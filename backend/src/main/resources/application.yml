@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: k-flow-erp
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  modulith:
+    detection-strategy: explicitly-annotated
