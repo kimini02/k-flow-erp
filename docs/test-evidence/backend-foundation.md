@@ -44,7 +44,7 @@ docker compose up -d --pull never postgres
 | 기본 Compose up | credential helper에서 대기하여 종료. 성공으로 기록하지 않음 |
 | 캐시 이미지로 Compose up | PASS, `127.0.0.1:5433` PostgreSQL 기동 |
 | local profile 실행 | PASS, localhost 8080에서 기동 |
-| GitHub Actions | workflow 작성만 완료. 원격 CI 실행은 하지 않음 |
+| GitHub Actions | 2026-10-01 원격 실행 PASS. 실행 커밋·로그 근거는 아래 원격 CI 절 참조 |
 
 로컬 HTTP/DB 확인에 실행한 명령:
 
@@ -55,6 +55,39 @@ docker compose exec -T postgres psql -U kflow_local -d kflow -c 'select version(
 ```
 
 별도 Python assertion으로 spec의 `openapi=3.1.0`, `paths={}`, Swagger HTML의 `Swagger UI`를 확인했다. SQL에서 public table은 `flyway_schema_history` 하나였다. `No migrations found` 경고는 SQL migration을 아직 만들지 않은 이번 범위와 일치하며 Flyway를 비활성화하지 않았다.
+
+## 원격 GitHub Actions 검증 — 2026-10-01
+
+- Workflow: `.github/workflows/backend.yml` / **Backend Foundation**, job: `verify`.
+- 실행: [Actions run 36841524554](https://github.com/kimini02/k-flow-erp/actions/runs/36841524554), [verify job 상세](https://github.com/kimini02/k-flow-erp/actions/runs/36841524554/job/110301509204).
+- Trigger: `codex/backend-foundation` 브랜치의 push.
+- 실제 검증한 commit: [`ac5d400a2ad82c8960e13812c7a7e1fd5b71bc11`](https://github.com/kimini02/k-flow-erp/commit/ac5d400a2ad82c8960e13812c7a7e1fd5b71bc11).
+- Job 실행: 2026-10-01 09:15:28~09:16:36 UTC (18:15:28~18:16:36 KST).
+- 최종 상태: `completed` / `success`. 첫 실행에서 성공했으며 CI 실패로 인한 코드 수정이나 재실행은 없었다.
+- 환경: GitHub-hosted `ubuntu-latest` (실제 Ubuntu 24.04.5 LTS), Temurin JDK 21 (로그: 21.0.12.1), Maven Wrapper.
+- 작업 디렉터리: `backend/`.
+- CI에서 실행한 명령: `./mvnw -B -ntp verify`.
+
+| 실제 실행된 검증 | 로그 결과 |
+| --- | --- |
+| `LayerArchitectureTest` | 3 tests, 0 failures, 0 errors, 0 skipped |
+| `FrameworkProblemHandlerTest` | 3 tests, 0 failures, 0 errors, 0 skipped |
+| `ModuleArchitectureTest` | 1 test, 0 failures, 0 errors, 0 skipped |
+| Surefire 합계 | 7 tests, 0 failures, 0 errors, 0 skipped |
+| `FoundationIT` / Failsafe | 2 tests, 0 failures, 0 errors, 0 skipped |
+| Maven 최종 결과 | `BUILD SUCCESS` |
+
+Testcontainers 2.0.5의 실제 Docker 연결, `Container postgres:16 started`, PostgreSQL 16.15 연결 및 Flyway 초기화 로그를 확인했다. Context/DB 검증과 OpenAPI/Swagger 실제 HTTP 검증이 포함된 `FoundationIT` 두 테스트가 실행됐다. H2 대체나 테스트 skip을 사용하지 않았다.
+
+원격 실행 결과 확인에 사용한 명령:
+
+```bash
+gh run watch 36841524554 --repo kimini02/k-flow-erp --interval 15 --exit-status
+gh run view 36841524554 --repo kimini02/k-flow-erp --json conclusion,status,headSha,url,createdAt,updatedAt,jobs
+gh run view 36841524554 --repo kimini02/k-flow-erp --log
+```
+
+이 절은 위 commit에 대한 실제 CI 근거다. 결과 기록 후속 커밋은 이 문서만 변경하며 Backend와 workflow는 변경하지 않는다. 현재 workflow의 `paths` 필터상 문서만 변경하는 push는 새 CI 실행을 만들지 않으므로, 기록 커밋 자체에서 CI가 재실행됐다고 주장하지 않는다.
 
 ## 실제 발생한 문제와 수정
 
