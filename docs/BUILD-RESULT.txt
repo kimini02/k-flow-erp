@@ -1,0 +1,51 @@
+
+> k-flow-erp@1.0.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 7699 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                    0.72 kB │ gzip:   0.43 kB
+dist/assets/index-rwxEmbJ6.css   229.06 kB │ gzip:  35.82 kB
+dist/assets/react-YM7vQBOF.js     38.47 kB │ gzip:  13.92 kB
+dist/assets/mantine-BlpGZ_3Y.js  253.68 kB │ gzip:  79.40 kB
+dist/assets/index-BDOpjxB3.js    377.82 kB │ gzip: 114.66 kB
+dist/assets/charts-CB2jAkTb.js   384.68 kB │ gzip: 111.77 kB
+✓ built in 5.48s
+
+
+> k-flow-erp@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/kimmini/Documents/Codex/2026-09-29/files-pasted-by-the-user-java/outputs/k-flow-erp
+
+ ✓ tests/domain.test.ts (10 tests) 168ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  21:46:41
+   Duration  498ms (transform 88ms, setup 0ms, collect 114ms, tests 168ms, environment 0ms, prepare 46ms)
+
+
+Browser E2E: 8 passed (44.9s). 53 sub-menu routes + dashboard verified.
+
+Theme update build:
+
+> k-flow-erp@1.0.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 7699 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                    0.72 kB │ gzip:   0.43 kB
+dist/assets/index-ODsUcDVK.css   229.80 kB │ gzip:  35.89 kB
+dist/assets/react-YM7vQBOF.js     38.47 kB │ gzip:  13.92 kB
+dist/assets/mantine-BlpGZ_3Y.js  253.68 kB │ gzip:  79.40 kB
+dist/assets/index-D_x3UDmI.js    377.85 kB │ gzip: 114.66 kB
+dist/assets/charts-CB2jAkTb.js   384.68 kB │ gzip: 111.77 kB
+✓ built in 4.54s
