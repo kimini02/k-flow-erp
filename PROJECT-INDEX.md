@@ -20,13 +20,22 @@
 
 - ERD Overview v0.1: [docs/domain/erd-overview.md](docs/domain/erd-overview.md)
 
+### Decisions
+
+- ADR 0001 — Organization / Employee / Account Boundaries: [docs/adr/0001-organization-employee-account-boundaries.md](docs/adr/0001-organization-employee-account-boundaries.md)
+
+### Detailed Design
+
+- Organization + HR Core + IAM Detailed Design v0.1: [docs/specs/organization-hr-iam-detailed-design-v0.1.md](docs/specs/organization-hr-iam-detailed-design-v0.1.md)
+
+### Implementation Plan
+
+- Implementation Plan v0.1: [docs/plans/organization-hr-iam-implementation-plan-v0.1.md](docs/plans/organization-hr-iam-implementation-plan-v0.1.md)
+
 ## Future Documentation
 
 다음 문서는 실제 작업이 시작될 때 추가한다.
 
-- `docs/adr/`: Architecture / Design Decision Record
-- `docs/specs/`: 기능별 상세 업무·Backend 설계
-- `docs/plans/`: 실제 구현 계획
 - `docs/test-evidence/`: 실제 실행한 Test Evidence
 - `PROGRESS.md`: 실제 개발 진행 기록
 

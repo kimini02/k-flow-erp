@@ -3,7 +3,7 @@
 - 작성일: 2026-10-01
 - 목적: 전체 ERP의 핵심 업무 Entity, 소유 Module, 주요 연결을 보여주는 **개념 데이터 지도**. 실제 DB나 Backend 구현 결과가 아니다.
 - 입력: [REQUIREMENTS v0.2](../../REQUIREMENTS-v0.2.md), [Architecture v0.1](../architecture/architecture.md), 이번 사용자 지시의 Entity·관계 범위.
-- 기준: DR-01/02/03/22 및 AQ-01 소유권 채택. 그 밖의 기존 미결 정책은 그대로 유지한다.
+- 기준: DR-01/02/03/22 및 AQ-01 소유권 채택. 2026-10-07 [ADR 0001](../adr/0001-organization-employee-account-boundaries.md)의 채택 정책에 맞춰 E-01/E-02를 CLOSED로 동기화했다. E-03~E-15와 그 밖의 기존 미결 정책은 그대로 유지한다.
 - 제외: 전체 컬럼·SQL 타입·JPA·Index·Unique Constraint·Version column·Lock·Idempotency key·Migration·Repository·Service·API·Controller·Spring 코드.
 
 ## 1. 지도를 읽는 방법
@@ -13,6 +13,7 @@
 - **확정 관계:** 사용자 채택 내용 또는 기존 목표 요구에서 확인된 업무 관계. 저장 구조·실행 시점·구체적 제약까지 확정하지 않는다.
 - **[DRAFT]:** 구체적인 표현·연결 수의 검토 후보. Entity 이름이나 관계 옆에 표시한다.
 - **[OPEN]:** 지원 범위나 연결 수를 정할 근거가 부족하다. 정확한 카디널리티를 임의로 그리지 않고 표와 질문으로 남긴다.
+- **CLOSED:** 해당 질문의 정책 결정이 완료됐다는 뜻이다. ADR 문서의 DRAFT나 상세설계의 DESIGN v0.1, 구현 계획의 PLANNED 및 후속 OPEN 항목을 구현 완료·확정으로 바꾸지 않는다.
 - `||`는 하나, `o|`는 0~1, `o{`는 0~여러 개, `|{`는 하나 이상이다. 문서→행의 0~여러 개는 초안까지 포함하는 지도 표현이다. 업무 확정에 필요한 최소 행 수를 0으로 허용한다는 정책이 아니다.
 - 실선은 문서 내부의 구성 관계, 점선은 별도 업무 대상의 참조 관계를 표현한다. 선 모양은 채택 여부를 뜻하지 않는다. 참조 선은 물리적 FK, 객체 연관, 호출 방향이나 전파 삭제를 정한 것이 아니다.
 - 모든 Entity와 **문서의 각 Line을 각각 Stable ID로 구별**한다. 이름·문서 표시번호·Item 식별만으로 원천 행을 대신하지 않는다. 이 지도에는 컬럼을 나열하지 않는다.
@@ -40,8 +41,8 @@ Business Use Case는 Architecture의 업무 시작 모듈이 조정한다. 데�
 | 소유 Module | 이번 지도의 핵심 Entity | 범위와 후보 표시 |
 | --- | --- | --- |
 | organization | Company, Site, Department, Position | 단일 법인, 장소와 조직 구분 |
-| hr | Employee | 인사상 직원. Attendance/Leave/Payroll 상세 Entity는 이번 지도에서 생략 |
-| iam | User, Role, UserRole | UserRole은 복수 역할의 논리 N:M 연결; 물리 표현 미정 |
+| hr | Employee, EmployeeAssignment | 인사상 직원과 기간별 주 소속·사업장·직급 이력. E-01 채택 반영; Attendance/Leave/Payroll 상세 Entity는 생략 |
+| iam | User, Role, UserRole | E-02에 따라 UserRole을 명시적 연결 Entity/Table로 채택. 구체 컬럼·제약·lifecycle은 상세설계 후보와 후속 결정 |
 | masterdata | Partner, Item, Unit | 거래처·품목·단위만 포함; 품목 역할별 허용 업무는 DR-01 유지 |
 | approval | ApprovalDocument, ApprovalStep; ApprovalPolicy [DRAFT] | 정책 개념의 소유권은 확정, 별도 저장 Entity·버전 표현은 DRAFT |
 | purchasing | PurchaseRequest, PurchaseRequestLine, PurchaseOrder, PurchaseOrderLine, GoodsReceipt, GoodsReceiptLine, VendorBill, VendorBillLine, Payable | Payable은 AP 보조부 개념. 청구와의 물리 분리/생성 개수는 미정 |
@@ -65,6 +66,7 @@ erDiagram
     orgDepartment["organization · Department"]
     orgPosition["organization · Position"]
     hrEmployee["hr · Employee"]
+    hrAssignment["hr · EmployeeAssignment"]
     iamUser["iam · User"]
     iamRole["iam · Role"]
     iamUserRole["iam · UserRole"]
@@ -75,18 +77,23 @@ erDiagram
     orgCompany ||..o{ orgPosition : "직급 기준"
     orgCompany ||..o{ hrEmployee : "직원"
     orgSite ||..o{ invWarehouse : "창고 위치"
-    orgDepartment o|..o{ hrEmployee : "DRAFT 현재 소속"
-    orgPosition o|..o{ hrEmployee : "DRAFT 현재 직급"
-    hrEmployee o|..o| iamUser : "DRAFT 선택적 계정 연결"
+    hrEmployee ||--|{ hrAssignment : "기간별 주 소속 이력"
+    orgDepartment ||..o{ hrAssignment : "소속 조직"
+    orgSite ||..o{ hrAssignment : "근무 사업장"
+    orgPosition ||..o{ hrAssignment : "인사 직급"
+    hrEmployee ||..o| iamUser : "직원별 선택적 계정 1개"
     iamUser ||--o{ iamUserRole : "역할 부여"
     iamRole ||..o{ iamUserRole : "시스템 역할"
 ```
 
 - **Company:** 한결 인더스트리라는 법인. 여러 Site가 같은 법인 안에 있다.
 - **Site:** 본사·화성 생산·용인 물류 등의 장소. **Department:** 인사·업무 조직. **Warehouse:** 물리 재고 위치. Site와 Department는 서로 대체할 수 없으며, 사업장 간 이동도 법인 간 매출·매입이 아니다.
-- Site→Department를 강제하지 않는다. 부서의 복수 사업장 활동, 직원의 겸직·전보 이력은 [OPEN E-01]이다.
-- Employee와 User의 분리 및 직원에게 계정이 필수가 아니라는 것은 확정이다. 그림의 양쪽 0~1은 **연결 표현 후보**이며, 직원당 계정 수·직원 미연결 계정 허용 여부는 [OPEN E-02]다.
-- User↔Role은 N:M이다. Position→Role 자동 부여 관계나 Role→ApprovalStep 자동 결재자 관계는 그리지 않는다.
+- **E-01 CLOSED:** Department와 Site는 독립이며 Position은 회사 공통 인사 직급이다. 재직 중 현재 주 Department·Site·Position은 각각 정확히 1개이고 동시 겸직은 v1 미지원이다. 기간별 배치 이력은 HR 소유 EmployeeAssignment에 보존한다.
+- Employee→EmployeeAssignment는 기간별 이력을 표현한다. 여러 이력 행이 동시에 유효한 겸직을 뜻하지 않는다. Assignment를 현재 소속의 단일 저장 원본으로 삼는 구체 모델·기간 경계·소급/예약 변경은 [상세설계 v0.1](../specs/organization-hr-iam-detailed-design-v0.1.md)의 DESIGN v0.1 / OHI-01 후속 범위다.
+- **E-02 CLOSED:** Employee 한 명은 User 0..1개를 가질 수 있고, v1의 사람 User는 Employee 정확히 1명과 연결한다. 직원 미연결 사람 계정과 직원당 복수 계정은 v1 미지원이다.
+- User↔Role은 명시적 UserRole Entity/Table을 통한 N:M이다. 유효한 Allow 권한은 합집합으로 결합하며 명시적 DENY 권한/Role은 v1 미지원이다. User 전역 Data Scope는 두지 않으며, 업무/권한별 Scope의 구체 저장 구조·적용표·결합 규칙은 후속 OPEN이다.
+- 퇴사자의 Employee/User와 과거 거래·결재·감사 참조는 보존하고 로그인은 비활성화한다. 휴직 로그인 정책과 퇴사 후 세션 차단의 구체 기술은 후속 OPEN으로 유지한다. Position→Role 자동 부여나 Role→ApprovalStep 자동 결재자 관계는 그리지 않는다.
+- 근거는 [ADR 0001](../adr/0001-organization-employee-account-boundaries.md)이며, E-01/E-02의 CLOSED는 정책 결정 완료다. 구체 저장 제약·API·인증 구현이나 전체 HR 범위가 확정·완료됐다는 뜻이 아니다.
 
 ### 4.2 공통 기준정보·결재
 
@@ -318,8 +325,8 @@ erDiagram
 
 | 확정한 업무 관계 | 남겨 둔 상세 |
 | --- | --- |
-| 단일 Company, 복수 Site와 Warehouse; Department는 조직, Warehouse는 재고 장소 | 부서/사업장 배치와 직원 겸직·이력 |
-| Employee와 User 분리, 계정 없는 직원 허용, User↔Role N:M | 직원/계정 연결 수, 계정 예외 및 역할 부여 저장 형식 |
+| 단일 Company, 복수 Site와 Warehouse; Department/Site 독립, 회사 공통 Position; 재직 중 주 배치 각 1개와 HR 소유 EmployeeAssignment 이력, 겸직 v1 미지원 | 기간 모델·예약/소급 변경·조직 비활성화 등 상세설계 OHI 후속 |
+| Employee당 User 0..1, 사람 User당 Employee 정확히 1; 명시적 UserRole N:M, 유효 Allow 합집합; 퇴사 참조 보존·로그인 비활성화, User 전역 Scope 없음 | 역할 lifecycle·인증/세션·휴직 로그인·업무별 Scope 등 상세설계 OHI 후속 |
 | 문서별 Line 식별과 Item Stable ID 참조 | Line의 구체적 저장 식별 형식·Snapshot |
 | PO Line→GoodsReceiptLine 반복 부분입고 1:N | PO 없는 입고·초과·잔량취소·합산 입고 문서 범위 |
 | SO Line→DeliveryLine 반복 부분출고 1:N | 주문 없는 출고·합산 문서·초과/잔량취소 |
@@ -329,14 +336,14 @@ erDiagram
 | BOM→BOMLine→Item, WorkOrder→BOM의 생산 기준 | BOM 버전 표현, 부분실적·WIP·생산 입고 연결 |
 | 결재 대상과 Step을 구분하고 승인과 ERP 후속 실행을 분리 | 정책·회차·병렬/대결·실제 처리 이력의 구조 |
 
-## 6. 상세 ERD 전에 결정할 DRAFT / OPEN 질문
+## 6. 상세 ERD 질문과 결정 상태
 
-아래 E 번호는 이 문서의 질문 식별자이며 새로운 채택 DR이나 구현 지시가 아니다. 관련 도메인의 상세 ERD를 작성하기 전에 해당 질문을 순서대로 해결한다.
+아래 E 번호는 이 문서의 질문 식별자이며 새로운 채택 DR이나 구현 지시가 아니다. E-01/E-02는 ADR 0001의 채택 정책으로 CLOSED이며, E-03~E-15는 기존 상태를 유지한다. 남은 질문은 관련 도메인의 상세 ERD 전에 해결한다.
 
-| ID | 상태 | 결정할 질문 | 연결된 기존 요구/결정 |
+| ID | 상태 | 질문 / 채택 결과 | 연결된 기존 요구/결정 |
 | --- | --- | --- | --- |
-| E-01 | OPEN | 부서와 사업장의 관계, 직원의 단일 소속·겸직·전보 이력과 직급 배정은 어떻게 표현하는가? | DR-02/22, HR-01 |
-| E-02 | DRAFT / OPEN | Employee↔User의 최대 연결 수, 직원 미연결 계정 범위, UserRole 저장 표현은? 직원의 User 보유는 여전히 필수가 아님 | DR-22 |
+| E-01 | CLOSED | Department/Site 독립, 회사 공통 Position. 재직 중 현재 주 Department·Site·Position 각각 1개, 겸직 v1 미지원. HR 소유 EmployeeAssignment에 기간별 이력 보존 | DR-02/22, HR-01, [ADR 0001 §3.1](../adr/0001-organization-employee-account-boundaries.md#31-e-01-조직과-직원-배치) |
+| E-02 | CLOSED | Employee당 User 0..1, 사람 User당 Employee 정확히 1. 명시적 UserRole N:M, 유효 Allow 합집합·명시적 DENY v1 미지원. 퇴사 참조 보존·로그인 비활성화. User 전역 Scope 없음; 구체 Scope·휴직 로그인은 후속 OPEN | DR-22, [ADR 0001 §3.2](../adr/0001-organization-employee-account-boundaries.md#32-e-02-직원과-계정-및-역할) |
 | E-03 | DRAFT / OPEN | Item의 기본 단위와 거래/BOM 단위, 환산 지원 범위는? | DR-04, QTY-01 |
 | E-04 | DRAFT / OPEN | 결재 대상·회차·재상신·정책 버전·단계 담당자/실제 처리자, 병렬/대결은 어떻게 표현하는가? | DR-17, APR-01~03, AQ-02/04 |
 | E-05 | OPEN | PR 분할/합산 발주, 직접 발주, PO 없는 입고 및 입고 문서 합산을 어디까지 허용하는가? 원천 Line 연결 수는? | DR-06/07, PUR-01/02/04 |
@@ -356,5 +363,5 @@ QC/LOT/Serial, Payroll 상세 Entity 및 계산 구조는 이번에 확정하지
 ## 7. 작성 검증 범위
 
 - Architecture는 4.1절의 GL/AP/AR 소유권과 대사 표현 한 곳만 수정한다. REQUIREMENTS와 Frontend 및 Backend 코드는 수정하지 않는다.
-- 사용자 지정 핵심 Entity 44개가 그림에 포함됐음을 확인했다. 후보를 포함한 전체 개념은 47개이며, 소유 Module·반복 부분 이행·배분·전표·생산 기준 및 DRAFT/OPEN 표시를 점검했다.
-- Mermaid erDiagram 7개를 임시 Mermaid 렌더러와 Chrome에서 문법 검사·실제 렌더링했다. 모두 통과했다. 검증 의존성과 렌더링 결과는 임시 폴더에만 두며 프로젝트 의존성은 변경하지 않았다. DB·Backend 업무 테스트나 미정 정책의 채택을 뜻하지 않는다.
+- 최초 작성 시 사용자 지정 핵심 Entity 44개와 후보를 포함한 전체 개념 47개를 점검했다. E-01 동기화로 EmployeeAssignment를 추가해 현재 지도는 전체 개념 48개를 포함한다. E-03~E-15의 관계·질문·상태는 변경하지 않았다.
+- 최초 작성 당시 Mermaid erDiagram 7개를 임시 Mermaid 렌더러와 Chrome에서 문법 검사·실제 렌더링했다. 모두 통과했다. 검증 의존성과 렌더링 결과는 임시 폴더에만 두며 프로젝트 의존성은 변경하지 않았다. DB·Backend 업무 테스트나 미정 정책의 채택을 뜻하지 않는다.
