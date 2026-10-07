@@ -1,12 +1,5 @@
-import {
-  IconFileDescription,
-  IconClock,
-  IconCircleCheck,
-  IconWallet,
-} from "@tabler/icons-react";
 import type { RecordData, Resource } from "../domain/types";
 import { shortWon, sum } from "../domain/helpers";
-import { KpiCard } from "./KpiCard";
 type Metric = {
   label: string;
   value: string | number;
@@ -16,9 +9,11 @@ type Metric = {
 export function ResourceKpis({
   resource,
   rows,
+  loading,
 }: {
   resource: Resource;
   rows: RecordData[];
+  loading?: boolean;
 }) {
   const count = (statuses: string[]) =>
     rows.filter((r) => statuses.includes(r.status)).length;
@@ -283,33 +278,18 @@ export function ResourceKpis({
       },
     ];
   }
-  const icons = [IconFileDescription, IconClock, IconCircleCheck, IconWallet];
+  // One compact strip keeps the list itself in the first screen.
   return (
-    <div className="kpi-grid">
-      {metrics.map((m, i) => {
-        const Icon = icons[i];
-        return (
-          <KpiCard
-            key={m.label}
-            label={m.label}
-            value={
-              <>
-                <span
-                  className={
-                    String(m.value).length > 9 ? "small-kpi-value" : ""
-                  }
-                >
-                  {m.value}
-                </span>
-                <small>{m.unit}</small>
-              </>
-            }
-            detail={m.detail}
-            icon={<Icon size={19} />}
-            tone={["neutral", "orange", "neutral", "blue"][i]}
-          />
-        );
-      })}
-    </div>
+    <dl className="summary-strip" aria-busy={loading || undefined}>
+      {metrics.map((m) => (
+        <div key={m.label} title={m.detail}>
+          <dt>{m.label}</dt>
+          <dd>
+            {loading ? "—" : m.value}
+            {!loading && m.unit && <small>{m.unit}</small>}
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }

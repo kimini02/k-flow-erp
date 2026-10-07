@@ -104,7 +104,6 @@ function BusinessAnalysis() {
   return (
     <>
       <PageHeader
-        eyebrow="REPORTS & ANALYTICS"
         title={title}
         description="업무 문서를 기준으로 실적과 주요 지표를 분석합니다. 기간 변경과 상세 문서 조회를 지원합니다."
         actions={

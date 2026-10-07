@@ -71,7 +71,6 @@ export function DashboardPage() {
   return (
     <>
       <PageHeader
-        eyebrow="WORKSPACE OVERVIEW"
         title="대시보드"
         description={`${actor}님, 안녕하세요. 오늘의 업무 흐름을 한눈에 확인하세요.`}
         actions={

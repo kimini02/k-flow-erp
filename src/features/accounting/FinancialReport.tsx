@@ -91,7 +91,6 @@ export function FinancialReport() {
   return (
     <>
       <PageHeader
-        eyebrow="ACCOUNTING / FINANCIAL REPORT"
         title={title}
         description="전기된 전표를 기준으로 집계한 회계 보고서입니다. 계정에서 원천 전표까지 확인할 수 있습니다."
         actions={

@@ -61,7 +61,7 @@ export function ResourceList({
   const mod = modules.find((m) => m.key === moduleKey)!;
   const item = mod.items.find((i) => i.key === screen)!;
   const { actor } = useSession();
-  const [params, setParams] = useState<ListParams>({ page: 1 });
+  const [params, setParams] = useState<ListParams>({ page: 1, size: 20 });
   const [search, setSearch] = useSearchParams();
   const [form, setForm] = useState<RecordData | "new" | null>(
     search.get("new") === "1" ? "new" : null,
@@ -76,7 +76,7 @@ export function ResourceList({
   const query = useRecords(resource.key, effective);
   const rows = query.data?.rows ?? [],
     all = query.data?.all ?? [];
-  const reset = () => setParams({ page: 1 });
+  const reset = () => setParams({ page: 1, size: params.size });
   const open = (r: RecordData) => setSearch({ doc: r.id });
   async function download() {
     try {
@@ -97,7 +97,6 @@ export function ResourceList({
   return (
     <>
       <PageHeader
-        eyebrow={`${mod.caption} / ${item.label}`}
         title={item.label}
         description={resource.description}
         actions={
@@ -120,7 +119,7 @@ export function ResourceList({
           </>
         }
       />
-      <ResourceKpis resource={resource} rows={all} />
+      <ResourceKpis resource={resource} rows={all} loading={query.isLoading} />
       {resource.key === "approvals" && (
         <div className="context-banner">
           <span className="online-dot" />
@@ -161,6 +160,9 @@ export function ResourceList({
           total={query.data?.total ?? 0}
           page={params.page ?? 1}
           onPage={(p) => setParams({ ...params, page: p })}
+          size={params.size ?? 20}
+          onSize={(size) => setParams({ ...params, size, page: 1 })}
+          selectedId={search.get("doc")}
           onRow={open}
           onSort={(sort) =>
             setParams({

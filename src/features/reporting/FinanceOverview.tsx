@@ -224,7 +224,6 @@ export function FinanceOverview() {
   return (
     <>
       <PageHeader
-        eyebrow="REPORTS & ANALYTICS"
         title="경영 분석"
         description="채권·채무부터 손익과 자금 흐름까지, 회사의 재무 현황을 한눈에 확인합니다."
         actions={

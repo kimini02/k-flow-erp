@@ -39,9 +39,9 @@ test("검색, 상태 필터, 페이지 이동, 상세, 신규 발주, 저장 유
   page,
 }) => {
   await page.goto("/purchasing/orders");
-  await expect(page.locator("tbody tr")).toHaveCount(10);
+  await expect(page.locator("tbody tr")).toHaveCount(20);
   await page.getByRole("button", { name: "2", exact: true }).click();
-  await expect(page.locator("tbody tr").first()).toContainText("PO-2026-0011");
+  await expect(page.locator("tbody tr").first()).toContainText("PO-2026-0021");
   await page.getByLabel("목록 검색").fill("없을검색어");
   await expect(page.getByText("조회된 데이터가 없습니다")).toBeVisible();
   await page
@@ -136,7 +136,7 @@ test("로딩 실패 후 재시도", async ({ page }) => {
   await expect(page.getByText("데이터를 불러오지 못했습니다")).toBeVisible();
   await page.evaluate(() => sessionStorage.removeItem("kflow-network-error"));
   await page.getByRole("button", { name: "다시 시도", exact: true }).click();
-  await expect(page.locator("tbody tr")).toHaveCount(10);
+  await expect(page.locator("tbody tr")).toHaveCount(20);
 });
 test("모바일 레이아웃과 메뉴", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -146,9 +146,10 @@ test("모바일 레이아웃과 메뉴", async ({ page }) => {
   ).toBeVisible();
   await page.getByLabel("메뉴 열기").click();
   await expect(page.locator(".sidebar.mobile-open")).toBeVisible();
+  await page.getByRole("button", { name: "구매관리", exact: true }).click();
   await page
     .locator(".sidebar nav")
-    .getByText("구매관리", { exact: true })
+    .getByRole("link", { name: "구매요청(PR)", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "구매요청(PR)", exact: true }),

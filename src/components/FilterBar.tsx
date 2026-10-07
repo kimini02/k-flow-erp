@@ -1,5 +1,5 @@
 import { TextInput, Select, Button } from "@mantine/core";
-import { IconSearch, IconRefresh, IconCalendar } from "@tabler/icons-react";
+import { IconSearch, IconRefresh } from "@tabler/icons-react";
 import type { ListParams } from "../domain/types";
 export function FilterBar({
   params,
@@ -29,6 +29,7 @@ export function FilterBar({
         }
       />
       <Select
+        className="filter-select"
         aria-label={`${entityLabel} 필터`}
         placeholder={`전체 ${entityLabel}`}
         clearable
@@ -39,6 +40,7 @@ export function FilterBar({
       />
       {!fixedStatus && (
         <Select
+          className="filter-select"
           aria-label="상태 필터"
           placeholder="전체 상태"
           clearable
@@ -51,13 +53,12 @@ export function FilterBar({
         <TextInput
           type="date"
           aria-label="조회 시작일"
-          leftSection={<IconCalendar size={13} />}
           value={params.from ?? ""}
           onChange={(e) =>
             onChange({ ...params, from: e.currentTarget.value, page: 1 })
           }
         />
-        <span>~</span>
+        <span aria-hidden="true">~</span>
         <TextInput
           type="date"
           aria-label="조회 종료일"
@@ -71,10 +72,10 @@ export function FilterBar({
       <Button
         variant="default"
         aria-label="필터 초기화"
-        px={10}
-        onClick={() => onChange({ page: 1 })}
+        leftSection={<IconRefresh size={14} />}
+        onClick={() => onChange({ page: 1, size: params.size })}
       >
-        <IconRefresh size={15} />
+        초기화
       </Button>
     </div>
   );
