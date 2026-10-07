@@ -1,9 +1,10 @@
 # Organization HR Core IAM Core Authentication Authorization Implementation Plan v0.1
 
-- 상태: **PLAN DRAFT — 모든 Slice PLANNED / 구현 미착수 / Astra 지시 없음**
+- 상태: **PLAN DRAFT — ORG-01 LOCAL VERIFIED / 나머지 Slice PLANNED / 원격 CI NOT_RUN**
 - 작성일: 2026-10-07 (Asia/Seoul)
 - 대상 경로: `docs/plans/organization-hr-iam-implementation-plan-v0.1.md`
-- 기준 브랜치/커밋: `codex/backend-foundation` / `145944770a458b7ac1eed0d2a166c25912159a19`
+- 기준 브랜치/커밋: `codex/backend-foundation` / `88347ded6d941c497ccefaf1d8447ce28d196d95`
+- ORG-01 채택 반영일: 2026-10-07 (Asia/Seoul). [ORG-01 상세설계 v0.1](../specs/organization-org-01-company-site-detailed-design-v0.1.md)의 O1-D01~10만 ADOPTED로 확정
 - 정책 근거: [ADR 0001 신규 초안](../adr/0001-organization-employee-account-boundaries.md)의 사용자 채택 E-01/E-02
 - 설계 입력: [Organization + HR Core + IAM 상세설계 v0.1](../specs/organization-hr-iam-detailed-design-v0.1.md)
 - 기반 구현 근거: [Backend Foundation Test Evidence](../test-evidence/backend-foundation.md)
@@ -16,15 +17,15 @@
 
 확인한 커밋에는 Java 21 / Spring Boot 4.1.1 / Spring Modulith 2.1.1 / PostgreSQL용 Foundation, 14개 모듈 metadata, 경계 테스트가 있다. Organization/HR/IAM 업무 클래스·Migration과 Spring Security 의존성은 아직 없다. 저장소의 기존 Foundation 검증 결과는 업무 기능의 구현·검증 완료를 뜻하지 않는다.
 
-최신 상세설계의 파일 추가 커밋은 1459447이며, 문서 안의 1e9e2c6은 작성 당시 Foundation 기준이다. 이번 계획의 읽기 기준은 1459447이다.
+상위 상세설계의 파일 추가 커밋은 1459447이며, 문서 안의 1e9e2c6은 작성 당시 Foundation 기준이다. ADR/이 계획·ERD E-01/E-02 CLOSED 동기화는 88347de에 반영돼 있다. 이번 ORG-01 후속 채택 반영의 읽기 기준은 88347de다. Foundation의 과거 실행 근거를 새 업무 테스트 결과로 재사용하지 않는다.
 
 ## 2. 준비와 공통 종료 조건
 
 ### 2.1 문서 준비
 
-구현 전에 새 ADR 초안과 이 계획을 검토하고 저장소에 반영한다. 기존 ADR 복원본으로 기록하지 않는다. 같은 기준 커밋에서 아직 OPEN으로 표기된 ERD의 E-01/E-02 및 관련 설명을 동기화하고 Project Index를 갱신한다. E-03~E-15는 기존 상태를 유지한다.
+기준 커밋에는 신규 ADR 초안과 이 계획, ERD의 E-01/E-02 CLOSED 동기화가 반영돼 있다. ADR을 기존 원본의 복원본으로 기록하지 않는다. ORG-01 구현 전에는 사용자 채택 상세설계와 관련 문서 참조를 같은 브랜치에 반영한다. E-03~E-15는 기존 상태를 유지한다.
 
-이미 채택된 정책은 다시 승인 대기로 돌리지 않는다. 검토할 것은 새 문구와 해당 Slice가 사용하는 DESIGN v0.1 후보 및 OPEN 계약이다. 현재 이 계획 작성으로 그 후보를 자동 채택하지 않는다.
+이미 채택된 E-01/E-02와 ORG-01 O1-D01~10은 다시 승인 대기로 돌리지 않는다. ORG-01 밖의 DESIGN v0.1 후보·OPEN 계약을 이번 채택으로 확정하지 않는다. GitHub 문서 변경안 및 Astra 프롬프트 준비는 실제 구현 실행이나 완료를 뜻하지 않는다.
 
 ### 2.2 모든 Slice의 공통 기준
 
@@ -36,7 +37,7 @@
 - 기존 ModuleArchitectureTest, LayerArchitectureTest와 관련 Foundation 검증을 유지한다. 업무 테스트는 해당 Slice에서 새 근거를 기록한다.
 - 권한 검증이 준비되기 전 업무 HTTP 경로를 공개하지 않는다. permitAll, 임의 관리자 Actor, 브라우저 선택 사용자 또는 고정 Role을 임시 인증으로 넣지 않는다. 테스트 fixture는 테스트 전용이다.
 - API 계약은 해당 Slice와 관련된 필드·오류·재시도만 확정한다. generic Idempotency 플랫폼이나 미정 Permission/Scope 저장소를 선행 구현하지 않는다.
-- 현재 계획의 모든 테스트는 예정이며 미실행이다. 구현 후 실제 명령·커밋·테스트 결과를 해당 Test Evidence에 기록한다.
+- ORG-01은 [Test Evidence](../test-evidence/organization-org-01.md)의 로컬 실행 결과를 따른다. 나머지 Slice의 테스트는 예정이며 미실행이다.
 
 ## 3. 작은 Slice별 순서
 
@@ -65,12 +66,16 @@
 
 #### ORG-01 회사와 사업장
 
-- 범위: Company 1개를 준비하는 초기 경로, Site 등록·단건/목록 조회, 최소 식별·표시정보. 일반 회사 추가/삭제 API는 포함하지 않는다.
-- 저장 후보: Stable ID, singleton 제약, Site의 Company 참조와 정규화 코드 UNIQUE. ID 기술·코드 규칙은 구현 계약에서 고정한다.
-- 공개 계약: OrganizationReferenceQueries의 Company/Site 조회 부분. JPA Entity 대신 최소 DTO를 반환한다.
+- 설계 상태: [ORG-01 상세설계 v0.1](../specs/organization-org-01-company-site-detailed-design-v0.1.md)의 O1-D01~10 전부 ADOPTED. 2026-10-07 ORG-01만 내부 구현·로컬 필수 검증 완료. [실행 근거](../test-evidence/organization-org-01.md). 원격 반영/CI는 미실행이다.
+- 범위: Company 1개 Flyway 초기화, Site 등록·단건·내부 목록 조회, Company/Site 표시명 수정. Company 상태·일반 생성/삭제, Site 활성/비활성화 명령은 포함하지 않는다.
+- 초기화 계약: Flyway seed + DB singleton + Runtime의 Company 정확히 1건 존재 검증. Application은 고정 seed UUID/code를 magic constant로 복제하거나 일치 검증하지 않는다.
+- 저장 계약: UUID v4 Stable ID, BIGINT optimistic version, Company/Site canonical code와 불변 코드, DB-01/02. Site는 Company별 모든 상태에서 코드가 유일하고 초기 ACTIVE다.
+- 공개 계약: OrganizationReferenceQueries의 getCompany·findSite 최소 단건 2계약만 Published. Site 목록·pagination/sorting 및 SitePage는 Organization 내부 계약이며 JPA Entity를 노출하지 않는다.
 - API 후보: GET company, GET/POST sites. 초기에는 외부 Controller를 활성화하지 않고 Application/Port/DB 테스트로 확인한다.
-- 선행 결정: OHI-08의 조직 코드 규칙, DB-01/02와 해당 FK 후보의 검토, 초기 회사 준비 경로.
-- 종료 검증: ORG-T01. 같은 코드 중복·없는 Company·두 번째 법인 생성 거부, 이름 변경 후 ID 유지. 마이그레이션·빈 DB 적용.
+- 선행 결정: ORG-01에 필요한 Company/Site 코드·초기화·Stable ID/version·DB-01/02는 채택 완료다. 다른 Entity 코드, Guard, Data Scope, 휴직 로그인은 후속 상태를 유지한다.
+- 필수 종료 검증: 상세설계 10절의 ORG-T01-A/B/C/D/G/H/I 및 10.1절의 O1-T01~15. PostgreSQL 16/Testcontainers와 기존 Modulith/ArchUnit/CI 검증을 유지하고 별도 ORG-01 Test Evidence를 기록한다.
+- 선택 검증: Flyway 동시 최초기동(ORG-T01-E)·Migration 실패주입(ORG-T01-F)은 Foundation/운영 선택 항목이다. 미실행을 ORG-01 미완료로 처리하지 않는다. Site 코드 동시 등록과 version 충돌은 필수다.
+- 실행 경계: 이번 문서 반영과 프롬프트 작성으로 Astra를 실행하거나 ORG-02/03·Employee·IAM·인증/인가·Data Scope·Frontend를 시작하지 않는다.
 
 #### ORG-02 부서와 직급
 
@@ -224,8 +229,8 @@
 | OHI-05 Role/계정 lifecycle·관리자 운영 | IAM-01~03, AN-01, AZ-01/03 | 저장 lifecycle과 실제 부여 권한·관리자 보호의 계약을 구분한다. |
 | OHI-06 인증·Credential·bootstrap·철회 | AN-01~03 | 기술·운영 선택 전 Session/JWT/SSO 중 하나를 구현하지 않는다. |
 | OHI-07 조직 계층·부서장·결재 연결 | 후속 Organization/Approval | 이번 Core에서 Position/Role로 대체하지 않는다. |
-| OHI-08 키 정규화·변경 | ORG-01 및 각 키 최초 저장 Slice | 관련 코드·사번·loginKey만 해당 시점에 정한다. |
-| OHI-09 제약·Guard·동시성 | ORG-03, HR-01/03/04, IAM-01/03 | 합의된 결과를 실제 PostgreSQL 경쟁 트랜잭션으로 검증한다. |
+| OHI-08 키 정규화·변경 | ORG-01 및 각 키 최초 저장 Slice | Company/Site 코드 부분은 ORG-01에서 ADOPTED. Department/Position/Role·사번·loginKey는 후속이며 OHI-08 전체는 OPEN 유지. |
+| OHI-09 제약·Guard·동시성 | ORG-01, ORG-03, HR-01/03/04, IAM-01/03 | ORG-01 optimistic 변경 계약은 ADOPTED이며 실제 PostgreSQL 경쟁 트랜잭션으로 검증한다. Guard·기간 제약 등 나머지는 OPEN 유지. |
 | AQ-04 Actor/진입 경계 | AN-03, AZ-01 | Published API와 소유권을 유지하며 HTTP 외 호출도 보호한다. |
 | DR-25 / E-14 감사 | 해당 변경을 외부 업무 성공으로 제공하기 전 | 필수 기록 범위·실패 계약을 정한다. 임시 로그를 필수 감사의 대체로 처리하지 않는다. |
 
@@ -251,9 +256,9 @@
 
 ## 6. 완료의 경계와 다음 검토 대상
 
-이 계획은 16개 기본 Slice와 선행 결정의 순서를 제시한다. 아직 날짜·공수·담당자·구현 완료를 배정하지 않았다. 새로운 ERP 업무, 급여/근태/연차 계산, 실제 결재선, 재고/회계 또는 Frontend 연동 전체를 포함하지 않는다.
+이 계획은 16개 기본 Slice와 선행 결정의 순서를 제시한다. ORG-01의 로컬 검증 상태 외 다른 Slice의 날짜·공수·담당자·구현 완료를 배정하지 않았다. 새로운 ERP 업무, 급여/근태/연차 계산, 실제 결재선, 재고/회계 또는 Frontend 연동 전체를 포함하지 않는다.
 
-다음 검토 대상은 **ORG-01의 저장·초기 회사·조직 코드 계약**이다. 해당 범위를 구체화해 검토할 수 있지만, 이 계획을 Astra 실행 프롬프트로 전달하거나 코드/Migration을 생성하지 않는다.
+ORG-01의 저장·초기 회사·조직 코드 계약은 O1-D01~10 채택으로 확정했다. 이후 사용자 실행 지시에 따라 ORG-01 내부 구현과 필수 로컬 검증을 완료했다. 코드·문서는 미커밋 상태이며 다른 Slice에 진입하지 않았다. 세부 결과는 ORG-01 Test Evidence를 기준으로 한다.
 
 참고 기술 근거:
 

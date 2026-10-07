@@ -32,24 +32,26 @@ class FoundationIT {
     @Value("${local.server.port}") int port;
 
     @Test
-    void bootsOnPostgresWithFlywayAndNoBusinessSchema() throws Exception {
+    void bootsOnPostgresWithOnlyOrg01BusinessSchema() throws Exception {
         assertThat(postgres.isRunning()).isTrue();
         try (var connection = dataSource.getConnection()) {
             assertThat(connection.getMetaData().getDatabaseProductName()).isEqualTo("PostgreSQL");
             assertThat(connection.getMetaData().getDatabaseMajorVersion()).isEqualTo(16);
             try (var statement = connection.createStatement();
-                 var result = statement.executeQuery("select count(*) from information_schema.tables "
+                 var result = statement.executeQuery("select table_name from information_schema.tables "
                          + "where table_schema = 'public' and table_type = 'BASE TABLE' "
                          + "and table_name <> 'flyway_schema_history'")) {
-                result.next();
-                assertThat(result.getInt(1)).isZero();
+                var tables = new java.util.ArrayList<String>();
+                while (result.next()) tables.add(result.getString(1));
+                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site");
             }
         }
-        assertThat(flyway.info().applied()).isEmpty();
+        assertThat(flyway.info().applied()).hasSize(1);
         assertThat(flyway.info().pending()).isEmpty();
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(entityManagerFactory.isOpen()).isTrue();
-        assertThat(entityManagerFactory.getMetamodel().getEntities()).isEmpty();
+        assertThat(entityManagerFactory.getMetamodel().getEntities()).extracting(jakarta.persistence.metamodel.EntityType::getName)
+                .containsExactlyInAnyOrder("Company", "Site");
         assertThat(environment.getProperty("spring.jpa.hibernate.ddl-auto")).isEqualTo("validate");
         assertThat(environment.getProperty("spring.jpa.open-in-view", Boolean.class)).isFalse();
     }

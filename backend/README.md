@@ -1,6 +1,6 @@
 # K-Flow ERP Backend Foundation
 
-Java 21 / Spring Boot 4.1.1의 Walking Skeleton이다. ERP 업무, 인증, API 계약 구현은 아직 없다. 기존 React/Vite는 저장소 루트에 그대로 둔다.
+Java 21 / Spring Boot 4.1.1 Foundation 위에 ORG-01 Company/Site 내부 업무를 구현했다. 인증 및 업무 HTTP API는 아직 없다. 기존 React/Vite는 저장소 루트에 그대로 둔다.
 
 ## 실행
 
@@ -40,8 +40,8 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 - `application.yml`: Hibernate `validate`, OSIV off, Flyway enabled, 명시적으로 표시한 Modulith 모듈만 감지.
 - `application-local.yml`: 개발용 PostgreSQL 연결 및 loopback HTTP 설정. 기본 프로필을 local로 강제하지 않는다.
-- `db/migration/.gitkeep`: 위치만 보존한다. SQL migration과 ERP table은 없다. Flyway가 초기화 중 만드는 자체 이력 테이블은 업무 테이블이 아니다.
-- 첫 업무 migration 번호를 소비하지 않는다. 환경에 따라 Flyway의 empty migration 경고가 발생할 수 있다.
+- `db/migration/V1__organization_company_site.sql`: Company/Site 두 테이블과 최초 Company 1행을 같은 Migration으로 만든다. Site 초기 행은 없다. 적용된 버전 Migration은 수정하지 않는다.
+- 기동 시 Company가 정확히 1건인지 읽기 검증한다. 누락은 기동 실패이며 자동 복구/재생성하지 않는다. 재기동은 저장된 이름·ID·version·시각을 덮어쓰지 않는다.
 
 ## 검증
 
@@ -55,7 +55,8 @@ export PATH="$JAVA_HOME/bin:$PATH"
 - Surefire: `*Test` / `*Tests`, Docker 없이 실행하는 JUnit·Modulith·ArchUnit·Framework 오류 응답 테스트.
 - Failsafe: `*IT`, `verify`에서 실제 PostgreSQL 16 Testcontainer와 앱 HTTP 서버를 실행한다.
 - Testcontainers는 Compose DB와 별개로 임시 DB를 만든다. Docker가 없으면 skip하지 않고 실패한다. H2 대체도 없다.
-- Integration Test는 PostgreSQL 제품/버전, Flyway 상태, JPA validate, 업무 Entity·table 0개, OpenAPI와 Swagger UI를 확인한다.
+- Integration Test는 PostgreSQL 제품/버전, Flyway 상태, JPA validate, Company/Site 두 업무 Entity·table만 존재함, OpenAPI 업무 paths가 비어 있음과 Swagger UI를 확인한다.
+- ORG-01 IT는 DB 제약·canonical code·등록 경쟁·Company/Site version 충돌·쓰기 없는 no-op 및 기동 실패를 검증한다. [실행 근거](../docs/test-evidence/organization-org-01.md)를 참고한다.
 - 테스트 결과는 `target/surefire-reports/`, `target/failsafe-reports/`에 생성한다.
 - GitHub workflow는 JDK 21에서 `./mvnw -B -ntp verify`를 실행한다. 로컬 성공이 원격 CI 실행 성공을 뜻하지 않는다.
 
@@ -68,11 +69,11 @@ organization iam masterdata approval purchasing inventory accounting
 payments sales manufacturing hr reporting audit assistant
 ```
 
-각 모듈은 `api`, `application`, `domain`, `infrastructure`, `web` 패키지를 가진다. root의 `@ApplicationModule`과 api의 `@NamedInterface("api")`만 선언한다. 실제 Port·Entity·Repository·업무 Service·Controller는 없다.
+각 모듈은 `api`, `application`, `domain`, `infrastructure`, `web` 패키지를 가진다. root의 `@ApplicationModule`과 api의 `@NamedInterface("api")` 경계를 유지한다. Organization에만 Company/Site Entity, 내부 저장 Port/JPA adapter, 내부 Application Service와 최소 Published 단건 조회가 있다. 다른 모듈은 metadata만 있으며 업무 Controller는 없다.
 
 Spring Modulith가 실제 14개 감지 여부 및 `verify()`로 모듈 순환/내부 접근을 검사한다. `technical.web`은 업무 모듈이 아니다. 공개 계약은 `<module>.api`에 두고 module root에는 업무 클래스를 두지 않는다.
 
-ArchUnit은 production class만 검사한다. domain→application/infrastructure/web, application→infrastructure/web, api→내부 구현 계층 의존을 금지한다. 현재 비어 있는 계층은 허용하되 새 클래스는 자동 검사한다. 따라서 현재 성공은 향후 업무 정합성을 증명하는 결과가 아니다.
+ArchUnit은 production class만 검사한다. domain→application/infrastructure/web, application→infrastructure/web, api→내부 구현 계층 의존을 금지한다. 현재 비어 있는 계층은 허용하되 새 클래스는 자동 검사한다. 경계 테스트 통과 자체는 다른 Slice의 업무 정합성을 증명하지 않는다.
 
 ## 오류 응답
 
@@ -90,3 +91,11 @@ ArchUnit은 production class만 검사한다. domain→application/infrastructur
 - 고정 버전은 사용자 지시대로 Boot 4.1.1, Modulith BOM 2.1.1, springdoc 3.1.1, ArchUnit core 1.5.0. Testcontainers/JUnit은 Boot dependency management를 따른다.
 
 확인한 공식 자료: [Boot 요구사항](https://docs.spring.io/spring-boot/system-requirements.html), [Modulith 구조/감지](https://docs.spring.io/spring-modulith/reference/fundamentals.html), [Boot Testcontainers](https://docs.spring.io/spring-boot/reference/testing/testcontainers.html), [springdoc](https://springdoc.org/).
+
+## ORG-01 내부 경계
+
+- Published `OrganizationReferenceQueries`는 `getCompany`, `findSite`만 제공한다. Site 목록은 `organization.application.SiteListQueries` 내부 계약이다.
+- `OrganizationService`는 등록·이름 정정 트랜잭션을 조정하고 내부 저장 Port에 의존한다. JPA adapter는 Organization 테이블만 접근한다.
+- 현재 내부 Use Case는 독립 호출에서 트랜잭션 완료 후 반환한다. Spring REQUIRED로 기존 트랜잭션이 있으면 참여하며 최종 commit은 바깥 소유자 책임이다. 향후 cross-module 쓰기 Port·외부 API의 원자성/오류 경계는 해당 Slice에서 결정한다.
+- 이름 no-op도 expectedVersion 비교와 JPA OPTIMISTIC 완료 검증을 거친다. DB UNIQUE의 지정된 Site 코드 제약만 `SITE_CODE_CONFLICT`로 변환하며 다른 DB 실패를 숨기지 않는다.
+- 수정 시각은 감사로그의 대체가 아니다. Site 상태 전이·직원·IAM·인증/인가·업무 REST API는 포함하지 않는다.

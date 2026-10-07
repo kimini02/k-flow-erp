@@ -1,18 +1,20 @@
 # Organization + HR Core(Employee/EmployeeAssignment) + IAM Detailed Design v0.1
 
 - 작성일: 2026-10-03 (Asia/Seoul)
-- 상태: **E-01/E-02 CLOSED — 사용자 채택 정책 반영 / 상세 구조 DESIGN v0.1 / 구현 미착수**
+- 상태: **E-01/E-02 CLOSED — 사용자 채택 정책 반영 / 상세 구조 DESIGN v0.1 / ORG-01만 로컬 검증 완료**
 - 기준 Repository: `kimini02/k-flow-erp`
 - 읽은 기준 브랜치/커밋: `codex/backend-foundation` / `1e9e2c6a64f0bfdd13b6314f49700c6c2ba9fbf5`
 - 기준 문서: [Requirements v0.2](../../REQUIREMENTS-v0.2.md), [Architecture v0.1](../architecture/architecture.md), [ERD Overview](../domain/erd-overview.md), [E-01/E-02 결정 기록](../adr/0001-organization-employee-account-boundaries.md)
 - 현재 구현 근거: [Backend Foundation 검증 기록](../test-evidence/backend-foundation.md). Foundation 및 원격 CI 완료와 이번 업무 설계/테스트 완료를 구분한다.
+- ORG-01 구현 근거: [2026-10-07 로컬 필수 검증](../test-evidence/organization-org-01.md). 나머지 Slice는 구현 미착수이며 원격 ORG-01 CI는 NOT_RUN이다.
+- ORG-01 후속 채택: 2026-10-07 사용자 채택. [ORG-01 회사와 사업장 상세설계 v0.1](organization-org-01-company-site-detailed-design-v0.1.md)의 O1-D01~10은 ADOPTED다. 이 문서의 다른 Slice는 기존 DESIGN/OPEN 상태를 유지한다.
 - 이번 산출물은 설계 문서다. Java 업무 코드, SQL Migration, Frontend 변경, JWT/Lock/Idempotency 구현 및 Astra 구현 지시는 추가하지 않는다.
 
 ## 1. 정책 확정과 설계안의 구분
 
 | 표기 | 의미 |
 | --- | --- |
-| ADOPTED | 2026-10-03 사용자가 채택한 정책 또는 기존 DR-02/03/22·AQ-01 원칙. 다시 선택 대기로 돌리지 않는다. |
+| ADOPTED | 2026-10-03 사용자 채택 정책·기존 DR-02/03/22·AQ-01 원칙 및 2026-10-07 ORG-01 O1-D01~10 채택 범위. 다시 선택 대기로 돌리지 않는다. |
 | DESIGN v0.1 | 정책을 만족시키기 위해 이번에 제안한 책임·상태명·테이블·제약·Port 계약·API 후보. 기존 사용자 채택 사실로 소급하지 않는다. |
 | OPEN | 이번 채택에 포함되지 않았거나 사용자가 명시적으로 남겨 둔 후속 결정. 미정 값을 코드 기본값으로 메우지 않는다. |
 
@@ -171,6 +173,8 @@ Role 비활성화의 추천안은 **Role 상태 변경과 그 Role의 미철회 
 
 기관명/사번/로그인명 정규화 및 허용 문자·길이는 구현 계약 확정 때 고정한다. 추천은 코드/로그인 식별 키의 정규화값에 유일 제약을 걸고 비활성화 후에도 키를 재사용하지 않는 것이다. 대소문자 처리·키 변경 정책은 OHI-08이다. 이름 자체의 중복을 금지하지 않는다.
 
+**ORG-01 후속 채택 범위:** Company/Site의 최소 필드·상태·UUID v4·canonical code·BIGINT optimistic version·DB-01/02는 ORG-01 상세설계를 따른다. Company/Site는 canonical code 하나만 저장하며 이 표의 normalizedCode와 별도 원본을 중복 보관하지 않는다. 초기화는 Flyway seed + DB singleton + Runtime의 정확히 1건 존재 검증이며 고정 seed UUID/code의 Application 상수 복제·일치 검증은 없다. Department/Position/Role·사번·loginKey·Assignment/Guard 계약은 이 후속 채택에 포함하지 않는다.
+
 ### 5.2 보장할 제약과 보장하지 못하는 것
 
 | ID | 대상 | DB Constraint 후보 | Application에서 별도로 확인할 것 |
@@ -205,6 +209,8 @@ Role 비활성화의 추천안은 **Role 상태 변경과 그 Role의 미철회 
 ## 6. Published Port 후보
 
 각 계약은 제공 모듈의 `api` Named Interface에 둔다. 반환값은 불변 DTO/ID/값이며 JPA Entity, Repository, Servlet 요청, 사용자 비밀번호/급여를 노출하지 않는다. 이름과 필드의 최종 Java 시그니처는 아직 코드로 작성하지 않는다.
+
+**ORG-01의 확정 Published 범위는 getCompany·findSite 최소 단건 2계약만**이다. Company에는 활성 상태가 없고 Site 단건은 INACTIVE도 반환한다. Site 목록·pagination/sorting·SitePage는 Organization 내부 조회 계약이다. 아래 표의 다른 대상 및 OrganizationAssignmentGuard는 후속 Slice 후보이며 ORG-01에서 구현하지 않는다.
 
 | 제공자 / Port 후보 | 입력 의미 | 최소 반환/보장 | 소비자 및 제한 |
 | --- | --- | --- | --- |
@@ -422,8 +428,8 @@ Modulith는 모듈 순환·내부 패키지 접근·설정된 허용 의존을 �
 | OHI-05 | OPEN | Role/계정 재활성화, 부여 가능한 Role, 자기 권한 변경/마지막 관리자 보호, 초기 역할의 행위 매핑 | ADMIN 전역 우회·고정 Role 코드·자동 Scope 부여 없음 |
 | OHI-06 | OPEN | Session/JWT/SSO, Credential·초대/비밀번호/잠금/철회, 초기 관리자 bootstrap | 직원 미연결 사람 계정을 편의상 추가하지 않음. JWT 구현 없음 |
 | OHI-07 | OPEN | 조직 계층·부서장·직책/담당자와 결재선 연결 | Position을 부서장/실제 결재자로 대체하지 않음 |
-| OHI-08 | OPEN | 코드·사번·로그인명 허용 문자/길이/대소문자 정규화·변경 정책 | 이름 중복 금지나 업무번호를 Stable ID로 사용하지 않음 |
-| OHI-09 | OPEN — 기술 검증 | Guard의 Lock 강도/순서·격리수준, EXCLUDE 확장 설치, optimistic 변경 계약 | SQL/Lock 코드·generic Idempotency를 작성하지 않음 |
+| OHI-08 | OPEN — Company/Site 부분 ADOPTED | Company/Site 코드는 ORG-01 상세설계로 확정. 다른 코드·사번·로그인명은 후속 | 이름 중복 금지나 업무번호를 Stable ID로 사용하지 않음. OHI-08 전체를 CLOSED로 바꾸지 않음 |
+| OHI-09 | OPEN — ORG-01 optimistic 계약 ADOPTED / 해당 로컬 검증 완료 | Guard의 Lock 강도/순서·격리수준, EXCLUDE 확장 설치는 후속. ORG-01의 version·DB 제약은 별도 Evidence에서 로컬 검증 완료 | 다른 Slice의 SQL/Lock·generic Idempotency를 선행 구현하지 않음. OHI-09 전체를 CLOSED로 바꾸지 않음 |
 | 기존 DR-25 / E-14 | OPEN | 감사 필수 범위·보존·실패 시 성공/원복·변경 근거 저장 경계 | audit Port/Entity/원자성 정책을 이번 채택으로 확정하지 않음 |
 | 기존 DR-24 / E-04 | OPEN | 근태·연차·급여·결재 정책/대결/후속 실행 | HR Core의 완성을 전체 HR/Approval 완성으로 표시하지 않음 |
 

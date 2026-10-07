@@ -27,10 +27,15 @@
 ### Detailed Design
 
 - Organization + HR Core + IAM Detailed Design v0.1: [docs/specs/organization-hr-iam-detailed-design-v0.1.md](docs/specs/organization-hr-iam-detailed-design-v0.1.md)
+- ORG-01 Company / Site Detailed Design v0.1 — O1-D01~10 ADOPTED, ORG-01 로컬 검증 완료: [docs/specs/organization-org-01-company-site-detailed-design-v0.1.md](docs/specs/organization-org-01-company-site-detailed-design-v0.1.md)
 
 ### Implementation Plan
 
 - Implementation Plan v0.1: [docs/plans/organization-hr-iam-implementation-plan-v0.1.md](docs/plans/organization-hr-iam-implementation-plan-v0.1.md)
+
+### ORG-01 Verification
+
+- ORG-01 로컬 실행 근거 — 원격 CI NOT_RUN: [docs/test-evidence/organization-org-01.md](docs/test-evidence/organization-org-01.md)
 
 ## Future Documentation
 

@@ -1,0 +1,157 @@
+ORG-01 local verify 2026-10-07 — selected actual log lines
+
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 s -- in com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.046 s -- in com.kflow.erp.ModuleArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.468 s -- in com.kflow.erp.LayerArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.538 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+[INFO] Tests run: 43, Failures: 0, Errors: 0, Skipped: 0
+15:12:38.175 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+2026-10-07T15:12:41.642+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:41.682+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.009s)
+2026-10-07T15:12:44.523+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:44.540+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.005s)
+ORG-EVIDENCE site no-op/stale unchanged xmin=769, row={id=8c0e2c81-0f79-408d-970c-463acbf0bb33, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=새 본사, status=ACTIVE, version=1, created_at=2026-10-07 15:12:45.185481, updated_at=2026-10-07 15:12:45.199997}
+2026-10-07T15:12:45.412+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:45.428+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.005s)
+2026-10-07T15:12:45.638+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:45.652+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.003s)
+ORG-EVIDENCE migration/restart company={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=한결 인더스트리, version=0, created_at=2026-10-07 15:12:41.799544, updated_at=2026-10-07 15:12:41.799544}, sites=0
+2026-10-07T15:12:45.842+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:45.855+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.004s)
+2026-10-07T15:12:45.890+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+ORG-EVIDENCE company rename race outcomes=[CompanyReference[companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HANGYEOL, name=승자A, version=1], VERSION_CONFLICT], committed={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=승자A, version=1, created_at=2026-10-07 15:12:41.799544, updated_at=2026-10-07 15:12:45.937166}
+ORG-EVIDENCE site rename race outcomes=[VERSION_CONFLICT, SiteReference[siteId=52b385aa-f2c5-45fb-b900-295a9b32e2df, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=승자B, status=ACTIVE, version=1]], committed={id=52b385aa-f2c5-45fb-b900-295a9b32e2df, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=승자B, status=ACTIVE, version=1, created_at=2026-10-07 15:12:45.958162, updated_at=2026-10-07 15:12:45.97197}
+ORG-EVIDENCE code race outcomes=[SiteReference[siteId=b384885f-4987-4ef5-aa9d-0c9e0036822a, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=동일 이름, status=ACTIVE, version=0], SITE_CODE_CONFLICT]
+ORG-EVIDENCE company no-op stale rejected at commit; committed={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=경쟁 변경, version=1, created_at=2026-10-07 15:12:41.799544, updated_at=2026-10-07 15:12:46.119052}
+ORG-EVIDENCE site no-op stale rejected at commit; committed={id=9c69c16c-3f40-4edc-9657-f906ad60677b, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=경쟁 변경, status=ACTIVE, version=1, created_at=2026-10-07 15:12:46.134835, updated_at=2026-10-07 15:12:46.143138}
+2026-10-07T15:12:46.302+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:46.315+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.003s)
+ORG-EVIDENCE company no-op/stale unchanged xmin=876, row={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=정정, version=1, created_at=2026-10-07 15:12:41.799544, updated_at=2026-10-07 15:12:46.498226}
+2026-10-07T15:12:46.706+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59222/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:46.718+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.004s)
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.285 s -- in com.kflow.erp.organization.OrganizationIT
+2026-10-07T15:12:50.299+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59276/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:50.319+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.005s)
+2026-10-07T15:12:50.796+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59276/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:50.848+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59276/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:50.881+09:00  INFO 63896 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59276/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-07T15:12:50.894+09:00  INFO 63896 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.003s)
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.161 s -- in com.kflow.erp.FoundationIT
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-10-07T15:12:52+09:00
+
+SHA-256 manifest of verification inputs (backend Java/SQL/pom/config):
+77df33bafcadaa6ccf41e9a5d90b00bb29857b70c69a6f947f61cf7fb2ac1eef  backend/compose.yml
+52db5a690ddde0bba60679fcdfdf9d0616b675cc382294b8f26c08c7fc7bf87c  backend/pom.xml
+cd29a602f2dd13a013815c7df4fb1ccca56d6a84e931e7d67063859e5a456cdf  backend/src/main/java/com/kflow/erp/KFlowErpApplication.java
+effc50c1b1b5b658eca17a96ba473cfec9ea0b0dae8efa37e80e25b72552a6d9  backend/src/main/java/com/kflow/erp/accounting/api/package-info.java
+8e97d05f9c84d0a268acab721ea6c921ff1d4075e12cc21fe4b9aec029d81063  backend/src/main/java/com/kflow/erp/accounting/application/package-info.java
+4901784f6e5fd74d346aba81c35a19ff5d2a3a5cb23c2d0622a48c833db74ca5  backend/src/main/java/com/kflow/erp/accounting/domain/package-info.java
+110cbeed39554ece3996ec22ac985d3eea0f38ebd1778fc151ec3209493693f1  backend/src/main/java/com/kflow/erp/accounting/infrastructure/package-info.java
+15353969bad77421ee9b0c468dee6afd44bc7a927e23f071575099b166fad22b  backend/src/main/java/com/kflow/erp/accounting/package-info.java
+80b65f086ad1a55a54fae6274895770ccd3e09b2daea9a204d681cb47c8415d1  backend/src/main/java/com/kflow/erp/accounting/web/package-info.java
+7545c9bc6934d3d2c48e5eb6e51076b2843830c5f80d76e506ab9579dd137401  backend/src/main/java/com/kflow/erp/approval/api/package-info.java
+69b8d2f864b92027840e7d116ff1709c25aad9efdd00155bceaaac4d4515fd27  backend/src/main/java/com/kflow/erp/approval/application/package-info.java
+c84ae702a466e27c73d2f834dae31d31001ce93e46a15ea3bcefd31a35479bc1  backend/src/main/java/com/kflow/erp/approval/domain/package-info.java
+3a08969e0d9dc134a69e5350987f36c25c790fb2e11f5b64667107e1e2f1f78a  backend/src/main/java/com/kflow/erp/approval/infrastructure/package-info.java
+9483672537aef24990d24809876db55b4892e277bf3e15a64141a37263e907a7  backend/src/main/java/com/kflow/erp/approval/package-info.java
+9715315b819f7b5d0365b2a1cfc77a8d622cf20ef7bc0dfbd53cd4769fc10e62  backend/src/main/java/com/kflow/erp/approval/web/package-info.java
+0d860a6923f05206c4a2846df07207cabd890c5bcee6843bfbb3a0ba9dfd653e  backend/src/main/java/com/kflow/erp/assistant/api/package-info.java
+187ea488e2140acae9681edfa6859972c4b8867014fcc134585f64c7aee543ec  backend/src/main/java/com/kflow/erp/assistant/application/package-info.java
+2f56991104dc9bb13127d8df4b10cc3d1b0c7464ee8c7dadb1fdb8c81509aac2  backend/src/main/java/com/kflow/erp/assistant/domain/package-info.java
+24286f0b7f915de62891fcaeb644c89fd879606eb885f14c722d6e631f9e1535  backend/src/main/java/com/kflow/erp/assistant/infrastructure/package-info.java
+842bc2d4ae340e2ffd5a7dfadca1832b06babf6a5ab672b3ed4b2538155f0af1  backend/src/main/java/com/kflow/erp/assistant/package-info.java
+720c33f608e5f07668ba7f64a7d8f17f9637ae687b87325eb5a7d774deeb56dd  backend/src/main/java/com/kflow/erp/assistant/web/package-info.java
+18471f76cc473d6b90c247267325f7906eb684c25861c6cdd6f626bb315d8404  backend/src/main/java/com/kflow/erp/audit/api/package-info.java
+837a5296fb16e3bad087b7077e3174f622a2d2bd9a1dea9c71d92eaebcdb0f15  backend/src/main/java/com/kflow/erp/audit/application/package-info.java
+d23451358722535dc5db78ad73f35f67689620eb6b2e377fef313a01c5d202ee  backend/src/main/java/com/kflow/erp/audit/domain/package-info.java
+36c8fac582cb8e196565f046fc7a05a95c6795fa64e0b6295b6c01086bc6b2d6  backend/src/main/java/com/kflow/erp/audit/infrastructure/package-info.java
+5c0e7b412e68978f6d3b76b188cff6ddbeb0c21de6d37abf61c3dea0759d8bf6  backend/src/main/java/com/kflow/erp/audit/package-info.java
+6d63805fe365f9165390038581b905bf0e8a6ca9ce3672f41408a578dbb15b14  backend/src/main/java/com/kflow/erp/audit/web/package-info.java
+ec8deb7dcfece41a8858f508f956b505bf1eabb8420ac5672aabdea0e2e0a637  backend/src/main/java/com/kflow/erp/hr/api/package-info.java
+f16c9354e43e6f299b2676c22baa6db14fadb1dfe347df3fcad59cfed85fc3af  backend/src/main/java/com/kflow/erp/hr/application/package-info.java
+23a26e74a48bb7f06c9c2ea0e00d2e7b24572b54bdf23857f76bf96171978acc  backend/src/main/java/com/kflow/erp/hr/domain/package-info.java
+12f7ad37f4617b9a42b3f1d250b8754820a32218b01b3f76db80ecd40021ef93  backend/src/main/java/com/kflow/erp/hr/infrastructure/package-info.java
+8dcb36080615703459e5ce5ad506409a394d7d30f1ba2a56094641da732fd7db  backend/src/main/java/com/kflow/erp/hr/package-info.java
+5b718f573af8ab6f89b174e5f7642e4612b8e31197fb41bb085b79f5a4d87a0b  backend/src/main/java/com/kflow/erp/hr/web/package-info.java
+38b9ee06d54e90965ea8972a85c61eaa9e2d24b2092fcdcd133ebf04d3608ee9  backend/src/main/java/com/kflow/erp/iam/api/package-info.java
+09d357eb70c0509f20f957832f4359b3c21fc8a20c9fe9a1ca020110e33a81f9  backend/src/main/java/com/kflow/erp/iam/application/package-info.java
+ac953ed40b51cc2a6fb345e6932036fa91a230b4f2056c01676f67fd3af910b5  backend/src/main/java/com/kflow/erp/iam/domain/package-info.java
+869df22ed3004ae78cbb3abf5eff3c690b3e29cf4c36e4db84cd35dd77d51252  backend/src/main/java/com/kflow/erp/iam/infrastructure/package-info.java
+982f2a7eb3e7688585d2b310815dd8766c0281827b73f40dbc81e2a922036d3d  backend/src/main/java/com/kflow/erp/iam/package-info.java
+fd70d08eb920cde61d372347b91e454608ed87d02e8904778162da2256c71835  backend/src/main/java/com/kflow/erp/iam/web/package-info.java
+f915bc8e2863b84b6e24fee5f99b2056650ab6ce54d296aa20691eff9b4f33ed  backend/src/main/java/com/kflow/erp/inventory/api/package-info.java
+8196a8d7af2e9d26c11bd763fce673e7cc4b8ca3f7c587e68c21c60d8802fe93  backend/src/main/java/com/kflow/erp/inventory/application/package-info.java
+bda24aad776425fe1bfc63ac648af3d82330f8faedc0d1d8c5979260a1e9e2e6  backend/src/main/java/com/kflow/erp/inventory/domain/package-info.java
+2062a11fa861698c2b77049210edfd1e84ad5615dbabf5415a4064b7abee3ae8  backend/src/main/java/com/kflow/erp/inventory/infrastructure/package-info.java
+a374baf2750e6ecc7200000a68d3b3d34e58be4e2d218faaf46ae5d1f8433527  backend/src/main/java/com/kflow/erp/inventory/package-info.java
+cc03c165ccc147c2c2122f097ef97f77b76185c9d28ad459999ace002c982154  backend/src/main/java/com/kflow/erp/inventory/web/package-info.java
+289a99449db5009bb7971f1d48d1de3b6bf518ad0e4e35435ef8507478af6189  backend/src/main/java/com/kflow/erp/manufacturing/api/package-info.java
+73284ad959514d43036ad4bb06a700ae5418ba61b33c9acea8bcc4e9f10a17dd  backend/src/main/java/com/kflow/erp/manufacturing/application/package-info.java
+9cd4f36e4772d49063688f03321de1d08a5b872bcf9aa9df5aaa969f80bfa6ac  backend/src/main/java/com/kflow/erp/manufacturing/domain/package-info.java
+e9e975f6c6aa89c8b1c57e397df32b0916e4435be6ccc97a9d3b538e50389066  backend/src/main/java/com/kflow/erp/manufacturing/infrastructure/package-info.java
+b016dde81448d6c89d15e6ebf12e9722f5055a3c2a25c461f1d5940d8d73b4ab  backend/src/main/java/com/kflow/erp/manufacturing/package-info.java
+95c1241e9c3b4597294897a3b5e16cf6245a4ce6d7abadeeb7ef1d1922628713  backend/src/main/java/com/kflow/erp/manufacturing/web/package-info.java
+bacef02cd74b0a5dad2baf6d136af9fe131501a937c9dd1c1eec68ba96b9a471  backend/src/main/java/com/kflow/erp/masterdata/api/package-info.java
+5b12edf1363af401096285b51ba52152a0a22589e72730e94f1b09d6ac14e3da  backend/src/main/java/com/kflow/erp/masterdata/application/package-info.java
+3493aa0426f78b7578fe1fbbfe0acf05a256443c90fdc4af8fe0bb0b61d58d98  backend/src/main/java/com/kflow/erp/masterdata/domain/package-info.java
+09e6060157ed8e58207f658838df089e3442a50a5f6e95923210cae0d4871af4  backend/src/main/java/com/kflow/erp/masterdata/infrastructure/package-info.java
+4a08cd7fe22b110fc8bda761ca2992bd8710e3c12662dd88fcae2005940838f9  backend/src/main/java/com/kflow/erp/masterdata/package-info.java
+6ca94103222f7aff3dc45614e6122b53474241d7b5117319435e41cb87d9af7a  backend/src/main/java/com/kflow/erp/masterdata/web/package-info.java
+18ec6ff0c49a34e8db7b2618a66e8b9ba127f959c86758cc301710b5fef48a8c  backend/src/main/java/com/kflow/erp/organization/api/CompanyReference.java
+3beac719bb8f9cf0565468dff6ead2a55e6ca58f88fbbc09395bffd303378de4  backend/src/main/java/com/kflow/erp/organization/api/OrganizationFailure.java
+bef75be2ea050df0c2c416b47891af85417ce3a8b713a7673242fde24216fe77  backend/src/main/java/com/kflow/erp/organization/api/OrganizationReferenceQueries.java
+75361dde2b7d16256652b7d0c5b4b889ccc47f2927f60f0d04ab1ee582a319b4  backend/src/main/java/com/kflow/erp/organization/api/SiteReference.java
+5afbf6881495db8a52f5138fb3da9e2d308ec477b7dfd2cfd3855ae744072929  backend/src/main/java/com/kflow/erp/organization/api/package-info.java
+ae342df63b4a2ad1a61cf1c001da1a91758b265c5e7f77102b07fb34ed405144  backend/src/main/java/com/kflow/erp/organization/application/OrganizationService.java
+c301220c1faa2baea03fbdb9c79dd21ef53b2bd186a6c4b4f0e60f164efb731e  backend/src/main/java/com/kflow/erp/organization/application/OrganizationStartupCheck.java
+5de7bf7754beb0c111f76e986256681a9bb761d29357915387a22f60dd678930  backend/src/main/java/com/kflow/erp/organization/application/OrganizationStore.java
+fbb03e7d8eb72d512102b59a189d4d2ab9b8b905b58a8f9bdbb30ffb6377eec3  backend/src/main/java/com/kflow/erp/organization/application/SiteListItem.java
+86185096ddc4361d457ce5889f37cef3eb7169665725193cfa56b9b535c6fc3c  backend/src/main/java/com/kflow/erp/organization/application/SiteListQueries.java
+ebb3af16683327e2fd8f51543555b37ed022bfc77f9d0b267c8c8943dc54853b  backend/src/main/java/com/kflow/erp/organization/application/SitePage.java
+0432b0b790285e6535bd02eb5d69798b301db02d4c3b7951cdce1ccc8eba6573  backend/src/main/java/com/kflow/erp/organization/application/package-info.java
+a52beffa3c8554821fb0cbe27729917d78acd60a2c4bea6e5b4ab0e5a8af2bc4  backend/src/main/java/com/kflow/erp/organization/domain/Company.java
+1065fda8d017ca9a362dcb02e1a638115b954746374ca874860727d8a14e71f0  backend/src/main/java/com/kflow/erp/organization/domain/OrganizationValues.java
+644d1262074bdd60813db272b6d6f81dc9cf34efc54b6f6febe684f81859f9e5  backend/src/main/java/com/kflow/erp/organization/domain/Site.java
+2f0b22635b5b270e76b0c44504ecbaa638802808a47de26664a720c3c190f7dd  backend/src/main/java/com/kflow/erp/organization/domain/package-info.java
+593c6e5f8bedccca9eac87df07ba5ca3c521017eab73548b7c856877c0be4324  backend/src/main/java/com/kflow/erp/organization/infrastructure/JpaOrganizationStore.java
+54b40eaadc6f7ee9915fc73af487a197d0662326cf4baf3cee95a0e47d361014  backend/src/main/java/com/kflow/erp/organization/infrastructure/package-info.java
+22e24f2bf1867e51d27dfe20c2b5828aba1cb768a5dda72b21c860299cdbc748  backend/src/main/java/com/kflow/erp/organization/package-info.java
+cd0b247ee3c0155fc4c5900733e2b38e4a6d67025cf906b532007d6512e43d36  backend/src/main/java/com/kflow/erp/organization/web/package-info.java
+454a7616991a9e20bd83e1bd3ea94c8ba8c51a6bccde129a3322e5d7e6611da4  backend/src/main/java/com/kflow/erp/payments/api/package-info.java
+60cdc4550d968f4864f4f2aa2e3d6afdb0ecdeb98f66321251b893f968920bbe  backend/src/main/java/com/kflow/erp/payments/application/package-info.java
+595ce968a61617141c565492bd6979456ac97df86fb844ee05eed0158b25d160  backend/src/main/java/com/kflow/erp/payments/domain/package-info.java
+0f083d9169a081e676fff2301b18aed7b565af4c7f3fc242450ba0482ca70132  backend/src/main/java/com/kflow/erp/payments/infrastructure/package-info.java
+03756bd20065c0aff710ea700307bcfc2dee362662e48497caaa0378552e546f  backend/src/main/java/com/kflow/erp/payments/package-info.java
+749bc4fe45f8e34d4981d887917626a012dde83cebbfdae411a5251ad1efb644  backend/src/main/java/com/kflow/erp/payments/web/package-info.java
+f8a8863d15204190a975258f2217681d0c6e1deb16b3c4fdd9052d71b27e1ddf  backend/src/main/java/com/kflow/erp/purchasing/api/package-info.java
+dee551da7d74d0959daf8c57907dbf932351da69b8619d69e20929a4df1166bb  backend/src/main/java/com/kflow/erp/purchasing/application/package-info.java
+3d0d5d0461dcc5fb6affb06c4f06e1ec79f96b273e9dee18d781855a85623f71  backend/src/main/java/com/kflow/erp/purchasing/domain/package-info.java
+4d0582dc9bfdd6d257aa1278e6cf23fc8fa437c27e20f7a4024c18139d6d0453  backend/src/main/java/com/kflow/erp/purchasing/infrastructure/package-info.java
+c5e3114b92698dca6418a86f96a13c4395701f0b075c98cc9896c599b4886bd9  backend/src/main/java/com/kflow/erp/purchasing/package-info.java
+5c1e138788203f610ad7979cb23c4a035d45fa2ca58668c5bd85d10c1df66f49  backend/src/main/java/com/kflow/erp/purchasing/web/package-info.java
+fbc9f554cfffe2d5ebf07256574b6b74d5981cadbabc109f051c8f5a47b0e7d6  backend/src/main/java/com/kflow/erp/reporting/api/package-info.java
+02f5742e99df129ba68a3a85ddebe42df6cc202f0dd8924ead9fde3165e7a5f2  backend/src/main/java/com/kflow/erp/reporting/application/package-info.java
+0bad588b5961e03d18f7bffb0b811aea833db916cbbf7f25aed72db759df7e9b  backend/src/main/java/com/kflow/erp/reporting/domain/package-info.java
+6c68711f001a329910d918143b7d92dcccfa3f5259a9f9fef7f19e80272a4cb5  backend/src/main/java/com/kflow/erp/reporting/infrastructure/package-info.java
+1ac9067bfcd714d045e8c589b6416ad591a137a2e545276e30bb83451836d637  backend/src/main/java/com/kflow/erp/reporting/package-info.java
+7ff04d06fba558a96e38910ba40808b23651f5f830c2c77d8e6a116a83a6c486  backend/src/main/java/com/kflow/erp/reporting/web/package-info.java
+c40e25b30eb4bdb0b9124baf8cb9c2a4c97d2b0c75581abb7f23b79e637a6cfc  backend/src/main/java/com/kflow/erp/sales/api/package-info.java
+b628e9d5544dba564628868060a5d5ef45dbb18ace173639f63987c562c683ff  backend/src/main/java/com/kflow/erp/sales/application/package-info.java
+b1cdd7feff5f0e99dbe6a19f6581b8b84406fb817a7beb93cba1749f0e698fbd  backend/src/main/java/com/kflow/erp/sales/domain/package-info.java
+2b1af0b4e42b1e82289920c814b0075926e50cd8c52dff2ab581e3b7bdd70234  backend/src/main/java/com/kflow/erp/sales/infrastructure/package-info.java
+42c00ed3f453d1879ef0037d7d98bb24c7233bf6215add3481ea784301e380fc  backend/src/main/java/com/kflow/erp/sales/package-info.java
+7797a43084d6a16250afcd014bcee146af0144b75960eafcb0400b8257eef527  backend/src/main/java/com/kflow/erp/sales/web/package-info.java
+1ae18b1da85eff861cde7cfba5ec3888b75293d6a264d26d7dbac5d51a91ec80  backend/src/main/java/com/kflow/erp/technical/web/FrameworkProblemHandler.java
+b16f6ff39920b29442f4a0f005ee2b488ee9d41e3f1a6a04abf951b03feebe4b  backend/src/main/resources/application-local.yml
+0a56f2ad3bde6890b221a3f71b4aa6aab47635a3e3aa38eb78a7e63c641f94f4  backend/src/main/resources/application.yml
+5621b94c120c43e40869b16ed0b4fb86d140cc8b63e3e83abc1f003338bcb30d  backend/src/main/resources/db/migration/V1__organization_company_site.sql
+ee18b2bb7afd36379921946109638562c8fb084a975140757d9721088dfd42d9  backend/src/test/java/com/kflow/erp/FoundationIT.java
+28766bdd4464f974b7c7ee9b46385043dfefcce120e0b8f6819c6fc27cc9bdcb  backend/src/test/java/com/kflow/erp/LayerArchitectureTest.java
+b8e230734d2ce39130ea4e0eec07730a9e88727030a7ed898a749588613964e0  backend/src/test/java/com/kflow/erp/ModuleArchitectureTest.java
+3f9f6d491233328ae09ace75cd148b4ce21b6e7566afd489e87fe2d821985bb8  backend/src/test/java/com/kflow/erp/organization/OrganizationContractTest.java
+9b8aeeb9c8da68b00b32387c7dcfe2d04142df56fa18822c9faae3edfface6af  backend/src/test/java/com/kflow/erp/organization/OrganizationIT.java
+03cacc84d2bf73f714b6edd5026ccac15a740870db16fde8cc34b8ab420c0d0a  backend/src/test/java/com/kflow/erp/organization/OrganizationValuesTest.java
+3f7f0f05ad3c8845b7d3ae357b9c87c5f8c480f194e7634db0f24fb5a8aac682  backend/src/test/java/com/kflow/erp/technical/web/FrameworkProblemHandlerTest.java
