@@ -71,27 +71,33 @@ flowchart TD
 src/
   main.tsx                       앱 진입, Provider, Router
   app/
-    AppLayout.tsx                Sidebar/Header, 데모 사용자 Context, Assistant
+    AppLayout.tsx                모듈 레일 + 하위 메뉴, 상단바(회사·위치), 데모 사용자 Context, Assistant
+    navigation.ts                레일 항목과 모듈별 하위 메뉴 묶음
     catalog.ts                   업무 모듈과 리소스 등록
     queryClient.ts               캐시 기본 정책
   pages/
-    DashboardPage.tsx            대시보드
-    DocumentListPage.tsx         URL 해석, 공통 목록, 전용 화면 분기
+    DashboardPage.tsx            대시보드(오늘 처리할 업무 → KPI → 추세)
+    DocumentListPage.tsx         URL 해석, 공통 목록, 현황 보기 전환, 전용 화면 분기
+    DocumentEditorPage.tsx       품목행 문서의 전용 작성·수정 화면(/new, /:id/edit)
   components/
-    DataTable.tsx                목록/정렬/pagination/loading/empty/error
+    DataTable.tsx                목록/정렬/페이지 크기/loading/empty/error, 선택 행
     FilterBar.tsx                검색·상태·엔티티·기간 조건
-    DocumentForm.tsx             설정 기반 입력, 품목행, 전표행, 금액 배분
-    DocumentDetails.tsx          상세 조회, 상태 액션, 연결 문서 이동
-    DetailDrawer.tsx             상세 패널 틀
+    ResourceKpis.tsx             목록 위 한 줄 요약
+    DocumentForm.tsx             설정 기반 입력(작성 화면 page / 오른쪽 패널 panel)
+    DocumentDetails.tsx          상세 조회, 상태 액션, 관련 문서 경로(?path=)
+    DetailDrawer.tsx             목록을 가리지 않는 상세 패널(좁은 화면은 전체 화면)
     ApprovalTimeline.tsx         결재 순서 표시
-    DocumentFlow.tsx             업무 문서 흐름 표시
+    DocumentFlow.tsx             연결 문서 기준 업무 흐름 표시
+    AgingByPartner.tsx           채권·채무 거래처별 연령분석
     AmountAllocationTable.tsx    지급/수금 배분 입력
-    StatusBadge.tsx              상태 텍스트와 색상
+    StatusBadge.tsx              상태 의미별 색(완료는 조용히, 조치 필요는 강조)
   features/
     */config.ts                  모듈 메뉴, 컬럼, 필드, 상태, 전이 정의
-    reporting/                   대시보드 조회와 경영 분석
-    accounting/                  전표 집계와 재무 보고서
-    manufacturing/               생산 현황과 샘플 데이터
+    reporting/                   대시보드 조회, 재무 개요, 업무 분석 보고서
+    accounting/                  전표 집계, 총계정원장, 재무제표 양식(Statements)
+    inventory/                   재고현황(품목별), 수불부(품목·창고별 누적)
+    manufacturing/               BOM 구성표, 생산 현황과 샘플 데이터
+    approval/                    결재함의 내 처리 대기 목록
     assistant/                   Mock 질문 처리와 확인 카드
   api/
     client.ts                    ErpClient와 Mock/REST 구현
@@ -104,7 +110,7 @@ src/
     effects.ts                   업무 액션의 연관 데이터 변경
     helpers.ts                   빈 문서·금액·표시 helper
     export.ts                    CSV 내보내기
-  theme.ts / index.css           테마와 화면 스타일
+  theme.ts / index.css           디자인 토큰(색·글꼴·간격)과 화면 스타일
 ```
 
 `features`로 업무를 나누되 CRUD 성격이 비슷한 화면은 공유한다. 따라서 feature 폴더마다 독립된 서버, 데이터베이스, 완전한 도메인 서비스가 있는 구조는 아니다.
@@ -128,19 +134,23 @@ transitions: [
 
 재무제표와 경영 분석은 일반 문서 목록과 구조가 다르므로 `FinancialReport`, `ReportingPage`로 분기한다. 생산 현황은 공통 목록에 `ProductionOverview`를 추가한다.
 
+일부 리소스는 기본 보기를 목록 대신 현황으로 연다. 재고현황(품목별 묶음), 매입채무·매출채권(거래처별 연령분석), 수불부(품목·창고별 전기이월·누적 잔량), BOM(단일 단계 구성표)이며 `DocumentListPage`의 `summaryViews`에서 지정하고 같은 화면에서 목록으로 전환할 수 있다. 내 결재함은 목록 위에 현재 사용자 차례의 문서를 따로 보여 준다. 다단계 BOM 전개는 DR-04/18 결정 전이라 하위 BOM을 링크로만 연결한다.
+
+입력은 두 형태다. 품목행이 있거나 구매·전표·지급·결재 문서이면 `DocumentEditorPage`(전용 작성 화면), 그 외 기준정보와 단순 문서는 오른쪽 패널을 쓴다(`usesEditorPage`). 저장하면 목록으로 돌아가 저장한 문서의 상세를 연다.
+
 이 방식은 필터나 오류 처리를 한 번 수정해 여러 업무에 반영할 수 있다. 대신 공통 폼과 상세 컴포넌트의 업무별 분기가 커질 수 있으므로, 백엔드 연결 이후 복잡해지는 기능은 전용 컴포넌트로 분리할 수 있다. 현재 구조를 마이크로프론트엔드나 엄격한 클린 아키텍처로 표현하지 않는다.
 
 ## 6. 상태 관리와 데이터 흐름
 
 | 상태 종류 | 저장 위치 | 예 |
 | --- | --- | --- |
-| 화면 내부 상태 | React useState | 입력 중인 폼, 검색 조건, Modal, 반려 사유 |
-| URL 상태 | Router + search params | 현재 업무, `?doc=PR-2026-0001`, `?new=1` |
+| 화면 내부 상태 | React useState | 입력 중인 폼, 검색 조건, 현황/목록 보기, 반려 사유 |
+| URL 상태 | Router + search params | 현재 업무, `?doc=PR-2026-0001`, 관련 문서 경로 `?path=`, 작성 화면 `/new`·`/:id/edit` (`?new=1`은 호환용 이동) |
 | 앱 공통 상태 | SessionContext | 데모 actor, Assistant 열기 |
 | 원격 데이터 형태의 상태 | TanStack Query | 목록, 상세, 대시보드, 회계 조회 |
 | Mock 영속 데이터 | 메모리 + localStorage | 문서, 재고, 결재 이력, 감사 이벤트 |
 
-목록 필터 전체가 URL에 저장되는 것은 아니다. 상세 문서는 `?doc=`로 다시 열 수 있지만 필터는 컴포넌트 state다. actor와 Assistant 대화는 서버 세션이나 영속 대화 저장소가 아니다.
+목록 필터 전체가 URL에 저장되는 것은 아니다. 상세 문서와 관련 문서 경로는 `?doc=`·`?path=`로 다시 열 수 있지만 필터·정렬·페이지는 컴포넌트 state다. actor와 Assistant 대화는 서버 세션이나 영속 대화 저장소가 아니다.
 
 목록 query key는 `['erp', resource, params]`, 상세는 `['erp', resource, 'detail', id]`다. 기본 `staleTime`은 15초, 읽기 재시도는 1회이며 창 포커스 시 재조회는 꺼져 있다. 저장/전이/결재 성공 후 `['erp']` 전체를 invalidate하여 연관 목록·상세·KPI를 다시 읽는다. 성공 전에 화면 값을 미리 확정하는 낙관적 업데이트는 사용하지 않는다.
 
@@ -167,7 +177,7 @@ sequenceDiagram
   S-->>Q: 저장 결과
   Q->>Q: erp 캐시 invalidate
   Q-->>F: 저장 성공
-  F-->>U: 폼 닫기, 생성 문서 상세 열기
+  F-->>U: 목록으로 돌아가 생성 문서 상세 열기
 ```
 
 후속 과정은 구매요청 상세의 **결재 상신 → 현재 결재자 승인 → 최종 승인 → 발주 생성**이다. PR 상태와 결재문서 상태는 별도다. PR의 `승인대기`와 결재문서의 `상신/결재중`을 같은 enum 하나로 합치지 않는다.
@@ -212,13 +222,17 @@ Mock에서 검증하는 예는 지급 배분 합계/잔액, 전표 차대변, �
 
 대시보드 월별 매출·매입 추이는 `monthlyTrend`의 고정 시나리오다. 실제 DB 월별 실적 조회를 구현했다고 표현하지 않는다.
 
-현재 디자인은 차콜 사이드바 `#24282b`, 초록 포인트 `#008000`, 밝은 본문 `#f5f5f8`이다. 보고서 항목은 초록색의 진하기로 구분하며 차트와 순위 영역에서 같은 항목에 같은 색을 쓴다. 이름 기반 색 매핑이므로 서버 전환 시 안정적인 엔티티 ID 기반 매핑을 고려할 수 있다. 색상 외에도 항목명과 순위를 표시한다. 데스크톱 업무 밀도와 모바일 메뉴/표 표시를 함께 고려했다.
+현재 디자인(2026-10-08, `design/erp-ui-refresh` 브랜치)은 흰 작업 면과 옅은 회색 메뉴, 링크·선택·초점에만 쓰는 파란 강조색 하나(`#2b59c3`)를 기준으로 한다. 색·글꼴·간격 기준값은 `index.css`의 `:root`와 `theme.ts`에 있고, Pretendard Variable을 CDN으로 불러온다(네트워크가 없으면 시스템 글꼴). 글자는 11px 이상, 굵기는 400~700, 표 행은 36px, 입력칸·버튼은 34px이다.
+
+상태 색은 의미로만 쓴다. 완료 계열은 점과 글자로 조용히, 대기(노랑)·위험(빨강)·확정/진행(파랑)은 배경을 채운다. 목록은 금액을 오른쪽 정렬하고 세로선 없이 가로선만 쓰며, 넓은 화면에서는 표가 패널 안에서 스크롤되어 헤더와 페이지 이동이 고정된다. 메뉴는 모듈 레일(아이콘+이름)과 묶음별 하위 메뉴로 구성하고 현재 화면에만 강조 막대를 둔다.
+
+화면 유형별로 표현을 나눈다. 재무제표는 인쇄 양식(로마숫자 구분, 계정·합계 두 금액 열, 괄호 음수, 이중선 합계), 시산표는 합계잔액시산표, 분석 보고서는 요약 → 가로 막대 1개(가장 큰 항목만 강조색) → 근거 표, 대시보드는 오늘 처리할 업무 → KPI → 추세 순이다. 연체 구간은 정상(회색)에서 위험(빨강)으로 갈수록 진해지는 색을 쓴다. 이전 디자인(차콜 사이드바·초록 포인트)과 이름 기반 보고서 색 매핑은 이 개편에서 대체했다.
 
 Assistant는 정규식과 예시 질문에 따른 **규칙 기반 Mock**다. 5종 예시 질문, 근거 문서 링크, 구매요청 초안 확인/취소/생성 UI를 제공한다. 생성 확인 후에만 `api.save`를 호출한다. 실제 LLM 추론, RAG, SSE, 외부 모델 연결은 없다. REST 모드로 바꾸어도 `mockReply`가 자동으로 실제 AI가 되지 않는다.
 
 ## 11. 검증과 근거
 
-기존 검증 기록은 [VALIDATION.md](VALIDATION.md), 테스트 코드는 `tests/domain.test.ts`, `tests/e2e/app.spec.ts`다. 초기 기능 검증에서 업무 테스트 10개와 브라우저 시나리오 8개가 통과했다. 이후 테마 수정 때 일부 브라우저 테스트를 재실행했고, 최신 초록 보고서 수정은 빌드와 보고서 화면 확인을 수행했다. **이번 문서 작성만을 위해 전체 테스트를 다시 실행한 것은 아니다.**
+기존 검증 기록은 [VALIDATION.md](VALIDATION.md), 테스트 코드는 `tests/domain.test.ts`, `tests/purchasing.test.ts`, `tests/finance-overview.test.ts`, `tests/e2e/app.spec.ts`, `tests/e2e/purchasing.spec.ts`다. 2026-10-08 디자인 개편 후 업무 테스트 31개와 브라우저 시나리오 13개가 통과했고, 54개 경로를 모두 열어 제목·데이터·현재 메뉴 표시와 콘솔 오류 없음을 별도로 확인했다. 시드 데이터 정합성(수불 누계 = 현재고, BOM 사용 버전 1개, 전표 잔액 비음수·자산 = 부채 + 자본)은 업무 테스트로 고정했다.
 
 업무 테스트는 Mock 함수의 통합 동작을 확인하며 Spring 서버의 통합 테스트가 아니다. 브라우저 시나리오 통과도 성능·보안·접근성 전체 검증을 뜻하지 않는다. 관련 캡처는 [대시보드](screenshots/dashboard.png), [구매 상세](screenshots/purchase-detail.png), [결재](screenshots/approval.png), [보고서](screenshots/reporting.png), [모바일](screenshots/mobile.png)에서 확인한다.
 
