@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button, TextInput, Select, Alert, Loader } from "@mantine/core";
 import { IconDownload } from "@tabler/icons-react";
 import { useAccounting } from "./api";
@@ -7,7 +7,7 @@ import { accountingModule } from "./config";
 import { resourceByKey } from "../../app/catalog";
 import { PageHeader } from "../../components/PageHeader";
 import { DocumentDetails } from "../../components/DocumentDetails";
-import { DocumentForm } from "../../components/DocumentForm";
+import { editorUrl } from "../../components/DocumentForm";
 import type { RecordData } from "../../domain/types";
 import { exportCsv } from "../../domain/export";
 import { GeneralLedger } from "./GeneralLedger";
@@ -32,7 +32,7 @@ export function FinancialReport() {
     new URLSearchParams(window.location.search).get("account"),
   );
   const [search, setSearch] = useSearchParams();
-  const [edit, setEdit] = useState<RecordData | null>(null);
+  const navigate = useNavigate();
   const query = useAccounting(
     screen === "balance-sheet" ? "2026-01-01" : from,
     to,
@@ -243,17 +243,9 @@ export function FinancialReport() {
           resource={resource}
           id={search.get("doc")!}
           onClose={() => setSearch({})}
-          onEdit={setEdit}
+          onEdit={(r) => navigate(editorUrl("journals", r.id))}
         />
       )}{" "}
-      {edit && (
-        <DocumentForm
-          resource={resource}
-          record={edit}
-          onClose={() => setEdit(null)}
-          onSaved={() => setEdit(null)}
-        />
-      )}
     </>
   );
 }

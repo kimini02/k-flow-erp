@@ -12,6 +12,7 @@ import { queryClient } from "./app/queryClient";
 import { AppLayout } from "./app/AppLayout";
 import { DashboardPage } from "./pages/DashboardPage";
 import { DocumentListPage } from "./pages/DocumentListPage";
+import { DocumentEditorPage } from "./pages/DocumentEditorPage";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MantineProvider theme={theme}>
@@ -22,6 +23,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route element={<AppLayout />}>
               <Route index element={<DashboardPage />} />
               <Route path=":module/:screen" element={<DocumentListPage />} />
+              <Route
+                path=":module/:screen/new"
+                element={<DocumentEditorPage />}
+              />
+              <Route
+                path=":module/:screen/:docId/edit"
+                element={<DocumentEditorPage />}
+              />
               <Route
                 path="*"
                 element={

@@ -102,10 +102,7 @@ export function AppLayout() {
             })}
           </div>
           <div className="sidebar-content">
-            <h2
-              className="navigation-heading"
-              id="section-navigation-title"
-            >
+            <h2 className="navigation-heading" id="section-navigation-title">
               {rail.label}
             </h2>
             <nav
@@ -118,7 +115,10 @@ export function AppLayout() {
                     <div className="nav-section-title">{section.title}</div>
                   )}
                   {section.links.map((link) => {
-                    const active = location.pathname === link.to;
+                    const active =
+                      location.pathname === link.to ||
+                      (link.to !== "/" &&
+                        location.pathname.startsWith(`${link.to}/`));
                     return (
                       <Link
                         key={link.to}

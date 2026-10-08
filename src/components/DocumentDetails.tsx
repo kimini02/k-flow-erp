@@ -1,8 +1,8 @@
 import { PurchaseDetailLines } from "../features/purchasing/PurchaseDetailLines";
 import { isPurchase, receiptProgress } from "../features/purchasing/model";
 import { useRecords } from "../api/hooks";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -16,9 +16,9 @@ import {
 import {
   IconExternalLink,
   IconPencil,
-  IconArrowRight,
   IconArrowLeft,
   IconFileDescription,
+  IconChevronRight,
 } from "@tabler/icons-react";
 import type { RecordData, Resource } from "../domain/types";
 import { fieldValue, won } from "../domain/helpers";
@@ -42,45 +42,59 @@ type DocumentDetailsProps = {
   onClose: () => void;
   onEdit: (r: RecordData) => void;
 };
-type DocumentVisit = { resource: Resource; id: string; tab: string };
+type Visit = { resource: Resource; id: string };
 
+// The opened document is ?doc=, documents opened from it are kept in ?path= so a
+// refresh or shared link reopens the same trail; Escape steps back one level.
 export function DocumentDetails(props: DocumentDetailsProps) {
-  return (
-    <DocumentPreviewSession
-      key={`${props.resource.key}/${props.id}`}
-      {...props}
-    />
-  );
-}
-
-function DocumentPreviewSession(props: DocumentDetailsProps) {
-  const [history, setHistory] = useState<DocumentVisit[]>([
-    { resource: props.resource, id: props.id, tab: "summary" },
-  ]);
-  const current = history[history.length - 1];
+  const [search, setSearch] = useSearchParams();
   const navigate = useNavigate();
+  const path: Visit[] = (search.get("path") ?? "")
+    .split(",")
+    .filter(Boolean)
+    .map((part) => {
+      const [key, id] = part.split(":");
+      return { resource: resourceByKey(key)!, id };
+    })
+    .filter((v) => v.resource && v.id);
+  const trail: Visit[] = [{ resource: props.resource, id: props.id }, ...path];
+  const current = trail[trail.length - 1];
+  const setPath = (visits: Visit[]) => {
+    const next = new URLSearchParams(search);
+    if (visits.length)
+      next.set(
+        "path",
+        visits.map((v) => `${v.resource.key}:${v.id}`).join(","),
+      );
+    else next.delete("path");
+    setSearch(next);
+  };
   const openRelated = (key: string, id: string) => {
     const resource = resourceByKey(key);
     if (!resource || (key === current.resource.key && id === current.id))
       return;
-    setHistory((visits) => [...visits, { resource, id, tab: "summary" }]);
+    setPath([...path, { resource, id }]);
   };
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      // Confirmation dialogs handle their own Escape first.
+      if (document.querySelector(".mantine-Modal-content")) return;
+      event.preventDefault();
+      if (path.length) setPath(path.slice(0, -1));
+      else props.onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
   return (
     <DocumentDetailView
-      key={`${history.length}/${current.resource.key}/${current.id}`}
+      key={`${trail.length}/${current.resource.key}/${current.id}`}
       {...props}
       resource={current.resource}
       id={current.id}
-      preview={history.length > 1}
-      tab={current.tab}
-      onTabChange={(tab) =>
-        setHistory((visits) =>
-          visits.map((visit, index) =>
-            index === visits.length - 1 ? { ...visit, tab } : visit,
-          ),
-        )
-      }
-      onBack={() => setHistory((visits) => visits.slice(0, -1))}
+      trail={trail}
+      onJump={(index) => setPath(path.slice(0, index))}
       onRelated={openRelated}
       onNavigate={() => {
         props.onClose();
@@ -95,20 +109,17 @@ function DocumentDetailView({
   id,
   onClose,
   onEdit,
-  preview,
-  tab,
-  onTabChange,
-  onBack,
+  trail,
+  onJump,
   onRelated: go,
   onNavigate,
 }: DocumentDetailsProps & {
-  preview: boolean;
-  tab: string;
-  onTabChange: (tab: string) => void;
-  onBack: () => void;
+  trail: Visit[];
+  onJump: (index: number) => void;
   onRelated: (resource: string, id: string) => void;
   onNavigate: () => void;
 }) {
+  const preview = trail.length > 1;
   const { data: row, isLoading, error, refetch } = useRecord(resource.key, id);
   const receipts = useRecords(
     resource.key === "purchase-orders" ? "goods-receipts" : "",
@@ -116,11 +127,13 @@ function DocumentDetailView({
   );
   const { actor } = useSession();
   const { approve, transition } = useActions(resource.key, actor);
+  const [tab, setTab] = useState("summary");
   const [reject, setReject] = useState(false);
   const [reason, setReason] = useState("");
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const pending = row?.approvals.find((s) => s.status === "대기");
   const isApproval = resource.kind === "approval";
+  const fieldKeys = new Set(resource.fields.map((f) => f.key));
   const activeActions =
     resource.transitions?.filter(
       (t) =>
@@ -136,13 +149,14 @@ function DocumentDetailView({
           (t.target !== "goods-receipts" &&
             !row.links.some((l) => l.resource === t.target))),
     ) ?? [];
+  const last = row?.history[row.history.length - 1];
   const footer = row && (
-    <Group justify="space-between">
-      <span className="muted" style={{ fontSize: 11 }}>
-        담당자 · {row.owner}
+    <Group justify="space-between" wrap="nowrap">
+      <span className="detail-footer-note">
+        {last ? `최근 처리 · ${last.action} · ${last.actor} · ${last.at}` : ""}
       </span>
       {!preview && (
-        <Group gap="xs">
+        <Group gap="xs" wrap="nowrap">
           {canEdit(resource, row, actor) && (
             <Button
               variant="default"
@@ -219,6 +233,18 @@ function DocumentDetailView({
         onClose={onClose}
         title={
           <div className="drawer-title">
+            {preview && (
+              <nav className="drawer-trail" aria-label="문서 경로">
+                {trail.slice(0, -1).map((v, i) => (
+                  <Fragment key={`${v.resource.key}:${v.id}`}>
+                    <button type="button" onClick={() => onJump(i)}>
+                      {v.id}
+                    </button>
+                    <IconChevronRight size={12} aria-hidden="true" />
+                  </Fragment>
+                ))}
+              </nav>
+            )}
             <span>{resource.singular}</span>
             <b>{id}</b>
           </div>
@@ -226,14 +252,14 @@ function DocumentDetailView({
         footer={footer}
       >
         {preview && (
-          <Group justify="space-between" mb="lg">
+          <Group justify="space-between" mb="md">
             <Button
               variant="subtle"
               color="neutral"
               leftSection={<IconArrowLeft size={16} />}
-              onClick={onBack}
+              onClick={() => onJump(trail.length - 2)}
             >
-              이전 문서
+              {trail[trail.length - 2].id}로 돌아가기
             </Button>
             <Button
               variant="default"
@@ -255,17 +281,23 @@ function DocumentDetailView({
           row && (
             <>
               <div className="detail-title">
-                <StatusBadge status={row.status} />
-                <span className="muted">
-                  {row.date}{" "}
-                  {resource.key === "purchase-bills"
-                    ? "전기일"
-                    : resource.key === "goods-receipts"
-                      ? "입고일"
-                      : resource.key === "payments-out"
-                        ? "지급일"
-                        : "작성"}
-                </span>
+                <div className="detail-meta">
+                  <StatusBadge status={row.status} />
+                  <span>
+                    {row.date}{" "}
+                    {resource.key === "purchase-bills"
+                      ? "전기일"
+                      : resource.key === "goods-receipts"
+                        ? "입고일"
+                        : resource.key === "payments-out"
+                          ? "지급일"
+                          : "작성"}
+                  </span>
+                  {row.partner && <span>{row.partner}</span>}
+                  {row.amount > 0 && (
+                    <span className="money">{won(row.amount)}</span>
+                  )}
+                </div>
                 <h2>{row.title}</h2>
               </div>
               {row.values.rejectReason && (
@@ -275,18 +307,56 @@ function DocumentDetailView({
               )}
               <Tabs
                 value={tab}
-                onChange={(value) => onTabChange(value ?? "summary")}
+                onChange={(value) => setTab(value ?? "summary")}
               >
                 <Tabs.List>
                   <Tabs.Tab value="summary">상세 정보</Tabs.Tab>
                   <Tabs.Tab value="history">
                     변경 이력 ({row.history.length})
                   </Tabs.Tab>
-                  <Tabs.Tab value="related">
-                    관련 문서 ({row.links.length})
-                  </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="summary">
+                  {(resource.workflow || row.links.length > 0) && (
+                    <section className="detail-links">
+                      <h3>
+                        업무 흐름{" "}
+                        <small>
+                          연결 문서 {row.links.length}건 · 누르면 이 창에서 열림
+                        </small>
+                      </h3>
+                      {resource.workflow && (
+                        <DocumentFlow
+                          steps={resource.workflow}
+                          resource={resource.key}
+                          links={row.links}
+                          onOpen={go}
+                        />
+                      )}
+                      {row.links.length > 0 ? (
+                        <div className="related-grid">
+                          {row.links.map((l) => (
+                            <button
+                              className="related-document"
+                              key={`${l.resource}/${l.id}`}
+                              onClick={() => go(l.resource, l.id)}
+                            >
+                              <IconFileDescription size={16} />
+                              <span>
+                                {resourceByKey(l.resource)?.singular}
+                                <b>{l.id}</b>
+                              </span>
+                              <IconChevronRight size={14} />
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="muted">
+                          아직 연결된 문서가 없습니다. 업무를 진행하면 후속
+                          문서가 연결됩니다.
+                        </p>
+                      )}
+                    </section>
+                  )}
                   <section>
                     <h3>기본정보</h3>
                     <dl className="detail-grid">
@@ -300,14 +370,18 @@ function DocumentDetailView({
                           </dd>
                         </div>
                       ))}
-                      <div>
-                        <dt>담당자</dt>
-                        <dd>{row.owner}</dd>
-                      </div>
-                      <div>
-                        <dt>부서</dt>
-                        <dd>{row.department}</dd>
-                      </div>
+                      {!fieldKeys.has("owner") && (
+                        <div>
+                          <dt>담당자</dt>
+                          <dd>{row.owner}</dd>
+                        </div>
+                      )}
+                      {!fieldKeys.has("department") && (
+                        <div>
+                          <dt>부서</dt>
+                          <dd>{row.department}</dd>
+                        </div>
+                      )}
                     </dl>
                   </section>
                   {isApproval && (
@@ -382,65 +456,6 @@ function DocumentDetailView({
                       </Table>
                     </section>
                   )}
-                  {resource.workflow && (
-                    <section>
-                      <h3>업무 진행현황</h3>
-                      <DocumentFlow
-                        steps={resource.workflow}
-                        current={Math.min(
-                          resource.workflow.length - 1,
-                          Math.max(
-                            0,
-                            (
-                              {
-                                "purchase-requests": 0,
-                                "purchase-orders": 2,
-                                "goods-receipts": 3,
-                                "purchase-bills": 4,
-                                payables: 4,
-                                "payments-out": 5,
-                                quotations: 0,
-                                "sales-orders": 1,
-                                deliveries: 2,
-                                invoices: 3,
-                                receivables: 3,
-                                "payments-in": 4,
-                                boms: 0,
-                                "work-orders": row.status === "생산중" ? 3 : 1,
-                                "material-issues": 2,
-                                "production-receipts": 4,
-                              } as Record<string, number>
-                            )[resource.key] ??
-                              resource.statuses.indexOf(row.status),
-                          ),
-                        )}
-                      />
-                    </section>
-                  )}
-                  <section>
-                    <h3>관련 문서</h3>
-                    {row.links.length ? (
-                      row.links.map((l) => (
-                        <button
-                          className="related-document"
-                          key={`${l.resource}/${l.id}`}
-                          onClick={() => go(l.resource, l.id)}
-                        >
-                          <IconFileDescription size={18} />
-                          <span>
-                            {resourceByKey(l.resource)?.singular}
-                            <b>{l.id}</b>
-                          </span>
-                          <IconArrowRight size={15} />
-                        </button>
-                      ))
-                    ) : (
-                      <p className="muted">
-                        아직 연결된 문서가 없습니다. 업무 진행 시 후속 문서가
-                        연결됩니다.
-                      </p>
-                    )}
-                  </section>
                   <section>
                     <h3>비고</h3>
                     <p className="detail-memo">
@@ -461,27 +476,6 @@ function DocumentDetailView({
                         </div>
                       </div>
                     ))}
-                  </section>
-                </Tabs.Panel>
-                <Tabs.Panel value="related">
-                  <section>
-                    {row.links.map((l) => (
-                      <button
-                        key={`${l.resource}/${l.id}`}
-                        className="related-document"
-                        onClick={() => go(l.resource, l.id)}
-                      >
-                        <IconFileDescription size={18} />
-                        <span>
-                          {resourceByKey(l.resource)?.label}
-                          <b>{l.id}</b>
-                        </span>
-                        <IconArrowRight size={17} />
-                      </button>
-                    ))}
-                    {!row.links.length && (
-                      <p className="muted">연결된 문서가 없습니다.</p>
-                    )}
                   </section>
                 </Tabs.Panel>
               </Tabs>

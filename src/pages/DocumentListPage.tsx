@@ -1,7 +1,12 @@
 import { ResourceKpis } from "../components/ResourceKpis";
 import { ProductionOverview } from "../features/manufacturing/ProductionOverview";
-import { useState } from "react";
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  useNavigate,
+  useParams,
+  useSearchParams,
+  Link,
+} from "react-router-dom";
 import { Button, Alert, SegmentedControl, Skeleton } from "@mantine/core";
 import { IconPlus, IconDownload } from "@tabler/icons-react";
 import { modules, resourceByKey } from "../app/catalog";
@@ -15,7 +20,11 @@ import { PageHeader } from "../components/PageHeader";
 import { DataTable } from "../components/DataTable";
 import { FilterBar } from "../components/FilterBar";
 import { DocumentDetails } from "../components/DocumentDetails";
-import { DocumentForm } from "../components/DocumentForm";
+import {
+  DocumentForm,
+  editorPath,
+  usesEditorPage,
+} from "../components/DocumentForm";
 import { ReportingPage } from "../features/reporting/ReportingPage";
 import { FinancialReport } from "../features/accounting/FinancialReport";
 import { notifications } from "@mantine/notifications";
@@ -80,9 +89,20 @@ export function ResourceList({
   const { actor } = useSession();
   const [params, setParams] = useState<ListParams>({ page: 1, size: 20 });
   const [search, setSearch] = useSearchParams();
+  const navigate = useNavigate();
+  const editorPage = usesEditorPage(resource);
+  // Line-item documents open the editor page; master data opens the side panel.
   const [form, setForm] = useState<RecordData | "new" | null>(
-    search.get("new") === "1" ? "new" : null,
+    search.get("new") === "1" && !editorPage ? "new" : null,
   );
+  const startNew = () =>
+    editorPage ? navigate(editorPath(moduleKey, screen)) : setForm("new");
+  const startEdit = (r: RecordData) =>
+    editorPage ? navigate(editorPath(moduleKey, screen, r.id)) : setForm(r);
+  useEffect(() => {
+    if (search.get("new") === "1" && editorPage)
+      navigate(editorPath(moduleKey, screen), { replace: true });
+  }, [search, editorPage, moduleKey, screen, navigate]);
   const effective = {
     ...params,
     status: item.status ?? params.status,
@@ -95,6 +115,16 @@ export function ResourceList({
     all = query.data?.all ?? [];
   const reset = () => setParams({ page: 1, size: params.size });
   const open = (r: RecordData) => setSearch({ doc: r.id });
+  const openId = search.get("doc");
+  const closeDetail = () => {
+    setSearch({});
+    // Return keyboard focus to the row the drawer was opened from.
+    requestAnimationFrame(() =>
+      document
+        .querySelector<HTMLElement>(`[aria-label="${openId} 상세 보기"]`)
+        ?.focus(),
+    );
+  };
   const summary = summaryViews[resource.key];
   const [view, setView] = useState<"summary" | "list">(
     summary ? "summary" : "list",
@@ -121,6 +151,28 @@ export function ResourceList({
   const summaryQueries = [fullQuery, itemsQuery, stockQuery, workOrderQuery];
   const summaryError = summaryQueries.find((q) => q.error)?.error;
   const inbox = resource.key === "approvals" && screen === "inbox";
+  // With a document open, ↑/↓ move to the previous/next row of the current page.
+  useEffect(() => {
+    if (!openId || showSummary) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+      const target = event.target as HTMLElement;
+      if (
+        target.closest(
+          "input, textarea, select, [role=tab], [role=listbox], [contenteditable=true]",
+        ) ||
+        document.querySelector(".mantine-Modal-content")
+      )
+        return;
+      const index = rows.findIndex((r) => r.id === openId);
+      const next = rows[index + (event.key === "ArrowDown" ? 1 : -1)];
+      if (index < 0 || !next) return;
+      event.preventDefault();
+      setSearch({ doc: next.id });
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [openId, rows, showSummary, setSearch]);
   async function download() {
     try {
       const result = await api.list(resource.key, {
@@ -152,10 +204,7 @@ export function ResourceList({
               내보내기
             </Button>
             {!resource.readOnly && (
-              <Button
-                leftSection={<IconPlus size={16} />}
-                onClick={() => setForm("new")}
-              >
+              <Button leftSection={<IconPlus size={16} />} onClick={startNew}>
                 신규 {resource.singular}
               </Button>
             )}
@@ -318,8 +367,8 @@ export function ResourceList({
         <DocumentDetails
           resource={resource}
           id={search.get("doc")!}
-          onClose={() => setSearch({})}
-          onEdit={(r) => setForm(r)}
+          onClose={closeDetail}
+          onEdit={startEdit}
         />
       )}{" "}
       {form && (

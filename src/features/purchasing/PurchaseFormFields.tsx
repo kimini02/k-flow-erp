@@ -264,7 +264,7 @@ export function PurchaseFormFields({ resource, draft, setDraft }: Props) {
               key={f.key}
               aria-label={f.label}
               label={f.label}
-              required={f.required}
+              required={f.required && f.key !== "owner"}
               readOnly={f.key === "owner"}
               type={f.type === "date" ? "date" : "text"}
               value={String(value)}
