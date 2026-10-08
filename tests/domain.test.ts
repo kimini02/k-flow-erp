@@ -240,4 +240,23 @@ describe("수량·금액 무결성", () => {
     for (const b of boms)
       expect(b.lines.map((l) => l.item), b.id).not.toContain(b.title);
   });
+  it("시드 전표: 계정 잔액이 중간에도 음수가 아니고 자산 = 부채 + 자본", () => {
+    const posted = database()
+      .journals.filter((r) => r.status === "전기완료")
+      .sort((a, b) => a.date.localeCompare(b.date) || b.id.localeCompare(a.id));
+    const balance: Record<string, number> = {};
+    for (const doc of posted)
+      for (const l of doc.journal) {
+        const sign = /^[156]/.test(l.account) ? 1 : -1;
+        balance[l.account] = (balance[l.account] ?? 0) + sign * (l.debit - l.credit);
+        expect(balance[l.account], `${doc.id} ${l.account}`).toBeGreaterThanOrEqual(0);
+      }
+    const total = (prefix: string) =>
+      Object.entries(balance)
+        .filter(([a]) => prefix.includes(a[0]))
+        .reduce((n, [, v]) => n + v, 0);
+    const income = total("4") - total("56");
+    expect(total("1")).toBe(total("2") + total("3") + income);
+    expect(income).toBeGreaterThan(0);
+  });
 });

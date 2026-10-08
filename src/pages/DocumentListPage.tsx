@@ -184,7 +184,11 @@ export function ResourceList({
       )}
       {moduleKey === "manufacturing" &&
         ["overview", "progress"].includes(screen) && (
-          <ProductionOverview rows={all} onOpen={open} />
+          <ProductionOverview
+            rows={all}
+            loading={query.isLoading}
+            onOpen={open}
+          />
         )}
       <div className="panel list-panel">
         <div className="list-panel-heading">
