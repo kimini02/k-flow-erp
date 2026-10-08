@@ -259,4 +259,34 @@ describe("수량·금액 무결성", () => {
     expect(total("1")).toBe(total("2") + total("3") + income);
     expect(income).toBeGreaterThan(0);
   });
+  it("확정된 입고·출고·생산 불출·완제품 입고는 모두 수불에 남는다", () => {
+    const db = database();
+    const recorded = new Set(
+      db["stock-ledger"].flatMap((r) => r.links.map((l) => l.id)),
+    );
+    const confirmed: [string, string][] = [
+      ["goods-receipts", "입고완료"],
+      ["deliveries", "출고완료"],
+      ["material-issues", "완료"],
+      ["production-receipts", "입고완료"],
+    ];
+    for (const [key, status] of confirmed)
+      for (const doc of db[key].filter((r) => r.status === status))
+        expect(recorded.has(doc.id), `${key}/${doc.id}`).toBe(true);
+    expect(
+      db["stock-ledger"].some((r) => r.values.movement === "재고조정"),
+    ).toBe(false);
+  });
+  it("DR-01: 재판매 상품(S-200/M-50)은 BOM·작업지시·생산입고에 쓰이지 않는다", () => {
+    const db = database();
+    const resale = db.items
+      .filter((i) => i.values.category === "상품")
+      .map((i) => i.title);
+    expect(resale.sort()).toEqual(["산업용 센서 S-200", "서보 모터 M-50"]);
+    for (const key of ["boms", "work-orders", "production-receipts"])
+      for (const r of db[key])
+        expect(resale, `${key}/${r.id}`).not.toContain(r.title);
+    for (const b of db.boms)
+      for (const l of b.lines) expect(resale, b.id).not.toContain(l.item);
+  });
 });

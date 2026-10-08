@@ -57,6 +57,7 @@ export const inventoryResources: Resource[] = [
         "원재료",
         "반제품",
         "완제품",
+        "상품",
         "소모품",
       ]),
       fld("unit", "단위", "select", ["EA", "KG", "SET", "BOX"]),

@@ -23,7 +23,7 @@ export function seedResource(r: Resource): RecordData[] {
             positions: 6,
             accounts: 12,
             "fiscal-periods": 12,
-            boms: 7,
+            boms: 3,
             stock: 21,
             "approval-lines": 4,
             "approval-policies": 4,
@@ -281,7 +281,14 @@ export function createSeed(): Database {
       });
     }
   }
-  connect(["boms", "work-orders", "material-issues", "production-receipts"], 6);
+  connect(["work-orders", "material-issues", "production-receipts"], 6);
+  // Each work order links to the BOM version it was planned with.
+  for (const wo of db["work-orders"] ?? []) {
+    const bom = db.boms?.find((b) => b.id === wo.values.bom);
+    if (!bom) continue;
+    wo.links.push({ resource: "boms", id: bom.id });
+    bom.links.push({ resource: "work-orders", id: wo.id });
+  }
   for (let i = 0; i < Math.min(24, db.approvals?.length ?? 0); i++) {
     const ap = db.approvals[i];
     const pr = db["purchase-requests"]?.[i];

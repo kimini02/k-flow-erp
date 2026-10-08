@@ -26,7 +26,11 @@ import { useRecord, useActions } from "../api/hooks";
 import { useSession } from "../app/AppLayout";
 import { modules, resourceByKey } from "../app/catalog";
 import { canEdit } from "../api/store";
-import { DetailDrawer } from "./DetailDrawer";
+import {
+  DetailDrawer,
+  fromOverlayAbove,
+  hasOverlayAbove,
+} from "./DetailDrawer";
 import { StatusBadge } from "./StatusBadge";
 import { ApprovalTimeline } from "./ApprovalTimeline";
 import { DocumentFlow, hasDocumentSteps } from "./DocumentFlow";
@@ -78,8 +82,8 @@ export function DocumentDetails(props: DocumentDetailsProps) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      // Confirmation dialogs handle their own Escape first.
-      if (document.querySelector(".mantine-Modal-content")) return;
+      // Dialogs and edit panels above the drawer handle their own Escape first.
+      if (hasOverlayAbove() || fromOverlayAbove(event)) return;
       event.preventDefault();
       if (path.length) setPath(path.slice(0, -1));
       else props.onClose();

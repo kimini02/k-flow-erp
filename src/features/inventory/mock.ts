@@ -17,10 +17,10 @@ export function inventoryFixture(key: string, r: RecordData, i: number) {
   if (key === "items") {
     r.values.category = [
       "완제품",
-      "완제품",
+      "상품",
       "원재료",
       "원재료",
-      "반제품",
+      "상품",
       "소모품",
       "소모품",
     ][i % 7];
@@ -66,9 +66,9 @@ type Movement = {
   movement: string;
   source?: { resource: string; id: string };
 };
-// Ledger entries come from confirmed source documents (ERD: StockLedgerEntry is the
-// record, current stock is its total). The opening balance is back-calculated so that
-// opening + receipts - issues = the seeded current stock for every item x warehouse.
+// Ledger entries come from every confirmed source document (ERD: StockLedgerEntry is
+// the record). Each item x warehouse starts from a mock opening balance on 2026-08-31,
+// and the seeded stock row is then set to opening + confirmed movements.
 export function stockLedgerFromDocuments(
   db: Record<string, RecordData[]>,
   blank: () => RecordData,
@@ -100,16 +100,9 @@ export function stockLedgerFromDocuments(
   };
   add(db["goods-receipts"], "입고완료", "구매입고", 1, "goods-receipts");
   add(db.deliveries, "출고완료", "판매출고", -1, "deliveries");
-  // Only the production documents linked to BOM/work orders in the seed.
+  add(db["material-issues"], "완료", "생산투입", -1, "material-issues");
   add(
-    db["material-issues"]?.slice(0, 6),
-    "완료",
-    "생산투입",
-    -1,
-    "material-issues",
-  );
-  add(
-    db["production-receipts"]?.slice(0, 6),
+    db["production-receipts"],
     "입고완료",
     "생산완료",
     1,
@@ -119,7 +112,6 @@ export function stockLedgerFromDocuments(
   for (const stock of db.stock ?? []) {
     const item = stock.title;
     const warehouse = String(stock.values.warehouse);
-    const target = Number(stock.values.qty);
     const price = Number(stock.values.price ?? 0);
     const own = events
       .filter((e) => e.item === item && e.warehouse === warehouse)
@@ -130,8 +122,9 @@ export function stockLedgerFromDocuments(
       running += e.delta;
       lowest = Math.min(lowest, running);
     }
-    const opening = Math.max(target - running, -lowest);
-    const adjustment = target - opening - running;
+    // The seeded quantity is the opening balance, raised only as far as needed so a
+    // confirmed issue never draws stock below zero.
+    const opening = Math.max(Number(stock.values.qty), -lowest);
     const sequence: Movement[] = [
       {
         date: "2026-08-31",
@@ -141,23 +134,20 @@ export function stockLedgerFromDocuments(
         movement: "기초재고",
       },
       ...own,
-      ...(adjustment
-        ? [
-            {
-              date: "2026-09-29",
-              item,
-              warehouse,
-              delta: adjustment,
-              movement: "재고조정",
-            },
-          ]
-        : []),
     ];
     let balance = 0;
     for (const e of sequence) {
       balance += e.delta;
       rows.push({ ...e, price, balance });
     }
+    // Current stock is the ledger result, not an independent number.
+    const reserved = Math.min(Number(stock.values.reserved ?? 0), balance);
+    stock.values.qty = balance;
+    stock.values.reserved = reserved;
+    stock.values.available = balance - reserved;
+    stock.amount = balance * price;
+    stock.status =
+      balance - reserved < Number(stock.values.safety ?? 0) ? "부족" : "정상";
   }
   rows.sort(
     (a, b) =>
@@ -186,10 +176,8 @@ export function stockLedgerFromDocuments(
       reference: e.source?.id ?? "",
       memo:
         e.movement === "기초재고"
-          ? "Mock 기초재고: 현재고와 9월 확정 수불로 역산 (기초재고 정책 DR-10/20 미정)"
-          : e.movement === "재고조정"
-            ? "정기 실사 차이 반영"
-            : "확정된 원천 문서 기준 수불",
+          ? "Mock 기초재고(2026-08-31). 현재고 = 기초 + 9월 확정 수불 (기초재고 정책 DR-10/20 미정)"
+          : "확정된 원천 문서 기준 수불",
     };
     r.lines = [];
     r.links = e.source ? [e.source] : [];

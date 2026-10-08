@@ -20,6 +20,7 @@ import { PageHeader } from "../components/PageHeader";
 import { DataTable } from "../components/DataTable";
 import { FilterBar } from "../components/FilterBar";
 import { DocumentDetails } from "../components/DocumentDetails";
+import { fromOverlayAbove, hasOverlayAbove } from "../components/DetailDrawer";
 import {
   DocumentForm,
   editorPath,
@@ -153,7 +154,7 @@ export function ResourceList({
   const inbox = resource.key === "approvals" && screen === "inbox";
   // With a document open, ↑/↓ move to the previous/next row of the current page.
   useEffect(() => {
-    if (!openId || showSummary) return;
+    if (!openId || showSummary || form) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
       const target = event.target as HTMLElement;
@@ -161,7 +162,8 @@ export function ResourceList({
         target.closest(
           "input, textarea, select, [role=tab], [role=listbox], [contenteditable=true]",
         ) ||
-        document.querySelector(".mantine-Modal-content")
+        hasOverlayAbove() ||
+        fromOverlayAbove(event)
       )
         return;
       const index = rows.findIndex((r) => r.id === openId);
@@ -172,7 +174,7 @@ export function ResourceList({
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [openId, rows, showSummary, setSearch]);
+  }, [openId, rows, showSummary, form, setSearch]);
   async function download() {
     try {
       const result = await api.list(resource.key, {
@@ -375,7 +377,14 @@ export function ResourceList({
         <DocumentForm
           resource={resource}
           record={form === "new" ? undefined : form}
-          onClose={() => setForm(null)}
+          onClose={() => {
+            setForm(null);
+            if (search.get("new")) {
+              const next = new URLSearchParams(search);
+              next.delete("new");
+              setSearch(next, { replace: true });
+            }
+          }}
           onSaved={(r) => {
             setForm(null);
             open(r);
