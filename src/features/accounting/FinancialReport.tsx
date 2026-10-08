@@ -1,24 +1,23 @@
 import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { Table, Button, TextInput, Select, Alert, Loader } from "@mantine/core";
-import {
-  IconDownload,
-  IconScale,
-  IconBook2,
-  IconArrowUpRight,
-} from "@tabler/icons-react";
+import { Button, TextInput, Select, Alert, Loader } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
 import { useAccounting } from "./api";
 import { accountingModule } from "./config";
 import { resourceByKey } from "../../app/catalog";
-import { won } from "../../domain/helpers";
 import { PageHeader } from "../../components/PageHeader";
-import { KpiCard } from "../../components/KpiCard";
-import { StatusBadge } from "../../components/StatusBadge";
 import { DocumentDetails } from "../../components/DocumentDetails";
 import { DocumentForm } from "../../components/DocumentForm";
 import type { RecordData } from "../../domain/types";
 import { exportCsv } from "../../domain/export";
 import { GeneralLedger } from "./GeneralLedger";
+import {
+  StatementFrame,
+  StatementTable,
+  TrialBalanceTable,
+  balanceSheet,
+  incomeStatement,
+} from "./Statements";
 const dayBefore = (date: string) => {
   const d = new Date(`${date}T00:00:00Z`);
   if (Number.isNaN(d.getTime())) return "";
@@ -47,33 +46,17 @@ export function FinancialReport() {
   const balances = data?.balances ?? [];
   const debit = balances.reduce((n, l) => n + l.debit, 0),
     credit = balances.reduce((n, l) => n + l.credit, 0);
-  const net = (prefix: string) =>
-    balances
-      .filter((l) => l.account.startsWith(prefix))
-      .reduce((n, l) => n + l.credit - l.debit, 0);
-  const revenue = net("4"),
-    cost = -net("5") - net("6"),
-    income = revenue - cost;
-  const assets = -net("1"),
-    liabilities = net("2"),
-    equity = net("3") + income;
+  const income = incomeStatement(balances);
+  const sheet = balanceSheet(balances);
   const reports =
     screen === "income"
-      ? [
-          ["매출액", revenue],
-          ["매출원가", -net("5")],
-          ["매출총이익", revenue + net("5")],
-          ["판매비와관리비", -net("6")],
-          ["당기순이익", income],
-        ]
+      ? income.lines
       : screen === "balance-sheet"
-        ? [
-            ["자산총계", assets],
-            ["부채총계", liabilities],
-            ["자본총계 (당기손익 포함)", equity],
-            ["부채와 자본총계", liabilities + equity],
-          ]
+        ? sheet.lines
         : [];
+  const period =
+    screen === "balance-sheet" ? `${to} 현재` : `${from} 부터 ${to} 까지`;
+  const balanced = debit === credit;
   const ledgerRows = (data?.journals ?? []).flatMap((r) =>
     r.journal
       .filter((l) => !account || l.account === account)
@@ -115,10 +98,10 @@ export function FinancialReport() {
               else {
                 const rows = (
                   reports.length
-                    ? reports.map(([account, value]) => ({
-                        account,
-                        debit: value,
-                        credit: "",
+                    ? reports.map((l) => ({
+                        account: `${l.roman ? `${l.roman}. ` : ""}${l.label}`,
+                        debit: l.detail ?? "",
+                        credit: l.value ?? "",
                       }))
                     : balances
                 ).map(
@@ -128,9 +111,18 @@ export function FinancialReport() {
                 exportCsv(
                   rows,
                   [
-                    { key: "account", label: "계정과목" },
-                    { key: "debit", label: reports.length ? "금액" : "차변" },
-                    { key: "credit", label: "대변" },
+                    {
+                      key: "account",
+                      label: reports.length ? "과목" : "계정과목",
+                    },
+                    {
+                      key: "debit",
+                      label: reports.length ? "계정 금액" : "차변 합계",
+                    },
+                    {
+                      key: "credit",
+                      label: reports.length ? "구분 금액" : "대변 합계",
+                    },
                   ],
                   `${title}.csv`,
                 );
@@ -169,36 +161,14 @@ export function FinancialReport() {
             onChange={setAccount}
           />
         )}
-        <span>단위: 원(KRW) · 미전기 전표 제외</span>
-      </div>
-      <div className="kpi-grid">
-        <KpiCard
-          label="전기된 전표"
-          value={
-            <>
-              {data?.journals.length ?? 0}
-              <small>건</small>
-            </>
-          }
-          detail="역분개 포함"
-          icon={<IconBook2 size={19} />}
-        />
-        <KpiCard
-          label="차변 합계"
-          value={<span className="report-kpi-money">{won(debit)}</span>}
-          detail="조회기간 누계"
-        />
-        <KpiCard
-          label="대변 합계"
-          value={<span className="report-kpi-money">{won(credit)}</span>}
-          detail="조회기간 누계"
-        />
-        <KpiCard
-          label="차대변 대사"
-          value={debit === credit ? "일치" : "불일치"}
-          detail={`차이 ${won(debit - credit)}`}
-          icon={<IconScale size={20} />}
-        />
+        <span className="report-check">
+          전기 전표 {data?.journals.length ?? 0}건 · 차변{" "}
+          {debit.toLocaleString("ko-KR")} · 대변{" "}
+          {credit.toLocaleString("ko-KR")}{" "}
+          <b data-ok={balanced || undefined}>
+            {balanced ? "✓ 차대변 일치" : "차대변 불일치"}
+          </b>
+        </span>
       </div>
       {query.isLoading ? (
         <Loader />
@@ -208,92 +178,65 @@ export function FinancialReport() {
           <Button onClick={() => query.refetch()}>다시 시도</Button>
         </Alert>
       ) : (
-        <section
-          className={`panel ${screen === "income" ? "income-statement-panel" : ""}`}
-        >
-          <div className="panel-heading">
-            <div>
-              <h2>한결 인더스트리 · {title}</h2>
-              <p>
-                {screen === "balance-sheet" ? `${to} 현재` : `${from} ~ ${to}`}
-              </p>
-            </div>
-            <StatusBadge status={debit === credit ? "정상" : "부족"} />
-          </div>
+        <>
           {screen === "ledger" ? (
-            <GeneralLedger
-              journals={data?.journals ?? []}
-              opening={openingQuery.data?.balances ?? []}
-              account={account}
-              from={from}
-              selectedId={search.get("doc")}
-              onOpen={(id) => setSearch({ doc: id })}
-            />
-          ) : reports.length ? (
-            <div className="statement">
-              <div className="statement-head">
-                <span>구분</span>
-                <span>금액</span>
-              </div>
-              {reports.map(([label, value], i) => (
-                <div
-                  className={i === reports.length - 1 ? "statement-total" : ""}
-                  key={label}
-                >
-                  <span>{label}</span>
-                  <strong>{won(Number(value))}</strong>
+            <section className="panel">
+              <div className="panel-heading">
+                <div>
+                  <h2>한결 인더스트리 · {title}</h2>
+                  <p>
+                    {from} ~ {to} · 단위 원 · 미전기 전표 제외
+                  </p>
                 </div>
-              ))}
-              {screen === "balance-sheet" && (
-                <p className="statement-note">
-                  자산 − (부채 + 자본) = {won(assets - liabilities - equity)}
-                </p>
-              )}
-            </div>
+              </div>
+              <GeneralLedger
+                journals={data?.journals ?? []}
+                opening={openingQuery.data?.balances ?? []}
+                account={account}
+                from={from}
+                selectedId={search.get("doc")}
+                onOpen={(id) => setSearch({ doc: id })}
+              />
+            </section>
+          ) : screen === "trial-balance" ? (
+            <StatementFrame
+              title="합계잔액시산표"
+              period={period}
+              check={{
+                ok: balanced,
+                label: balanced
+                  ? "차변 합계 = 대변 합계"
+                  : `차변 − 대변 = ${(debit - credit).toLocaleString("ko-KR")}`,
+              }}
+              note="전기된 전표 기준 · 계정과목을 누르면 총계정원장으로 이동"
+            >
+              <TrialBalanceTable balances={balances} />
+            </StatementFrame>
+          ) : screen === "income" ? (
+            <StatementFrame
+              title="손 익 계 산 서"
+              period={period}
+              note="영업외손익·법인세비용 계정이 없어 영업이익과 당기순이익이 같습니다 (데모 계정과목 범위) · 괄호는 음수"
+            >
+              <StatementTable lines={reports} />
+            </StatementFrame>
           ) : (
-            <Table>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>계정과목</Table.Th>
-                  <Table.Th ta="right">차변 합계</Table.Th>
-                  <Table.Th ta="right">대변 합계</Table.Th>
-                  <Table.Th ta="right">잔액 (차변 − 대변)</Table.Th>
-                  <Table.Th />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {balances.map((l) => (
-                  <Table.Tr key={l.account}>
-                    <Table.Td>
-                      <Link
-                        to={`/accounting/ledger?account=${encodeURIComponent(l.account)}`}
-                        onClick={() => setAccount(l.account)}
-                        className="text-link"
-                      >
-                        {l.account}
-                      </Link>
-                    </Table.Td>
-                    <Table.Td ta="right">{won(l.debit)}</Table.Td>
-                    <Table.Td ta="right">{won(l.credit)}</Table.Td>
-                    <Table.Td ta="right">{won(l.debit - l.credit)}</Table.Td>
-                    <Table.Td>
-                      <IconArrowUpRight size={13} />
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-              <Table.Tfoot>
-                <Table.Tr>
-                  <Table.Th>합계</Table.Th>
-                  <Table.Th ta="right">{won(debit)}</Table.Th>
-                  <Table.Th ta="right">{won(credit)}</Table.Th>
-                  <Table.Th ta="right">{won(debit - credit)}</Table.Th>
-                  <Table.Th />
-                </Table.Tr>
-              </Table.Tfoot>
-            </Table>
+            <StatementFrame
+              title="재 무 상 태 표"
+              period={period}
+              check={{
+                ok: sheet.assetTotal === sheet.claimTotal,
+                label:
+                  sheet.assetTotal === sheet.claimTotal
+                    ? "자산총계 = 부채와자본총계"
+                    : `자산 − (부채 + 자본) = ${(sheet.assetTotal - sheet.claimTotal).toLocaleString("ko-KR")}`,
+              }}
+              note="2026년 1월 1일부터 기준일까지 전기된 전표 누계 · 당기순이익은 이익잉여금에 포함 · 괄호는 음수"
+            >
+              <StatementTable lines={reports} />
+            </StatementFrame>
           )}
-        </section>
+        </>
       )}
       {search.get("doc") && (
         <DocumentDetails

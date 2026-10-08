@@ -13,17 +13,31 @@ export function useDashboard() {
   return useQuery({
     queryKey: ["erp", "dashboard"],
     queryFn: async () => {
-      const [approval, purchase, sales, stock, production, audit] =
-        await Promise.all(
-          [
-            "approvals",
-            "purchase-orders",
-            "sales-orders",
-            "stock",
-            "work-orders",
-            "audit-events",
-          ].map((r) => api.list(r, { size: 10000 })),
-        );
+      const [
+        approval,
+        purchase,
+        sales,
+        stock,
+        production,
+        audit,
+        requests,
+        receipts,
+        bills,
+        payables,
+      ] = await Promise.all(
+        [
+          "approvals",
+          "purchase-orders",
+          "sales-orders",
+          "stock",
+          "work-orders",
+          "audit-events",
+          "purchase-requests",
+          "goods-receipts",
+          "purchase-bills",
+          "payables",
+        ].map((r) => api.list(r, { size: 10000 })),
+      );
       return {
         approvals: approval.all,
         purchases: purchase.all,
@@ -31,6 +45,10 @@ export function useDashboard() {
         stock: stock.all,
         production: production.all,
         audit: audit.all,
+        requests: requests.all,
+        receipts: receipts.all,
+        bills: bills.all,
+        payables: payables.all,
         revenue: sum(sales.all),
         purchaseAmount: sum(purchase.all),
         stockValue: sum(stock.all),

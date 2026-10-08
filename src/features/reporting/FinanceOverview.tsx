@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Loader, TextInput } from "@mantine/core";
+import { Alert, Button, Loader, Table, TextInput } from "@mantine/core";
 import {
   IconUsers,
   IconFileInvoice,
@@ -11,7 +11,6 @@ import {
   IconCash,
   IconDownload,
   IconArrowUpRight,
-  IconDatabase,
 } from "@tabler/icons-react";
 import {
   ResponsiveContainer,
@@ -33,9 +32,22 @@ import { won, shortWon } from "../../domain/helpers";
 import { exportCsv } from "../../domain/export";
 import type { RecordData } from "../../domain/types";
 import { PageHeader } from "../../components/PageHeader";
+import { StatusBadge } from "../../components/StatusBadge";
 import { financeOverviewModel } from "./financeOverviewModel";
 
-const chartShades = ["#262626", "#525252", "#737373", "#969696", "#bdbdbd"];
+// Aging is ordinal severity: not due stays neutral, overdue warms towards red.
+const AGING_COLORS = ["#b4bcc7", "#f59e0b", "#ea580c", "#dc2626", "#991b1b"];
+const ACCENT = "#2b59c3";
+const NEUTRAL = "#b4bcc7";
+const profitColor = (name: string, value: number) =>
+  name === "매출액"
+    ? ACCENT
+    : name === "당기순이익"
+      ? value < 0
+        ? "#b91c1c"
+        : "#15803d"
+      : NEUTRAL;
+const tick = { fontSize: 12, fill: "#6b7280" };
 function Card({
   title,
   note,
@@ -79,7 +91,10 @@ function AgingDonut({
               isAnimationActive={false}
             >
               {(total > 0 ? groups : [{ name: "empty" }]).map((g, i) => (
-                <Cell key={g.name} fill={total > 0 ? chartShades[i] : "#ececec"} />
+                <Cell
+                  key={g.name}
+                  fill={total > 0 ? AGING_COLORS[i] : "#eceef1"}
+                />
               ))}
             </Pie>
             {total > 0 && <Tooltip formatter={(v) => won(Number(v))} />}
@@ -93,7 +108,7 @@ function AgingDonut({
       <ul className="fo-legend">
         {groups.map((g, i) => (
           <li key={g.name}>
-            <i style={{ background: chartShades[i] }} />
+            <i style={{ background: AGING_COLORS[i] }} />
             <span>{g.name}</span>
             <b>{won(g.value)}</b>
           </li>
@@ -330,14 +345,14 @@ export function FinanceOverview() {
                       <CartesianGrid vertical={false} stroke="#efefef" />
                       <XAxis
                         dataKey="name"
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
                       <YAxis
                         width={55}
                         tickFormatter={(n) => shortWon(Number(n))}
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
@@ -349,7 +364,10 @@ export function FinanceOverview() {
                         isAnimationActive={false}
                       >
                         {data.profit.map((p, i) => (
-                          <Cell key={p.name} fill={chartShades[i]} />
+                          <Cell
+                            key={p.name}
+                            fill={profitColor(p.name, p.value)}
+                          />
                         ))}
                       </Bar>
                     </BarChart>
@@ -377,23 +395,23 @@ export function FinanceOverview() {
                       <XAxis
                         dataKey="month"
                         tickFormatter={(s) => String(s).slice(5) + "월"}
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
                       <YAxis
                         width={55}
                         tickFormatter={(n) => shortWon(Number(n))}
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
                       <Tooltip formatter={(v) => won(Number(v))} />
-                      <Legend wrapperStyle={{ fontSize: 10 }} />
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
                       <Line
                         dataKey="revenue"
                         name="매출액"
-                        stroke="#262626"
+                        stroke={ACCENT}
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         isAnimationActive={false}
@@ -401,7 +419,7 @@ export function FinanceOverview() {
                       <Line
                         dataKey="grossProfit"
                         name="매출총이익"
-                        stroke="#969696"
+                        stroke="#6b7280"
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         isAnimationActive={false}
@@ -424,30 +442,30 @@ export function FinanceOverview() {
                       <XAxis
                         dataKey="month"
                         tickFormatter={(s) => String(s).slice(5) + "월"}
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
                       <YAxis
                         width={55}
                         tickFormatter={(n) => shortWon(Number(n))}
-                        tick={{ fontSize: 10 }}
+                        tick={tick}
                         axisLine={false}
                         tickLine={false}
                       />
                       <Tooltip formatter={(v) => won(Number(v))} />
-                      <Legend wrapperStyle={{ fontSize: 10 }} />
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
                       <Bar
                         dataKey="inflow"
                         name="유입"
-                        fill="#262626"
+                        fill={ACCENT}
                         radius={[3, 3, 0, 0]}
                         isAnimationActive={false}
                       />
                       <Bar
                         dataKey="outflow"
                         name="유출"
-                        fill="#bdbdbd"
+                        fill={NEUTRAL}
                         radius={[3, 3, 0, 0]}
                         isAnimationActive={false}
                       />
@@ -471,47 +489,82 @@ export function FinanceOverview() {
                 </div>
               </Card>
             </div>
-            <section className="fo-reconciliation">
-              <header>
-                <span className="fo-reconcile-icon">
-                  <IconScale size={25} />
-                </span>
+            <section className="panel fo-reconciliation">
+              <div className="panel-heading">
                 <div>
                   <h2>장부 대사 현황</h2>
-                  <p>전표 차대변 확인과 보조원장 대사를 구분해 표시합니다.</p>
+                  <p>
+                    전표 차대변 확인과 보조원장 대사를 구분해 표시합니다 · 현재{" "}
+                    {data.postedCount}건의 전기 전표 기준
+                  </p>
                 </div>
                 <span className="fo-pending-label">보조원장 연동 전</span>
-              </header>
-              <div className="fo-reconcile-grid">
-                <div>
-                  <small>전표 차대변</small>
-                  <strong>
-                    {data.postedCount === 0
-                      ? "전기 전표 없음"
-                      : data.debit === data.credit
-                        ? "일치"
-                        : "불일치"}
-                  </strong>
-                  <p>차이 {won(data.debit - data.credit)}</p>
-                  <Link to="/accounting/trial-balance">시산표 확인 ↗</Link>
-                </div>
-                {[
-                  "매출채권 ↔ 총계정원장",
-                  "매입채무 ↔ 총계정원장",
-                  "재고장 ↔ 총계정원장",
-                ].map((label) => (
-                  <div key={label}>
-                    <small>{label}</small>
-                    <strong className="fo-unconnected">연동 전</strong>
-                    <p>대사 결과가 아직 없습니다.</p>
-                    <IconDatabase size={15} />
-                  </div>
-                ))}
               </div>
-              <footer>
-                현재 {data.postedCount}건의 전기 전표 기준 · 차대변 일치만으로
-                보조원장 정합성이 검증된 것은 아닙니다.
-              </footer>
+              <div className="data-table">
+                <div className="table-scroll">
+                  <Table miw={720} highlightOnHover={false}>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th style={{ width: 240 }}>대사 항목</Table.Th>
+                        <Table.Th style={{ width: 130 }}>상태</Table.Th>
+                        <Table.Th data-align="end" style={{ width: 160 }}>
+                          차이
+                        </Table.Th>
+                        <Table.Th>근거 · 확인</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      <Table.Tr>
+                        <Table.Td>전표 차변 ↔ 대변</Table.Td>
+                        <Table.Td>
+                          <StatusBadge
+                            status={
+                              data.postedCount === 0
+                                ? "대기"
+                                : data.debit === data.credit
+                                  ? "정상"
+                                  : "부족"
+                            }
+                          />
+                        </Table.Td>
+                        <Table.Td data-align="end">
+                          {(data.debit - data.credit).toLocaleString("ko-KR")}
+                        </Table.Td>
+                        <Table.Td>
+                          <Link
+                            className="text-link"
+                            to="/accounting/trial-balance"
+                          >
+                            합계잔액시산표에서 확인 ↗
+                          </Link>
+                        </Table.Td>
+                      </Table.Tr>
+                      {[
+                        "매출채권 ↔ 총계정원장",
+                        "매입채무 ↔ 총계정원장",
+                        "재고장 ↔ 총계정원장",
+                      ].map((label) => (
+                        <Table.Tr key={label}>
+                          <Table.Td>{label}</Table.Td>
+                          <Table.Td>
+                            <span className="status-badge" data-tone="neutral">
+                              <i aria-hidden="true" />
+                              연동 전
+                            </span>
+                          </Table.Td>
+                          <Table.Td data-align="end" className="muted">
+                            —
+                          </Table.Td>
+                          <Table.Td className="muted">
+                            보조원장 연동 후 잔액을 비교합니다. 대사 결과를
+                            정상으로 가정하지 않습니다.
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                </div>
+              </div>
             </section>
           </div>
         )

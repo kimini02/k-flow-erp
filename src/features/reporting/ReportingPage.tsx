@@ -1,19 +1,13 @@
 import { FinanceOverview } from "./FinanceOverview";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  Button,
-  TextInput,
-  Table,
-  Alert,
-  Loader,
-  Progress,
-} from "@mantine/core";
-import { IconDownload, IconArrowUpRight } from "@tabler/icons-react";
+import { Button, TextInput, Table, Alert, Loader } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
 import {
   BarChart,
   Bar,
   Cell,
+  LabelList,
   XAxis,
   YAxis,
   Tooltip,
@@ -23,89 +17,156 @@ import {
 import { useRecords } from "../../api/hooks";
 import { reportingModule } from "./config";
 import { PageHeader } from "../../components/PageHeader";
-import { KpiCard } from "../../components/KpiCard";
-import { sum, shortWon, won } from "../../domain/helpers";
+import { sum, shortWon } from "../../domain/helpers";
 import { exportCsv } from "../../domain/export";
 import { documentUrl } from "../../components/DocumentDetails";
 import { StatusBadge } from "../../components/StatusBadge";
-import { PARTNERS, WAREHOUSES } from "../../domain/types";
+import type { RecordData } from "../../domain/types";
 
-const REPORT_COLORS = [
-  "#525252",
-  "#737373",
-  "#969696",
-  "#404040",
-  "#262626",
-  "#616161",
-  "#a3a3a3",
-  "#858585",
-];
-function categoryColor(name: string) {
-  // Category identity keeps its color when the date range or ranking changes.
-  const categories = [
-    PARTNERS,
-    WAREHOUSES,
-    ["A라인 · 조립", "B라인 · 가공", "C라인 · 검사"],
-  ];
-  const known = categories.find((names) => names.includes(name));
-  const index = known
-    ? known.indexOf(name)
-    : Array.from(name).reduce(
-        (hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0,
-        0,
-      );
-  return REPORT_COLORS[index % REPORT_COLORS.length];
-}
+// One highlight for the largest group; the rest stay neutral so colour carries meaning.
+const HIGHLIGHT = "#2b59c3";
+const NEUTRAL = "#b4bcc7";
+const num = (r: RecordData, key: string) => Number(r.values[key] ?? 0);
+type Screen = "overview" | "purchasing" | "sales" | "inventory" | "production";
+const SETUP: Record<
+  Screen,
+  {
+    resource: string;
+    group: string;
+    groupLabel: string;
+    measure: string;
+    unit: "원" | "EA";
+    list: string;
+  }
+> = {
+  overview: {
+    resource: "sales-orders",
+    group: "partner",
+    groupLabel: "거래처",
+    measure: "주문 금액",
+    unit: "원",
+    list: "/sales/orders",
+  },
+  purchasing: {
+    resource: "purchase-orders",
+    group: "partner",
+    groupLabel: "거래처",
+    measure: "발주 금액",
+    unit: "원",
+    list: "/purchasing/orders",
+  },
+  sales: {
+    resource: "invoices",
+    group: "partner",
+    groupLabel: "거래처",
+    measure: "매출 금액",
+    unit: "원",
+    list: "/sales/invoices",
+  },
+  inventory: {
+    resource: "stock",
+    group: "warehouse",
+    groupLabel: "창고",
+    measure: "재고 평가액",
+    unit: "원",
+    list: "/inventory/stock",
+  },
+  production: {
+    resource: "work-orders",
+    group: "line",
+    groupLabel: "생산라인",
+    measure: "생산 수량",
+    unit: "EA",
+    list: "/manufacturing/orders",
+  },
+};
 
 export function ReportingPage() {
   const { screen = "overview" } = useParams();
   return screen === "overview" ? <FinanceOverview /> : <BusinessAnalysis />;
 }
 function BusinessAnalysis() {
-  const { screen = "overview" } = useParams();
+  const { screen: param = "purchasing" } = useParams();
+  const screen = (param in SETUP ? param : "purchasing") as Screen;
+  const setup = SETUP[screen];
   const [from, setFrom] = useState("2026-09-01");
   const [to, setTo] = useState("2026-09-30");
-  const resource =
-    (
-      {
-        overview: "sales-orders",
-        purchasing: "purchase-orders",
-        sales: "invoices",
-        inventory: "stock",
-        production: "work-orders",
-      } as Record<string, string>
-    )[screen] ?? "sales-orders";
-  const query = useRecords(resource, { from, to, size: 100000 });
+  const query = useRecords(setup.resource, { from, to, size: 100000 });
   const rows = query.data?.rows ?? [];
-  const groups = new Map<string, number>();
-  rows.forEach((r) => {
-    const label =
-      screen === "inventory"
-        ? String(r.values.warehouse)
-        : screen === "production"
-          ? String(r.values.line)
-          : r.partner;
-    groups.set(
-      label,
-      (groups.get(label) ?? 0) +
-        (screen === "production" ? Number(r.values.produced ?? 0) : r.amount),
-    );
-  });
+  const production = screen === "production";
+  const groupOf = (r: RecordData) =>
+    setup.group === "partner"
+      ? r.partner
+      : String(r.values[setup.group] ?? "—");
+  const measureOf = (r: RecordData) =>
+    production ? num(r, "produced") : r.amount;
+  const groups = new Map<string, { value: number; docs: number }>();
+  for (const r of rows) {
+    const g = groups.get(groupOf(r)) ?? { value: 0, docs: 0 };
+    g.value += measureOf(r);
+    g.docs += 1;
+    groups.set(groupOf(r), g);
+  }
+  const total = [...groups.values()].reduce((n, g) => n + g.value, 0);
   const data = [...groups.entries()]
-    .map(([name, value]) => ({
+    .map(([name, g]) => ({
       name,
-      color: categoryColor(name),
-      value: screen === "production" ? value : Math.round(value / 10000),
+      value: g.value,
+      docs: g.docs,
+      share: total ? (g.value / total) * 100 : 0,
     }))
     .sort((a, b) => b.value - a.value);
+  const format = (n: number) =>
+    setup.unit === "EA"
+      ? `${n.toLocaleString("ko-KR")} EA`
+      : `${shortWon(n)}원`;
   const title =
     reportingModule.items.find((i) => i.key === screen)?.label ?? "경영 분석";
-  const total = sum(rows);
+  const planned = sum(rows, "qty"),
+    produced = sum(rows, "produced");
+  const metrics = production
+    ? [
+        ["작업지시", rows.length, "건"],
+        ["계획 수량", planned.toLocaleString("ko-KR"), "EA"],
+        ["생산 수량", produced.toLocaleString("ko-KR"), "EA"],
+        [
+          "계획 달성률",
+          planned ? Math.round((produced / planned) * 100) : 0,
+          "%",
+        ],
+      ]
+    : [
+        ["분석 대상 문서", rows.length, "건"],
+        [setup.measure, shortWon(total), "원"],
+        ["문서당 평균", shortWon(rows.length ? total / rows.length : 0), "원"],
+        [`${setup.groupLabel} 수`, groups.size, "개"],
+      ];
+  const columns: [string, (r: RecordData) => ReactNode, boolean?][] = production
+    ? [
+        ["생산 품목", (r) => r.title],
+        ["생산라인", (r) => String(r.values.line ?? "—")],
+        ["일자", (r) => r.date],
+        ["계획", (r) => num(r, "qty").toLocaleString("ko-KR"), true],
+        ["생산", (r) => num(r, "produced").toLocaleString("ko-KR"), true],
+      ]
+    : screen === "inventory"
+      ? [
+          ["품목", (r) => r.title],
+          ["창고", (r) => String(r.values.warehouse ?? "—")],
+          ["현재고", (r) => num(r, "qty").toLocaleString("ko-KR"), true],
+          ["평가액", (r) => r.amount.toLocaleString("ko-KR"), true],
+        ]
+      : [
+          ["문서명", (r) => r.title],
+          ["거래처", (r) => r.partner || "—"],
+          ["일자", (r) => r.date],
+          ["금액", (r) => r.amount.toLocaleString("ko-KR"), true],
+        ];
   return (
     <>
       <PageHeader
         title={title}
-        description="업무 문서를 기준으로 실적과 주요 지표를 분석합니다. 기간 변경과 상세 문서 조회를 지원합니다."
+        description="업무 문서를 기준으로 실적을 분석합니다. 회계 확정 실적은 재무제표에서 확인합니다."
         actions={
           <Button
             variant="default"
@@ -142,56 +203,21 @@ function BusinessAnalysis() {
           value={to}
           onChange={(e) => setTo(e.currentTarget.value)}
         />
-        <span>거래 문서 기준 집계 · 회계 확정 실적은 회계 보고서 참조</span>
+        <span>
+          거래 문서 기준 집계 · 취소 문서 포함 · 회계 확정 실적은 재무제표 참조
+        </span>
       </div>
-      <div className="kpi-grid">
-        <KpiCard
-          label="분석 대상 문서"
-          value={
-            <>
-              {rows.length}
-              <small>건</small>
-            </>
-          }
-          detail="선택한 조회기간 기준"
-        />
-        <KpiCard
-          label="문서 금액 합계"
-          value={
-            <>
-              {shortWon(total)}
-              <small>원</small>
-            </>
-          }
-          detail="취소 문서 포함 · 문서 기준"
-        />
-        <KpiCard
-          label="평균 문서 금액"
-          value={
-            <>
-              {shortWon(rows.length ? total / rows.length : 0)}
-              <small>원</small>
-            </>
-          }
-          detail="총금액 ÷ 문서수"
-        />
-        <KpiCard
-          label={
-            screen === "inventory"
-              ? "창고 수"
-              : screen === "production"
-                ? "생산라인 수"
-                : "거래처 수"
-          }
-          value={
-            <>
-              {groups.size}
-              <small>개</small>
-            </>
-          }
-          detail="조회 결과의 고유 그룹"
-        />
-      </div>
+      <dl className="summary-strip" aria-busy={query.isLoading || undefined}>
+        {metrics.map(([label, value, unit]) => (
+          <div key={String(label)}>
+            <dt>{label}</dt>
+            <dd>
+              {query.isLoading ? "—" : value}
+              {!query.isLoading && <small>{unit}</small>}
+            </dd>
+          </div>
+        ))}
+      </dl>
       {query.isLoading ? (
         <Loader />
       ) : query.error ? (
@@ -201,170 +227,146 @@ function BusinessAnalysis() {
         </Alert>
       ) : (
         <>
-          <div className="dashboard-top-grid">
-            <section className="panel">
-              <div className="panel-heading">
-                <div>
-                  <h2>
-                    {screen === "production"
-                      ? "라인별 생산량"
-                      : screen === "inventory"
-                        ? "창고별 재고 평가액"
-                        : "거래처별 거래 규모"}
-                  </h2>
-                  <p>단위: {screen === "production" ? "EA" : "만원"}</p>
-                </div>
-              </div>
-              <div style={{ height: 260, padding: "0 25px 20px" }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={data.slice(0, 8)}
-                    margin={{ left: 0, right: 10, bottom: 8 }}
-                  >
-                    <CartesianGrid vertical={false} stroke="#efefef" />
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fontSize: 10, fill: "#929292" }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 10, fill: "#929292" }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip />
-                    <Bar
-                      dataKey="value"
-                      name={screen === "production" ? "생산량" : "금액 (만원)"}
-                      fill={REPORT_COLORS[0]}
-                      radius={[4, 4, 0, 0]}
-                      maxBarSize={40}
-                      isAnimationActive={false}
-                    >
-                      {data.slice(0, 8).map((item) => (
-                        <Cell key={item.name} fill={item.color} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </section>
-            <section className="panel">
-              <div className="panel-heading">
-                <h2>상위 비중</h2>
-              </div>
-              <div className="ranking">
-                {data.slice(0, 5).map((d, i) => (
-                  <div key={d.name}>
-                    <span>{String(i + 1).padStart(2, "0")}</span>
-                    <div>
-                      <b className="report-category-label">
-                        <i
-                          style={{ backgroundColor: d.color }}
-                          aria-hidden="true"
-                        />
-                        {d.name}
-                      </b>
-                      <Progress
-                        value={
-                          (d.value /
-                            Math.max(
-                              1,
-                              data.reduce((n, x) => n + x.value, 0),
-                            )) *
-                          100
-                        }
-                        size={5}
-                        color={d.color}
-                      />
-                    </div>
-                    <strong>
-                      {(
-                        (d.value /
-                          Math.max(
-                            1,
-                            data.reduce((n, x) => n + x.value, 0),
-                          )) *
-                        100
-                      ).toFixed(1)}
-                      %
-                    </strong>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-          <section className="panel">
+          <section className="panel analysis-panel">
             <div className="panel-heading">
-              <h2>분석 근거 문서</h2>
-              <Link
-                className="text-link"
-                to={
-                  screen === "production"
-                    ? "/manufacturing/orders"
-                    : screen === "inventory"
-                      ? "/inventory/stock"
-                      : screen === "purchasing"
-                        ? "/purchasing/orders"
-                        : "/sales/orders"
-                }
-              >
+              <div>
+                <h2>
+                  {setup.groupLabel}별 {setup.measure}
+                </h2>
+                <p>
+                  {from} ~ {to} · 큰 순서 · 막대 끝은 {setup.measure}와 비중
+                </p>
+              </div>
+            </div>
+            <div
+              className="analysis-chart"
+              style={{ height: Math.max(180, data.length * 40 + 40) }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={data}
+                  layout="vertical"
+                  margin={{ top: 4, right: 150, left: 8, bottom: 4 }}
+                >
+                  <CartesianGrid horizontal={false} stroke="#eceef1" />
+                  <XAxis
+                    type="number"
+                    tickFormatter={(n) =>
+                      setup.unit === "EA"
+                        ? Number(n).toLocaleString("ko-KR")
+                        : shortWon(Number(n))
+                    }
+                    tick={{ fontSize: 12, fill: "#6b7280" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    width={120}
+                    tick={{ fontSize: 13, fill: "#1f2328" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    cursor={{ fill: "#f7f8fa" }}
+                    formatter={(v) => [format(Number(v)), setup.measure]}
+                  />
+                  <Bar
+                    dataKey="value"
+                    radius={[0, 3, 3, 0]}
+                    maxBarSize={22}
+                    isAnimationActive={false}
+                  >
+                    {data.map((d, i) => (
+                      <Cell key={d.name} fill={i === 0 ? HIGHLIGHT : NEUTRAL} />
+                    ))}
+                    <LabelList
+                      dataKey="value"
+                      position="right"
+                      content={({ x, y, width, height, index }) => {
+                        const d = data[Number(index)];
+                        if (!d) return null;
+                        return (
+                          <text
+                            x={Number(x) + Number(width) + 8}
+                            y={Number(y) + Number(height) / 2}
+                            dominantBaseline="central"
+                            fontSize={12}
+                            fill="#4b5563"
+                          >
+                            {format(d.value)} · {d.share.toFixed(1)}%
+                          </text>
+                        );
+                      }}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </section>
+          <section className="panel analysis-panel">
+            <div className="panel-heading">
+              <div>
+                <h2>
+                  분석 근거 문서{" "}
+                  <span className="count-pill">{rows.length}</span>
+                </h2>
+                <p>문서번호를 누르면 해당 업무 화면에서 문서를 엽니다</p>
+              </div>
+              <Link className="text-link" to={setup.list}>
                 전체 업무 목록 ↗
               </Link>
             </div>
-            <div className="table-scroll">
-              <Table miw={650}>
-                <Table.Thead>
-                  <Table.Tr>
-                    {[
-                      "문서번호",
-                      "문서명",
-                      "거래처 / 담당부서",
-                      "일자",
-                      "금액",
-                      "상태",
-                      "",
-                    ].map((s, i) => (
-                      <Table.Th key={i}>{s}</Table.Th>
-                    ))}
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {rows.map((r) => (
-                    <Table.Tr key={r.id}>
-                      <Table.Td>
-                        <Link
-                          className="text-link"
-                          to={documentUrl(resource, r.id)}
+            <div className="data-table">
+              <div className="table-scroll analysis-table">
+                <Table miw={720} highlightOnHover={false}>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th style={{ width: 150 }}>문서번호</Table.Th>
+                      {columns.map(([label, , end]) => (
+                        <Table.Th
+                          key={label}
+                          data-align={end ? "end" : undefined}
                         >
-                          {r.id}
-                        </Link>
-                      </Table.Td>
-                      <Table.Td>{r.title}</Table.Td>
-                      <Table.Td>{r.partner || r.department}</Table.Td>
-                      <Table.Td>{r.date}</Table.Td>
-                      <Table.Td>{won(r.amount)}</Table.Td>
-                      <Table.Td>
-                        <StatusBadge status={r.status} />
-                      </Table.Td>
-                      <Table.Td>
-                        <Link
-                          to={documentUrl(resource, r.id)}
-                          aria-label={`${r.id} 상세`}
-                        >
-                          <IconArrowUpRight size={14} />
-                        </Link>
-                      </Table.Td>
+                          {label}
+                        </Table.Th>
+                      ))}
+                      <Table.Th style={{ width: 116 }}>상태</Table.Th>
                     </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-              {!rows.length && (
-                <div className="empty-state">
-                  해당 기간에 데이터가 없습니다.
-                </div>
-              )}
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {rows.map((r) => (
+                      <Table.Tr key={r.id}>
+                        <Table.Td>
+                          <Link
+                            className="doc-link"
+                            to={documentUrl(setup.resource, r.id)}
+                          >
+                            {r.id}
+                          </Link>
+                        </Table.Td>
+                        {columns.map(([label, value, end]) => (
+                          <Table.Td
+                            key={label}
+                            data-align={end ? "end" : undefined}
+                          >
+                            {value(r)}
+                          </Table.Td>
+                        ))}
+                        <Table.Td>
+                          <StatusBadge status={r.status} />
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+                {!rows.length && (
+                  <div className="empty-state">
+                    해당 기간에 데이터가 없습니다.
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         </>
