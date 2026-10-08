@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import {
-  Table,
-  Button,
-  TextInput,
-  Select,
-  Alert,
-  Loader,
-} from "@mantine/core";
+import { Table, Button, TextInput, Select, Alert, Loader } from "@mantine/core";
 import {
   IconDownload,
   IconScale,
@@ -25,6 +18,13 @@ import { DocumentDetails } from "../../components/DocumentDetails";
 import { DocumentForm } from "../../components/DocumentForm";
 import type { RecordData } from "../../domain/types";
 import { exportCsv } from "../../domain/export";
+import { GeneralLedger } from "./GeneralLedger";
+const dayBefore = (date: string) => {
+  const d = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return "";
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+};
 export function FinancialReport() {
   const { screen } = useParams();
   const [from, setFrom] = useState("2026-01-01");
@@ -38,6 +38,8 @@ export function FinancialReport() {
     screen === "balance-sheet" ? "2026-01-01" : from,
     to,
   );
+  // Opening balances for the general ledger: everything posted before the start date.
+  const openingQuery = useAccounting("", dayBefore(from) || "0000-00-00");
   const title =
     accountingModule.items.find((i) => i.key === screen)?.label ??
     "회계 보고서";
@@ -206,7 +208,9 @@ export function FinancialReport() {
           <Button onClick={() => query.refetch()}>다시 시도</Button>
         </Alert>
       ) : (
-        <section className={`panel ${screen === "income" ? "income-statement-panel" : ""}`}>
+        <section
+          className={`panel ${screen === "income" ? "income-statement-panel" : ""}`}
+        >
           <div className="panel-heading">
             <div>
               <h2>한결 인더스트리 · {title}</h2>
@@ -217,46 +221,14 @@ export function FinancialReport() {
             <StatusBadge status={debit === credit ? "정상" : "부족"} />
           </div>
           {screen === "ledger" ? (
-            <div className="table-scroll">
-              <Table miw={750}>
-                <Table.Thead>
-                  <Table.Tr>
-                    {[
-                      "전표일",
-                      "전표번호",
-                      "계정과목",
-                      "적요",
-                      "차변",
-                      "대변",
-                    ].map((s) => (
-                      <Table.Th key={s}>{s}</Table.Th>
-                    ))}
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {ledgerRows.map((r) => (
-                    <Table.Tr
-                      key={r.id}
-                      className="clickable-row"
-                      onClick={() => setSearch({ doc: String(r.values.entry) })}
-                    >
-                      <Table.Td>{r.date}</Table.Td>
-                      <Table.Td className="document-number">
-                        {r.values.entry}
-                      </Table.Td>
-                      <Table.Td>{r.values.account}</Table.Td>
-                      <Table.Td>{r.title}</Table.Td>
-                      <Table.Td ta="right">
-                        {won(Number(r.values.debit))}
-                      </Table.Td>
-                      <Table.Td ta="right">
-                        {won(Number(r.values.credit))}
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            </div>
+            <GeneralLedger
+              journals={data?.journals ?? []}
+              opening={openingQuery.data?.balances ?? []}
+              account={account}
+              from={from}
+              selectedId={search.get("doc")}
+              onOpen={(id) => setSearch({ doc: id })}
+            />
           ) : reports.length ? (
             <div className="statement">
               <div className="statement-head">

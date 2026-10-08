@@ -136,7 +136,8 @@ test("로딩 실패 후 재시도", async ({ page }) => {
   await expect(page.getByText("데이터를 불러오지 못했습니다")).toBeVisible();
   await page.evaluate(() => sessionStorage.removeItem("kflow-network-error"));
   await page.getByRole("button", { name: "다시 시도", exact: true }).click();
-  await expect(page.locator("tbody tr")).toHaveCount(20);
+  // 재고현황 defaults to the item-grouped view: one group row per item.
+  await expect(page.locator("tbody tr.group-row")).toHaveCount(7);
 });
 test("모바일 레이아웃과 메뉴", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

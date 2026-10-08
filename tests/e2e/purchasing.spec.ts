@@ -186,6 +186,7 @@ test("입고 Grid와 반복 부분입고, 매입 세액·AP·지급 배분까지
   await expect(
     page.getByRole("button", { name: "신규 매입채무", exact: true }),
   ).toHaveCount(0);
+  await page.getByText("문서 목록", { exact: true }).click();
   await expect(
     page.getByRole("columnheader", { name: "원천 매입문서", exact: true }),
   ).toBeVisible();
