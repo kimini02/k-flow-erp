@@ -91,6 +91,34 @@ export function ResourceKpis({
         detail: "보유수량 × 단가",
       },
     ];
+  else if (resource.key === "stock-ledger")
+    metrics = [
+      {
+        label: "수불 기록",
+        value: rows.length,
+        unit: "건",
+        detail: "기초재고 포함 확정 수불",
+      },
+      {
+        label: "입고 수량",
+        value: total("inQty").toLocaleString(),
+        unit: "EA",
+        detail: "기초재고 · 구매입고 · 생산완료",
+      },
+      {
+        label: "출고 수량",
+        value: total("outQty").toLocaleString(),
+        unit: "EA",
+        detail: "판매출고 · 생산투입 · 재고조정",
+      },
+      {
+        label: "품목 · 창고",
+        value: new Set(rows.map((r) => `${r.title}|${r.values.warehouse}`))
+          .size,
+        unit: "개",
+        detail: "수불이 있는 품목 x 창고",
+      },
+    ];
   else if (resource.key === "work-orders")
     metrics = [
       {

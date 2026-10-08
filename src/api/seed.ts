@@ -1,7 +1,10 @@
 import type { RecordData, Resource } from "../domain/types";
 import { PARTNERS, DEPARTMENTS, ITEMS, WAREHOUSES } from "../domain/types";
 import { resources } from "../app/catalog";
-import { inventoryFixture } from "../features/inventory/mock";
+import {
+  inventoryFixture,
+  stockLedgerFromDocuments,
+} from "../features/inventory/mock";
 import { hrFixture } from "../features/hr/mock";
 import { manufacturingFixture } from "../features/manufacturing/mock";
 import { accountingFixture } from "../features/accounting/mock";
@@ -20,7 +23,7 @@ export function seedResource(r: Resource): RecordData[] {
             positions: 6,
             accounts: 12,
             "fiscal-periods": 12,
-            boms: 6,
+            boms: 7,
             stock: 21,
             "approval-lines": 4,
             "approval-policies": 4,
@@ -296,5 +299,10 @@ export function createSeed(): Database {
       ap.links.push({ resource: "purchase-requests", id: pr.id });
     }
   }
+  const ledger = resources.find((r) => r.key === "stock-ledger");
+  if (ledger)
+    db["stock-ledger"] = stockLedgerFromDocuments(db, () =>
+      blankRecord(ledger, "김민희"),
+    );
   return db;
 }

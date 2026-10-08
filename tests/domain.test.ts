@@ -210,4 +210,34 @@ describe("수량·금액 무결성", () => {
           ).toBe(true);
       }
   });
+  it("시드 수불 누계가 품목·창고별 현재고와 일치 (INV-01)", () => {
+    const db = database();
+    for (const stock of db.stock) {
+      const rows = db["stock-ledger"].filter(
+        (r) =>
+          r.title === stock.title &&
+          r.values.warehouse === stock.values.warehouse,
+      );
+      let balance = 0;
+      for (const r of rows) {
+        balance += Number(r.values.inQty) - Number(r.values.outQty);
+        expect(balance, `${r.id} 잔량`).toBeGreaterThanOrEqual(0);
+        expect(Number(r.values.qty), `${r.id} 기록 잔량`).toBe(balance);
+      }
+      expect(balance, `${stock.title} @ ${stock.values.warehouse}`).toBe(
+        Number(stock.values.qty),
+      );
+    }
+  });
+  it("BOM은 품목마다 사용중 버전이 하나이고 자기 자신을 투입하지 않음", () => {
+    const boms = database().boms;
+    for (const title of new Set(boms.map((b) => b.title))) {
+      const active = boms.filter(
+        (b) => b.title === title && b.status === "사용중",
+      );
+      expect(active, title).toHaveLength(1);
+    }
+    for (const b of boms)
+      expect(b.lines.map((l) => l.item), b.id).not.toContain(b.title);
+  });
 });

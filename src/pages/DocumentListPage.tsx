@@ -22,11 +22,19 @@ import { notifications } from "@mantine/notifications";
 import { StockOverview } from "../features/inventory/StockOverview";
 import { AgingByPartner } from "../components/AgingByPartner";
 import { ApprovalQueue } from "../features/approval/ApprovalQueue";
+import { StockLedgerView } from "../features/inventory/StockLedgerView";
+import { BomStructure } from "../features/manufacturing/BomStructure";
 // Screens whose default view summarises documents instead of listing them.
-const summaryViews: Record<string, [string, string]> = {
-  stock: ["품목별 현황", "창고별 목록"],
-  payables: ["거래처별 연령분석", "문서 목록"],
-  receivables: ["거래처별 연령분석", "문서 목록"],
+// ownFilters: the view brings its own conditions, so the list filter bar is hidden.
+const summaryViews: Record<
+  string,
+  { labels: [string, string]; ownFilters?: boolean }
+> = {
+  stock: { labels: ["품목별 현황", "창고별 목록"] },
+  payables: { labels: ["거래처별 연령분석", "문서 목록"] },
+  receivables: { labels: ["거래처별 연령분석", "문서 목록"] },
+  "stock-ledger": { labels: ["품목별 수불", "전체 목록"], ownFilters: true },
+  boms: { labels: ["구성표", "BOM 목록"], ownFilters: true },
 };
 export function DocumentListPage() {
   const { module: moduleKey, screen } = useParams();
@@ -92,15 +100,26 @@ export function ResourceList({
     summary ? "summary" : "list",
   );
   const showSummary = !!summary && view === "summary";
-  const fullQuery = useRecords(showSummary ? resource.key : "", {
-    ...effective,
-    page: 1,
-    size: 100000,
-  });
+  const needs = (key: string, ...screens: string[]) =>
+    showSummary && screens.includes(resource.key) ? key : "";
+  const fullQuery = useRecords(
+    showSummary ? resource.key : "",
+    summary?.ownFilters
+      ? { size: 100000 }
+      : { ...effective, page: 1, size: 100000 },
+  );
   const itemsQuery = useRecords(
-    showSummary && resource.key === "stock" ? "items" : "",
+    needs("items", "stock", "stock-ledger", "boms"),
     { size: 100000 },
   );
+  const stockQuery = useRecords(needs("stock", "stock-ledger"), {
+    size: 100000,
+  });
+  const workOrderQuery = useRecords(needs("work-orders", "boms"), {
+    size: 100000,
+  });
+  const summaryQueries = [fullQuery, itemsQuery, stockQuery, workOrderQuery];
+  const summaryError = summaryQueries.find((q) => q.error)?.error;
   const inbox = resource.key === "approvals" && screen === "inbox";
   async function download() {
     try {
@@ -178,8 +197,8 @@ export function ResourceList({
               size="xs"
               aria-label="보기 방식"
               data={[
-                { value: "summary", label: summary[0] },
-                { value: "list", label: summary[1] },
+                { value: "summary", label: summary.labels[0] },
+                { value: "list", label: summary.labels[1] },
               ]}
               value={view}
               onChange={(v) => setView(v as "summary" | "list")}
@@ -188,42 +207,59 @@ export function ResourceList({
             <span>2026년 데모 데이터</span>
           )}
         </div>
-        <FilterBar
-          params={params}
-          onChange={setParams}
-          statuses={resource.statuses}
-          entities={all.map((r) =>
-            String(fieldValue(r, resource.filters?.key ?? "partner")),
-          )}
-          entityLabel={resource.filters?.label ?? "거래처"}
-          fixedStatus={!!item.status}
-        />
+        {!(showSummary && summary?.ownFilters) && (
+          <FilterBar
+            params={params}
+            onChange={setParams}
+            statuses={resource.statuses}
+            entities={all.map((r) =>
+              String(fieldValue(r, resource.filters?.key ?? "partner")),
+            )}
+            entityLabel={resource.filters?.label ?? "거래처"}
+            fixedStatus={!!item.status}
+          />
+        )}
         {params.from && params.to && params.from > params.to && (
           <Alert color="orange">시작일은 종료일 이전으로 설정해 주세요.</Alert>
         )}
         {showSummary ? (
-          fullQuery.error || itemsQuery.error ? (
+          summaryError ? (
             <Alert color="red" title="데이터를 불러오지 못했습니다" m="md">
-              {(fullQuery.error ?? itemsQuery.error)?.message}
+              {summaryError.message}
               <Button
                 variant="light"
                 color="red"
                 ml="md"
                 onClick={() => {
                   void query.refetch();
-                  void fullQuery.refetch();
-                  void itemsQuery.refetch();
+                  summaryQueries.forEach((q) => void q.refetch());
                 }}
               >
                 다시 시도
               </Button>
             </Alert>
-          ) : fullQuery.isLoading || itemsQuery.isLoading ? (
+          ) : summaryQueries.some((q) => q.isLoading) ? (
             <div className="summary-loading">
               <Skeleton height={14} />
               <Skeleton height={14} />
               <Skeleton height={14} />
             </div>
+          ) : resource.key === "stock-ledger" ? (
+            <StockLedgerView
+              ledger={fullQuery.data?.rows ?? []}
+              stock={stockQuery.data?.rows ?? []}
+              items={itemsQuery.data?.rows ?? []}
+              onOpen={open}
+              selectedId={search.get("doc")}
+            />
+          ) : resource.key === "boms" ? (
+            <BomStructure
+              boms={fullQuery.data?.rows ?? []}
+              items={itemsQuery.data?.rows ?? []}
+              workOrders={workOrderQuery.data?.rows ?? []}
+              onOpen={open}
+              selectedId={search.get("doc")}
+            />
           ) : resource.key === "stock" ? (
             <StockOverview
               rows={fullQuery.data?.rows ?? []}
