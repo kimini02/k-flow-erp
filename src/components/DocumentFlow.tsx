@@ -21,6 +21,9 @@ const STEP_RESOURCE: Record<string, string> = {
   "완제품 입고": "production-receipts",
 };
 
+// Steps that map to a document resource; approval stages are shown by the approval line.
+export const hasDocumentSteps = (steps: string[]) =>
+  steps.some((step) => STEP_RESOURCE[step]);
 // The flow shows what is actually linked to this document, not a fixed stage per screen.
 export function DocumentFlow({
   steps,

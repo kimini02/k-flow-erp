@@ -29,7 +29,7 @@ import { canEdit } from "../api/store";
 import { DetailDrawer } from "./DetailDrawer";
 import { StatusBadge } from "./StatusBadge";
 import { ApprovalTimeline } from "./ApprovalTimeline";
-import { DocumentFlow } from "./DocumentFlow";
+import { DocumentFlow, hasDocumentSteps } from "./DocumentFlow";
 export function documentUrl(resource: string, id: string) {
   const r = resourceByKey(resource);
   const mod = modules.find((m) => m.key === r?.module);
@@ -134,6 +134,10 @@ function DocumentDetailView({
   const pending = row?.approvals.find((s) => s.status === "대기");
   const isApproval = resource.kind === "approval";
   const fieldKeys = new Set(resource.fields.map((f) => f.key));
+  const flowSteps =
+    resource.workflow && hasDocumentSteps(resource.workflow)
+      ? resource.workflow
+      : null;
   const activeActions =
     resource.transitions?.filter(
       (t) =>
@@ -316,7 +320,7 @@ function DocumentDetailView({
                   </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="summary">
-                  {(resource.workflow || row.links.length > 0) && (
+                  {(flowSteps || row.links.length > 0) && (
                     <section className="detail-links">
                       <h3>
                         업무 흐름{" "}
@@ -324,9 +328,9 @@ function DocumentDetailView({
                           연결 문서 {row.links.length}건 · 누르면 이 창에서 열림
                         </small>
                       </h3>
-                      {resource.workflow && (
+                      {flowSteps && (
                         <DocumentFlow
-                          steps={resource.workflow}
+                          steps={flowSteps}
                           resource={resource.key}
                           links={row.links}
                           onOpen={go}
