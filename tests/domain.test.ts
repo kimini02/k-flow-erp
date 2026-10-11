@@ -238,7 +238,10 @@ describe("수량·금액 무결성", () => {
       expect(active, title).toHaveLength(1);
     }
     for (const b of boms)
-      expect(b.lines.map((l) => l.item), b.id).not.toContain(b.title);
+      expect(
+        b.lines.map((l) => l.item),
+        b.id,
+      ).not.toContain(b.title);
   });
   it("시드 전표: 계정 잔액이 중간에도 음수가 아니고 자산 = 부채 + 자본", () => {
     const posted = database()
@@ -248,8 +251,12 @@ describe("수량·금액 무결성", () => {
     for (const doc of posted)
       for (const l of doc.journal) {
         const sign = /^[156]/.test(l.account) ? 1 : -1;
-        balance[l.account] = (balance[l.account] ?? 0) + sign * (l.debit - l.credit);
-        expect(balance[l.account], `${doc.id} ${l.account}`).toBeGreaterThanOrEqual(0);
+        balance[l.account] =
+          (balance[l.account] ?? 0) + sign * (l.debit - l.credit);
+        expect(
+          balance[l.account],
+          `${doc.id} ${l.account}`,
+        ).toBeGreaterThanOrEqual(0);
       }
     const total = (prefix: string) =>
       Object.entries(balance)
@@ -259,7 +266,7 @@ describe("수량·금액 무결성", () => {
     expect(total("1")).toBe(total("2") + total("3") + income);
     expect(income).toBeGreaterThan(0);
   });
-  it("확정된 입고·출고·생산 불출·완제품 입고는 모두 수불에 남는다", () => {
+  it("확정된 입고·출고·생산·이동·조정 문서는 모두 수불에 남는다", () => {
     const db = database();
     const recorded = new Set(
       db["stock-ledger"].flatMap((r) => r.links.map((l) => l.id)),
@@ -269,13 +276,22 @@ describe("수량·금액 무결성", () => {
       ["deliveries", "출고완료"],
       ["material-issues", "완료"],
       ["production-receipts", "입고완료"],
+      ["stock-transfers", "완료"],
+      ["stock-adjustments", "완료"],
     ];
     for (const [key, status] of confirmed)
       for (const doc of db[key].filter((r) => r.status === status))
         expect(recorded.has(doc.id), `${key}/${doc.id}`).toBe(true);
-    expect(
-      db["stock-ledger"].some((r) => r.values.movement === "재고조정"),
-    ).toBe(false);
+    // Adjustments come only from confirmed adjustment documents, never invented.
+    const adjustments = new Set(
+      db["stock-adjustments"]
+        .filter((r) => r.status === "완료")
+        .map((r) => r.id),
+    );
+    for (const r of db["stock-ledger"].filter(
+      (x) => x.values.movement === "재고조정",
+    ))
+      expect(adjustments.has(String(r.values.reference)), r.id).toBe(true);
   });
   it("DR-01: 재판매 상품(S-200/M-50)은 BOM·작업지시·생산입고에 쓰이지 않는다", () => {
     const db = database();
@@ -288,5 +304,22 @@ describe("수량·금액 무결성", () => {
         expect(resale, `${key}/${r.id}`).not.toContain(r.title);
     for (const b of db.boms)
       for (const l of b.lines) expect(resale, b.id).not.toContain(l.item);
+  });
+  it("DR-01: K-100은 구매하지 않고, 판매는 K-100·재판매 상품만 한다", () => {
+    const db = database();
+    const own = "정밀 제어 모듈 K-100";
+    const sold = [own, "산업용 센서 S-200", "서보 모터 M-50"];
+    for (const key of [
+      "purchase-requests",
+      "purchase-orders",
+      "goods-receipts",
+      "purchase-bills",
+    ])
+      for (const r of db[key])
+        for (const l of r.lines) expect(l.item, `${key}/${r.id}`).not.toBe(own);
+    for (const key of ["quotations", "sales-orders", "deliveries", "invoices"])
+      for (const r of db[key])
+        for (const l of r.lines)
+          expect(sold, `${key}/${r.id}`).toContain(l.item);
   });
 });

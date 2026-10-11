@@ -66,8 +66,9 @@ type Movement = {
   movement: string;
   source?: { resource: string; id: string };
 };
-// Ledger entries come from every confirmed source document (ERD: StockLedgerEntry is
-// the record). Each item x warehouse starts from a mock opening balance on 2026-08-31,
+// Ledger entries come from every confirmed source document — receipts, deliveries,
+// material issues, production receipts, transfers and adjustments (ERD:
+// StockLedgerEntry is the record). Each item x warehouse starts from a mock opening balance on 2026-08-31,
 // and the seeded stock row is then set to opening + confirmed movements.
 export function stockLedgerFromDocuments(
   db: Record<string, RecordData[]>,
@@ -108,6 +109,43 @@ export function stockLedgerFromDocuments(
     1,
     "production-receipts",
   );
+  // Stock transfers are immediate in the mock (DR-21 open): one issue at the source,
+  // one receipt at the destination, as the runtime confirm does.
+  for (const t of db["stock-transfers"] ?? []) {
+    if (t.status !== "완료") continue;
+    const qty = Number(t.values.qty ?? 0);
+    const source = { resource: "stock-transfers", id: t.id };
+    events.push(
+      {
+        date: t.date,
+        item: t.title,
+        warehouse: String(t.values.fromWarehouse),
+        delta: -qty,
+        movement: "창고이동",
+        source,
+      },
+      {
+        date: t.date,
+        item: t.title,
+        warehouse: String(t.values.toWarehouse),
+        delta: qty,
+        movement: "창고이동",
+        source,
+      },
+    );
+  }
+  for (const a of db["stock-adjustments"] ?? []) {
+    if (a.status !== "완료") continue;
+    const sign = a.values.direction === "감소" ? -1 : 1;
+    events.push({
+      date: a.date,
+      item: a.title,
+      warehouse: String(a.values.warehouse),
+      delta: sign * Number(a.values.qty ?? 0),
+      movement: "재고조정",
+      source: { resource: "stock-adjustments", id: a.id },
+    });
+  }
   const rows: (Movement & { price: number; balance: number })[] = [];
   for (const stock of db.stock ?? []) {
     const item = stock.title;

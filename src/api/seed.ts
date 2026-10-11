@@ -11,6 +11,20 @@ import { accountingFixture } from "../features/accounting/mock";
 import { paymentsFixture } from "../features/payments/mock";
 import { blankRecord } from "../domain/helpers";
 export type Database = Record<string, RecordData[]>;
+// DR-01 (adopted) item roles: K-100 is made in-house, S-200/M-50 are bought and resold,
+// PCB/housing are purchased materials, MacBook and packing sets are internal use.
+const SOLD_ITEMS = [
+  "정밀 제어 모듈 K-100",
+  "산업용 센서 S-200",
+  "서보 모터 M-50",
+];
+const PURCHASED_ITEMS = ITEMS.filter((item) => item !== "정밀 제어 모듈 K-100");
+const itemPool = (r: Resource) =>
+  r.module === "sales"
+    ? SOLD_ITEMS
+    : r.module === "purchasing" || r.key === "approvals"
+      ? PURCHASED_ITEMS
+      : ITEMS;
 export function seedResource(r: Resource): RecordData[] {
   return Array.from(
     {
@@ -41,12 +55,14 @@ export function seedResource(r: Resource): RecordData[] {
       row.department = DEPARTMENTS[i % DEPARTMENTS.length];
       row.date = `2026-09-${String(29 - (i % 24)).padStart(2, "0")}`;
       row.dueDate = `2026-10-${String(1 + (i % 12)).padStart(2, "0")}`;
-      row.title = `${ITEMS[i % ITEMS.length]} ${r.singular}`;
+      const pool = itemPool(r);
+      const item = pool[i % pool.length];
+      row.title = `${item} ${r.singular}`;
       row.status = r.statuses[i % r.statuses.length];
       row.lines = r.hasLines
         ? [
             {
-              item: ITEMS[i % ITEMS.length],
+              item,
               qty: 10 + (i % 6) * 10,
               price: 120000 + (i % 7) * 35000,
             },
