@@ -12,7 +12,8 @@ import { paymentsFixture } from "../features/payments/mock";
 import { blankRecord } from "../domain/helpers";
 export type Database = Record<string, RecordData[]>;
 // DR-01 (adopted) item roles: K-100 is made in-house, S-200/M-50 are bought and resold,
-// PCB/housing are purchased materials, MacBook and packing sets are internal use.
+// PCB/housing are purchased materials, MacBook is internal use. The packing set is not in
+// the DR-01 table; the mock only buys it.
 const SOLD_ITEMS = [
   "정밀 제어 모듈 K-100",
   "산업용 센서 S-200",

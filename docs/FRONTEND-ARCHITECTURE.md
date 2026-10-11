@@ -190,6 +190,13 @@ sequenceDiagram
 
 기본 데이터는 `seed.ts`와 일부 feature Mock 파일에서 만든다. 읽기/쓰기에 180ms 비동기 지연을 주어 loading과 실패 상태를 확인할 수 있다. `sessionStorage['kflow-network-error']='1'`은 개발·테스트용 통신 실패 스위치다.
 
+시드 데이터는 다음 규칙을 지킨다. 업무 정책을 새로 정한 것이 아니라 채택된 결정 DR-01과 요구사항 INV-01(재고 잔량은 직접 고치지 않고 확정 수불로 설명)에 맞춘 시연 데이터다.
+
+- 수불: 확정된 입고·판매출고·자재출고·생산입고·창고이동·재고조정 문서마다 수불을 만든다. 창고이동은 확정 시 출발 창고 출고와 도착 창고 입고를 함께 기록한다(화면의 이동 확정과 같은 즉시 이동이며, 이동 모델 DR-21은 미정).
+- 현재고: 8월 말 기초재고 + 9월 확정 수불의 결과다. 기초재고는 시드 수량을 쓰되 9월 중 누계가 음수가 되면 그만큼 올리며, 기초재고·평가 정책(DR-10/20)을 정한 것은 아니다.
+- 품목 역할(DR-01): K-100만 생산하고 BOM을 가진다. 판매 문서는 K-100과 재판매 상품 S-200·M-50만, 구매·결재 문서는 K-100을 제외한 품목만 쓴다. 포장재 세트는 DR-01 표에 없는 시연 품목으로 구매에만 쓴다.
+- 전표: 9월 전표를 업무 순서로 구성해 계정 잔액이 음수가 되지 않고 자산 = 부채 + 자본이 성립한다.
+
 저장 키는 `localStorage['k-flow-erp-v1']`이다. 새로고침 후 문서가 남는 이유는 서버 DB가 아니라 이 저장소다. 다른 브라우저나 사용자의 데이터와 동기화되지 않는다.
 
 쓰기 작업은 `structuredClone(database())`로 복사본을 만든 뒤 검증과 연관 변경을 수행한다. 성공한 경우에만 commit하므로 중간 검증 실패가 원 데이터에 일부만 반영되는 일을 줄인다. 이것은 **단일 브라우저의 시뮬레이션**이며 DB 트랜잭션, 여러 탭의 동시 수정, 분산 잠금, 서버 멱등성을 보장하지 않는다.
@@ -232,7 +239,7 @@ Assistant는 정규식과 예시 질문에 따른 **규칙 기반 Mock**다. 5�
 
 ## 11. 검증과 근거
 
-기존 검증 기록은 [VALIDATION.md](VALIDATION.md), 테스트 코드는 `tests/domain.test.ts`, `tests/purchasing.test.ts`, `tests/finance-overview.test.ts`, `tests/e2e/app.spec.ts`, `tests/e2e/purchasing.spec.ts`다. 2026-10-08 디자인 개편 후 업무 테스트 31개와 브라우저 시나리오 13개가 통과했고, 54개 경로를 모두 열어 제목·데이터·현재 메뉴 표시와 콘솔 오류 없음을 별도로 확인했다. 시드 데이터 정합성(수불 누계 = 현재고, BOM 사용 버전 1개, 전표 잔액 비음수·자산 = 부채 + 자본)은 업무 테스트로 고정했다.
+기존 검증 기록은 [VALIDATION.md](VALIDATION.md), 테스트 코드는 `tests/domain.test.ts`, `tests/purchasing.test.ts`, `tests/finance-overview.test.ts`, `tests/e2e/app.spec.ts`, `tests/e2e/purchasing.spec.ts`다. 2026-10-11 시드 정리 후 업무 테스트 34개와 브라우저 시나리오 13개가 통과했고, 54개 경로를 모두 열어 제목·데이터·현재 메뉴 표시와 콘솔 오류 없음을 별도로 확인했다. 시드 데이터 정합성(수불 누계 = 현재고, 확정 원천 문서는 모두 수불에 반영, BOM 사용 버전 1개, DR-01 품목 역할, 전표 잔액 비음수·자산 = 부채 + 자본)은 업무 테스트로 고정했다.
 
 업무 테스트는 Mock 함수의 통합 동작을 확인하며 Spring 서버의 통합 테스트가 아니다. 브라우저 시나리오 통과도 성능·보안·접근성 전체 검증을 뜻하지 않는다. 관련 캡처는 [대시보드](screenshots/dashboard.png), [구매 상세](screenshots/purchase-detail.png), [결재](screenshots/approval.png), [보고서](screenshots/reporting.png), [모바일](screenshots/mobile.png)에서 확인한다.
 
