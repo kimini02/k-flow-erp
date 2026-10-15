@@ -48,7 +48,7 @@ npm run test:e2e     # dev 서버 실행 후 브라우저 테스트
 |감사로그|이벤트 검색/필터, 변경 전후 상세, 원천문서 이동|
 |AI Assistant|5종 Mock 질문, 근거 문서 링크, 초안 확인·취소·생성|
 
-목록 공통: 검색, 상태/엔티티/기간 필터, 정렬, pagination, CSV 내보내기, loading skeleton, empty, error/retry. 업무 문서는 상세 Drawer, 신규/수정 Modal, 상태별 액션, 관련 문서, 처리 이력을 제공합니다. 원장·분석·감사 자료는 조회 전용입니다.
+목록 공통: 검색, 상태/엔티티/기간 필터, 정렬, pagination, CSV 내보내기, loading skeleton, empty, error/retry. 업무 문서는 목록을 가리지 않는 상세 Drawer(관련 문서 경로 유지), 품목행 문서의 전용 작성 화면·기준정보의 오른쪽 패널, 상태별 액션, 연결 문서 기준 업무 흐름, 처리 이력을 제공합니다. 재고현황·채권/채무·수불부·BOM·총계정원장은 업무에 맞는 현황 보기로 엽니다. 원장·분석·감사 자료는 조회 전용입니다.
 
 ## 5분 시연
 
@@ -69,7 +69,7 @@ npm run test:e2e     # dev 서버 실행 후 브라우저 테스트
 src/
   app/          # 공통 셸, 메뉴/리소스 등록, QueryClient
   components/   # DataTable, DetailDrawer, FilterBar, DocumentForm 등
-  pages/        # Dashboard, 공통 업무 목록
+  pages/        # Dashboard, 공통 업무 목록, 문서 작성 화면
   features/
     approval/ purchasing/ inventory/ sales/ manufacturing/
     accounting/ hr/ reporting/ audit/ assistant/ payments/
