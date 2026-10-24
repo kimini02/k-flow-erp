@@ -1,9 +1,9 @@
-# ORG-02 Department / Position — Local Test Evidence
+# ORG-02 Department / Position — Test Evidence
 
-- 상태: **LOCAL VERIFIED / 원격 CI NOT_RUN / PM 검토 대기**. ORG-02 전체 종료조건 중 remote CI는 아직 충족하지 않았다.
+- 상태: **LOCAL VERIFIED / REMOTE CI VERIFIED / PM3 코드 리뷰·최종 판정 대기**. 구현 커밋의 원격 실행 근거는 아래 제출 절에 기록했다.
 - 실행일: 2026-10-24 (Asia/Seoul).
 - GitHub 기준: `main`, `ad1c2e06d7d4b3755f18335e8e73b98c9fa3f985`. 구현 전 `git ls-remote origin HEAD refs/heads/main`으로 원격 기본 HEAD와 로컬 일치를 확인했다.
-- 구현 브랜치: `codex/org-02-department-position`. 위 SHA 이후 **미커밋 working tree** 검증이다. 새 commit/push는 하지 않았다.
+- 구현 브랜치: `codex/org-02-department-position`. 최초 로컬 검증 당시에는 위 기준선 이후 미커밋 working tree였으며, 제출 단계에서 구현 커밋 `0391dc0db2c3d0658358a86ccd0627df1e8c2e18`로 commit/push했다. 기준선 SHA와 구현 SHA를 구분한다.
 - [실행 로그 및 개별 파일 SHA-256](organization-org-02-run.txt). 로컬 경로·사용자명만 명시적 placeholder로 치환했다. 테스트 결과 줄은 생략하거나 새로 만들지 않았다. aggregate manifest hash 주장은 하지 않는다.
 
 ## 직접 읽은 Google Drive 설계
@@ -89,7 +89,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 ## 한계와 후속
 
-- 원격 GitHub Actions **NOT_RUN**. 이번 working tree를 commit/push하지 않아 원격에 없는 코드를 기존 CI PASS로 표시하지 않는다. remote CI를 포함한 전체 ORG-02 종료 판정은 후속이다.
+- 최초 로컬 검증 당시 원격 CI는 NOT_RUN이었다. 이후 아래 구현 커밋의 GitHub Actions 성공을 직접 확인했다. PM3 코드 리뷰와 전체 ORG-02 최종 완료 판정은 아직 대기 중이다.
 - REQUIRED Transaction의 commit-time 예외 변환 보장은 현재 독립 Organization Use Case에 한한다. 외부 상위 Transaction 참여 시 실제 commit 소유자/변환 계약은 후속 상세설계 대상이다.
 - O2-T15/16은 ORG-03/HR 후속 검증이다. 상태 전환/Guard/EmployeeAssignment 구현 없음.
 - O2-T19는 DOCUMENTED LIMITATION: offset pagination의 여러 요청 간 snapshot 일치는 보장하지 않는다.
@@ -149,3 +149,16 @@ V1→V2는 OrganizationV2MigrationIT에서 기존 회사/사업장 행·V1 check
 발생 문제의 분류: 보존된 개발 실행에서 실제 ORG-02 업무 로직 버그 수정은 없었다. FoundationIT 실패는 승인된 schema 확장에 따른 테스트 기대값 갱신이며, 반복 실패는 수정 스크립트의 상대경로 실수다. 이를 동시성 또는 데이터 무결성 버그를 발견·해결한 사례로 바꾸어 기록하지 않는다. PM3의 코드 리뷰와 최종 판정은 별도다.
 
 커밋 직전 재실행: `./mvnw -B -ntp verify`, 완료 시각 `2026-10-24T20:11:32+09:00`, **92 PASS / 실패 0 / 오류 0 / skip 0** (Surefire 43 + Failsafe 49). XML 보고서와 로그 결과를 대조했으며 실행 로그에 추가 보존했다.
+
+
+## GitHub 제출 및 원격 CI — 2026-10-24
+
+- [작업 브랜치](https://github.com/kimini02/k-flow-erp/tree/codex/org-02-department-position), [Draft PR #2](https://github.com/kimini02/k-flow-erp/pull/2), base `main`. main 병합·브랜치 삭제 없음.
+- 구현 커밋: [`0391dc0db2c3d0658358a86ccd0627df1e8c2e18`](https://github.com/kimini02/k-flow-erp/commit/0391dc0db2c3d0658358a86ccd0627df1e8c2e18). ORG-02 소스/테스트 22개와 Evidence 2개만 포함했다.
+- Backend push [실행 40088977977](https://github.com/kimini02/k-flow-erp/actions/runs/40088977977), [verify job](https://github.com/kimini02/k-flow-erp/actions/runs/40088977977/job/120857565382): **SUCCESS**. Actions metadata의 `headSha`는 위 구현 커밋과 일치한다.
+- 실제 명령: `./mvnw -B -ntp verify`. 로그 완료 시각 `2026-10-24T11:13:47Z` (20:13:47 KST).
+- 실제 결과: **92 PASS / failures 0 / errors 0 / skips 0** = Surefire 43 + Failsafe 49. 각 클래스 실행 수는 위 로컬 최종 실행 표와 일치한다. ORG-01 22개, Foundation 2개, Modulith/ArchUnit 포함.
+- 로그에서 Testcontainers **2.0.5**, `postgres:16` pull·container start, Flyway의 **PostgreSQL 16.15**, V1/V2 적용을 직접 확인했다. H2 대체 또는 테스트 skip으로 얻은 결과가 아니다.
+- 같은 구현 커밋의 pull_request [실행 40089002784](https://github.com/kimini02/k-flow-erp/actions/runs/40089002784)도 metadata에서 SUCCESS를 확인했다. 위 테스트 수와 원문 보존 근거는 push 실행 로그다.
+- 원격 CI 실패·원인 수정 없음. 이번 제출 검증 중 Java/SQL/테스트/설정 변경 없음. 기존 로컬 구현을 제출했으며 이 절과 원격 실행 기록은 Evidence 후속 커밋으로 추가한다.
+- [run.txt](organization-org-02-run.txt)에 `gh run view 40088977977 --repo kimini02/k-flow-erp --log`로 받은 출력 중 실제 verify step 전체를 추가 보존했다. checkout·cache 등 다른 step은 제외했음을 표시했다. 실제 실행 출력을 다시 작성하거나 추정 PASS를 추가하지 않았다.
