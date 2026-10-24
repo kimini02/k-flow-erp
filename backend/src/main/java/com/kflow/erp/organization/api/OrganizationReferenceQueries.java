@@ -7,4 +7,6 @@ import java.util.UUID;
 public interface OrganizationReferenceQueries {
     CompanyReference getCompany();
     Optional<SiteReference> findSite(UUID companyId, UUID siteId);
+    Optional<DepartmentReference> findDepartment(UUID companyId, UUID departmentId);
+    Optional<PositionReference> findPosition(UUID companyId, UUID positionId);
 }

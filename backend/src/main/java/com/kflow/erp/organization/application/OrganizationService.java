@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import static com.kflow.erp.organization.api.OrganizationFailure.Code.*;
 
 @Service
-public class OrganizationService implements OrganizationReferenceQueries, SiteListQueries {
+public class OrganizationService implements OrganizationReferenceQueries, SiteListQueries, DepartmentListQueries, PositionListQueries {
     private final OrganizationStore store;
     private final TransactionTemplate read;
     private final TransactionTemplate write;
@@ -80,6 +80,82 @@ public class OrganizationService implements OrganizationReferenceQueries, SiteLi
             var items = rows.stream().limit(size).map(s -> new SiteListItem(s.id(), s.companyId(),
                     s.code(), s.name(), s.status(), s.version())).toList();
             return new SitePage(items, pageIndex, size, rows.size() > size);
+        });
+    }
+
+    private static DepartmentReference reference(Department value) {
+        return new DepartmentReference(value.id(), value.companyId(), value.code(), value.name(), value.status(), value.version());
+    }
+    public Optional<DepartmentReference> findDepartment(UUID companyId, UUID departmentId) {
+        return read.execute(tx -> { company(companyId); return store.department(companyId, departmentId).map(OrganizationService::reference); });
+    }
+    public DepartmentReference registerDepartment(String code, String name) {
+        String canonical = OrganizationValues.code(code), display = OrganizationValues.name(name);
+        return change(() -> {
+            var value = new Department(currentCompany().id(), canonical, display, Instant.now());
+            store.add(value); store.flush(); return reference(value);
+        });
+    }
+    public DepartmentReference renameDepartment(UUID companyId, UUID departmentId, String name, Long expectedVersion) {
+        if (expectedVersion == null) throw new OrganizationFailure(INVALID_VERSION);
+        OrganizationValues.expectedVersion(expectedVersion);
+        String display = OrganizationValues.name(name);
+        return change(() -> {
+            company(companyId);
+            var value = store.department(companyId, departmentId).orElseThrow(() -> new OrganizationFailure(DEPARTMENT_NOT_FOUND));
+            value.rename(display, expectedVersion, Instant.now());
+            store.verifyAtCommit(value); store.flush(); return reference(value);
+        });
+    }
+    public DepartmentPage listDepartments(UUID companyId, String status, int pageIndex, Integer pageSize) {
+        int size = pageSize == null ? 20 : pageSize;
+        if (pageIndex < 0 || size < 1 || size > 100 || (long) pageIndex * size > Integer.MAX_VALUE
+                || (status != null && !status.equals("ACTIVE") && !status.equals("INACTIVE")))
+            throw new OrganizationFailure(INVALID_PAGE);
+        return read.execute(tx -> {
+            company(companyId);
+            var rows = store.departments(companyId, status, pageIndex * size, size + 1);
+            var items = rows.stream().limit(size).map(value -> new DepartmentListItem(value.id(), value.companyId(),
+                    value.code(), value.name(), value.status(), value.version())).toList();
+            return new DepartmentPage(items, pageIndex, size, rows.size() > size);
+        });
+    }
+
+    private static PositionReference reference(Position value) {
+        return new PositionReference(value.id(), value.companyId(), value.code(), value.name(), value.status(), value.version());
+    }
+    public Optional<PositionReference> findPosition(UUID companyId, UUID positionId) {
+        return read.execute(tx -> { company(companyId); return store.position(companyId, positionId).map(OrganizationService::reference); });
+    }
+    public PositionReference registerPosition(String code, String name) {
+        String canonical = OrganizationValues.code(code), display = OrganizationValues.name(name);
+        return change(() -> {
+            var value = new Position(currentCompany().id(), canonical, display, Instant.now());
+            store.add(value); store.flush(); return reference(value);
+        });
+    }
+    public PositionReference renamePosition(UUID companyId, UUID positionId, String name, Long expectedVersion) {
+        if (expectedVersion == null) throw new OrganizationFailure(INVALID_VERSION);
+        OrganizationValues.expectedVersion(expectedVersion);
+        String display = OrganizationValues.name(name);
+        return change(() -> {
+            company(companyId);
+            var value = store.position(companyId, positionId).orElseThrow(() -> new OrganizationFailure(POSITION_NOT_FOUND));
+            value.rename(display, expectedVersion, Instant.now());
+            store.verifyAtCommit(value); store.flush(); return reference(value);
+        });
+    }
+    public PositionPage listPositions(UUID companyId, String status, int pageIndex, Integer pageSize) {
+        int size = pageSize == null ? 20 : pageSize;
+        if (pageIndex < 0 || size < 1 || size > 100 || (long) pageIndex * size > Integer.MAX_VALUE
+                || (status != null && !status.equals("ACTIVE") && !status.equals("INACTIVE")))
+            throw new OrganizationFailure(INVALID_PAGE);
+        return read.execute(tx -> {
+            company(companyId);
+            var rows = store.positions(companyId, status, pageIndex * size, size + 1);
+            var items = rows.stream().limit(size).map(value -> new PositionListItem(value.id(), value.companyId(),
+                    value.code(), value.name(), value.status(), value.version())).toList();
+            return new PositionPage(items, pageIndex, size, rows.size() > size);
         });
     }
     private <T> T change(Supplier<T> command) {
