@@ -1140,3 +1140,69 @@ focused attempt 2, exit 1: injected test exception translated by Spring
 [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 [ERROR] Tests run: 46, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 9.497 s <<< FAILURE! -- in com.kflow.erp.organization.OrganizationStateGuardIT
 [ERROR] Tests run: 46, Failures: 3, Errors: 0, Skipped: 0
+
+=== REMOTE CI ACTUAL JOB LOG EXCERPTS (UTC timestamps retained) ===
+Implementation head: 3afc9ce6db4e99ab40bdf462439adcd5a50478a6
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40096472136
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40096472136/job/120879669377
+Fetch command: gh run view 40096472136 --repo kimini02/k-flow-erp --job 120879669377 --log
+Run conclusion: success
+Only test result/environment/observed SQL/evidence lines are selected below; not the complete CI log.
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:22.4026817Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.765 s -- in com.kflow.erp.LayerArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:23.6913452Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.369 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.3543614Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.656 s -- in com.kflow.erp.ModuleArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.3857032Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.kflow.erp.organization.OrganizationContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.5157665Z [INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s -- in com.kflow.erp.organization.OrganizationValuesTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.5531988Z [INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:26.4196981Z 13:03:26.387 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:40.9474098Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:44.6716968Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.39 s -- in com.kflow.erp.FoundationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:46.3749838Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:48.9896895Z [INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.321 s -- in com.kflow.erp.organization.DepartmentPositionIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:51.3946551Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:52.0112733Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:52.8086059Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:53.5206345Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:53.9169465Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:54.4411886Z [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.425 s -- in com.kflow.erp.organization.OrganizationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:56.1983525Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.790 s -- in com.kflow.erp.organization.OrganizationConstraintTranslationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:57.7351014Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.4593057Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.4804901Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.5540809Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.5542235Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.6285812Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.6286660Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.7266782Z O3-EVIDENCE PostgreSQL blocked: update organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.7705838Z O3-EVIDENCE PostgreSQL blocked: update organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.8164942Z O3-EVIDENCE PostgreSQL blocked: update organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.8554732Z O3-EVIDENCE root / guard / write same physical PID+XID: [{pid=72, xid=899}, {pid=72, xid=899}, {pid=72, xid=899}] guard=[{xid=899, pid=72}, {xid=899, pid=72}, {xid=899, pid=72}]
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.0605532Z O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.0633982Z O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1250868Z O3-SQL 73 956 LOG:  execute S_5: select status from organization_site where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1267766Z O3-SQL 73 956 LOG:  execute S_6: select status from organization_department where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1270818Z O3-SQL 73 956 LOG:  execute S_7: select status from organization_position where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1272958Z O3-EVIDENCE emitted SQL: FOR SHARE Site -> Department -> Position; concurrent guards coexisted; raw non-key UPDATE blocked. {pid=73, xid=956}
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.5826388Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.6353295Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.6852922Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.0023244Z O3-EVIDENCE commit ACK loss injected after actual DB commit: persisted v1, no automatic retry or second rollback; re-read is not a receipt
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.2666889Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.3489045Z O3-EVIDENCE real PG deadlock: SQLSTATE 40P01, one root aborted, no business-error translation
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.4059687Z O3-LIMITATION FK permits direct reference to INACTIVE; provider guard blocks normal consumer. Real HR paths DEFERRED.
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6248990Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6250250Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6672986Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6988535Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.7673742Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.7746789Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.8599187Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.8601421Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:01.1182743Z [INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.914 s -- in com.kflow.erp.organization.OrganizationStateGuardIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:02.8735163Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:02.9227772Z O3-EVIDENCE V1/V2 checksums and existing Company/Site/Department/Position values preserved; V3 only adds nullable evidence pair; Flyway/Hibernate validated
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:03.1651155Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.055 s -- in com.kflow.erp.organization.OrganizationV3MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:04.7945915Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.0792976Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.914 s -- in com.kflow.erp.organization.OrganizationV2MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.1822909Z [INFO] Tests run: 101, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.9321506Z [INFO] BUILD SUCCESS

@@ -1,6 +1,6 @@
 # ORG-03 Status Transition / Assignment Guard — Test Evidence
 
-- 상태: **LOCAL VERIFIED / 원격 CI 확인 전 / PM3 코드 리뷰·최종 판정 대기**.
+- 상태: **LOCAL VERIFIED / REMOTE CI VERIFIED / PM3 코드 리뷰·최종 판정 대기**.
 - 실행일: 2026-10-24 (Asia/Seoul).
 - 구현 전 및 제출 준비 시 직접 조회한 GitHub `main`: `bdf6f48032b8ddf53f0366d085e360d3a0c66c01` (ORG-02 PR #2 merge). 이 기준선은 ORG-03 구현 커밋이 아니다.
 - 작업 브랜치: `codex/org-03-status-assignment-guard`. 로컬 검증은 위 기준선 이후 미커밋 working tree에서 실행했다.
@@ -148,4 +148,12 @@ V1/V2 파일 diff 없음. V3 upgrade는 기존 ID/code/status/version/시각/Com
 
 ## GitHub 제출 / 원격 CI
 
-로컬 검증과 분리하여 실제 push/PR/Actions 실행이 끝난 뒤 결과를 기록한다. 아직 이 절의 원격 PASS를 주장하지 않는다. main 병합은 이번 승인 범위가 아니다.
+- 구현 커밋: [`3afc9ce6db4e99ab40bdf462439adcd5a50478a6`](https://github.com/kimini02/k-flow-erp/commit/3afc9ce6db4e99ab40bdf462439adcd5a50478a6).
+- [브랜치](https://github.com/kimini02/k-flow-erp/tree/codex/org-03-status-assignment-guard), [Draft PR #3](https://github.com/kimini02/k-flow-erp/pull/3), base `main`. 소스/테스트 24개 + Evidence 2개, 총 26개 파일. 개인 `.idea/` 제외.
+- 원격 Backend workflow의 실제 명령: `./mvnw -B -ntp verify`.
+- [PR CI run 40096472136](https://github.com/kimini02/k-flow-erp/actions/runs/40096472136) / [verify job 120879669377](https://github.com/kimini02/k-flow-erp/actions/runs/40096472136/job/120879669377): **SUCCESS**, head `3afc9ce6db4e99ab40bdf462439adcd5a50478a6`.
+- [push CI run 40096442983](https://github.com/kimini02/k-flow-erp/actions/runs/40096442983): 같은 구현 HEAD의 **SUCCESS**. 테스트 상세 수치는 직접 다운로드한 위 PR job 로그를 기준으로 한다.
+- PR job 로그: 2026-10-24T13:04:05Z(UTC) `BUILD SUCCESS`, Surefire **44** + Failsafe **101** = **145 PASS**, failures/errors/skipped 모두 **0**. PostgreSQL **16.15**, Testcontainers **2.0.5**, 실제 SQL 및 PID/XID 관찰 확인.
+- 실제 원격 로그의 테스트 결과·환경·잠금 근거 발췌를 `organization-org-03-run.txt` 끝에 추가했다. 원본 job 링크와 UTC timestamp를 유지한다.
+- 이 절은 **구현 커밋 CI**의 근거다. 이 결과를 기록하는 후속 문서 커밋의 CI 또는 main 병합 후 CI로 바꾸어 주장하지 않는다. 문서 동기화 후 최종 HEAD CI는 제출 보고에서 별도로 확인한다.
+- main에 병합하지 않았다. ORG-03 Provider 구현/검증 제출 완료이며 PM3 리뷰·최종 판정 대기다. HR/IAM/Item을 시작하지 않았다.
