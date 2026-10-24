@@ -5,7 +5,8 @@ public final class OrganizationFailure extends RuntimeException {
     public enum Code {
         INVALID_ORGANIZATION_CODE, INVALID_ORGANIZATION_NAME, INVALID_VERSION,
         INVALID_PAGE, SITE_CODE_CONFLICT, VERSION_CONFLICT,
-        COMPANY_NOT_FOUND, SITE_NOT_FOUND, COMPANY_CONFIGURATION_INVALID
+        COMPANY_NOT_FOUND, SITE_NOT_FOUND, COMPANY_CONFIGURATION_INVALID,
+        DEPARTMENT_CODE_CONFLICT, POSITION_CODE_CONFLICT, DEPARTMENT_NOT_FOUND, POSITION_NOT_FOUND
     }
     private final Code code;
     public OrganizationFailure(Code code) { super(code.name()); this.code = code; }
