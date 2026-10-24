@@ -28,7 +28,7 @@ class OrganizationV2MigrationIT {
         var companyBefore=jdbc.queryForMap("select * from organization_company");
         var siteBefore=jdbc.queryForMap("select * from organization_site");
         var checksum=jdbc.queryForObject("select checksum from flyway_schema_history where version='1'",Integer.class);
-        var latest=Flyway.configure().dataSource(ds).load();
+        var latest=Flyway.configure().dataSource(ds).target("2").load();
         assertThat(latest.migrate().migrationsExecuted).isEqualTo(1);
         assertThat(latest.validateWithResult().validationSuccessful).isTrue();
         assertThat(latest.migrate().migrationsExecuted).isZero();

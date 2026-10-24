@@ -46,7 +46,7 @@ class FoundationIT {
                 assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position");
             }
         }
-        assertThat(flyway.info().applied()).hasSize(2);
+        assertThat(flyway.info().applied()).hasSize(3);
         assertThat(flyway.info().pending()).isEmpty();
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(entityManagerFactory.isOpen()).isTrue();

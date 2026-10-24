@@ -47,4 +47,20 @@ class OrganizationContractTest {
             assertThat(type.getDeclaredField("companyId").getAnnotation(jakarta.persistence.Column.class).updatable()).isFalse();
         assertThat(Site.class.getDeclaredField("companyId").getAnnotation(jakarta.persistence.Column.class).updatable()).isFalse();
     }
+    @Test void guardIsMinimalAndStateWritesRemainInternal() {
+        assertThat(OrganizationAssignmentGuard.class.getDeclaredMethods()).singleElement().satisfies(m -> {
+            assertThat(m.getName()).isEqualTo("requireAssignable");
+            assertThat(m.getReturnType()).isEqualTo(void.class);
+            assertThat(m.getParameterTypes()).containsExactly(OrganizationAssignmentTargets.class);
+        });
+        assertThat(OrganizationAssignmentTargets.class.getRecordComponents())
+                .extracting(java.lang.reflect.RecordComponent::getName)
+                .containsExactly("companyId", "siteId", "departmentId", "positionId");
+        assertThat(OrganizationStateService.class.getPackageName()).endsWith(".application");
+        assertThat(OrganizationStateService.class.getDeclaredMethods()).filteredOn(m -> Modifier.isPublic(m.getModifiers()))
+                .extracting(java.lang.reflect.Method::getName).containsExactlyInAnyOrder("activateSite", "deactivateSite",
+                        "activateDepartment", "deactivateDepartment", "activatePosition", "deactivatePosition");
+        assertThat(Company.class.getDeclaredMethods()).extracting(java.lang.reflect.Method::getName)
+                .doesNotContain("changeStatus", "activate", "deactivate");
+    }
 }

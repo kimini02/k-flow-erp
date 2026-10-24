@@ -29,6 +29,15 @@ public final class OrganizationValues {
             throw new OrganizationFailure(INVALID_ORGANIZATION_NAME);
         return value;
     }
+    public static String stateChangeReason(String input) {
+        if (input == null) throw new OrganizationFailure(INVALID_STATE_CHANGE_REASON);
+        String value = spaces(input);
+        if (value.isEmpty() || value.codePointCount(0, value.length()) > 500
+                || value.codePoints().anyMatch(c -> Character.isISOControl(c)
+                    || Character.getType(c) == Character.SURROGATE))
+            throw new OrganizationFailure(INVALID_STATE_CHANGE_REASON);
+        return value;
+    }
     public static void expectedVersion(long value) {
         if (value < 0) throw new OrganizationFailure(INVALID_VERSION);
     }
