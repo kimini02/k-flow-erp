@@ -17,6 +17,8 @@ public class Site {
     @Version @Column(nullable = false) private Long version;
     @Column(nullable = false, updatable = false) private Instant createdAt;
     @Column(nullable = false) private Instant updatedAt;
+    private Instant stateChangedAt;
+    @Column(length = 500) private String lastStateChangeReason;
     protected Site() {}
     public Site(UUID companyId, String code, String name, Instant now) {
         this.id = UUID.randomUUID(); this.companyId = companyId;
@@ -27,6 +29,18 @@ public class Site {
         if (version != expectedVersion) throw new OrganizationFailure(VERSION_CONFLICT);
         if (!this.name.equals(name)) { this.name = name; this.updatedAt = now; }
     }
+    public boolean changeStatus(String target, long expectedVersion, String reason, Instant now) {
+        if (version != expectedVersion) throw new OrganizationFailure(VERSION_CONFLICT);
+        if (!target.equals("ACTIVE") && !target.equals("INACTIVE")) throw new IllegalArgumentException("Unsupported status");
+        if (status.equals(target)) return false;
+        status = target;
+        updatedAt = now;
+        stateChangedAt = now;
+        lastStateChangeReason = OrganizationValues.stateChangeReason(reason);
+        return true;
+    }
+    public Instant stateChangedAt() { return stateChangedAt; }
+    public String lastStateChangeReason() { return lastStateChangeReason; }
     public UUID id() { return id; }
     public UUID companyId() { return companyId; }
     public String status() { return status; }

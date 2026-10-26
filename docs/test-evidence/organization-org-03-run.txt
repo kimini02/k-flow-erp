@@ -1,0 +1,1208 @@
+ORG-03 local verification record — 2026-10-24 Asia/Seoul
+Baseline: bdf6f48032b8ddf53f0366d085e360d3a0c66c01 (main; NOT an ORG-03 implementation commit)
+Branch: codex/org-03-status-assignment-guard
+State at execution: uncommitted ORG-03 working tree
+Command, working directory <REPO>/backend:
+export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+export PATH="$JAVA_HOME/bin:$PATH"
+./mvnw -B -ntp verify
+Exit code: 0
+Only local paths/user identifier are replaced with <REPO>/<HOME>/<USER>.
+Intentional negative-case SQL/transaction errors in the raw log are not failed JUnit tests.
+
+=== FINAL VERIFY RAW OUTPUT ===
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.kflow:k-flow-erp >------------------------
+[INFO] Building K-Flow ERP Backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ k-flow-erp ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ k-flow-erp ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ k-flow-erp ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ k-flow-erp ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 14 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.073 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Running com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.091 s -- in com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Running com.kflow.erp.ModuleArchitectureTest
+21:57:18.249 [main] INFO com.tngtech.archunit.core.PluginLoader -- Detected Java version 21.0.2
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.089 s -- in com.kflow.erp.ModuleArchitectureTest
+[INFO] Running com.kflow.erp.LayerArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.514 s -- in com.kflow.erp.LayerArchitectureTest
+[INFO] Running com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+21:57:19.845 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+21:57:19.970 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+21:57:19.970 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+21:57:19.972 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+21:57:20.008 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+21:57:20.008 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+21:57:20.008 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+21:57:20.131 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+21:57:20.131 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+21:57:20.131 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.527 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ k-flow-erp ---
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ k-flow-erp ---
+[INFO] Replacing main artifact <REPO>/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to <REPO>/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar.original
+[INFO] 
+[INFO] --- failsafe:3.5.6:integration-test (default) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.organization.OrganizationConstraintTranslationIT
+21:57:20.975 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+21:57:20.977 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+21:57:20.999 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+21:57:21.189 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+21:57:21.497 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+21:57:21.498 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+21:57:21.514 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 27.4.0
+  API Version: 1.47
+  Operating System: Docker Desktop
+  Total Memory: 3919 MB
+  Labels: 
+    com.docker.desktop.address=unix://<HOME>/Library/Containers/com.docker.docker/Data/docker-cli.sock
+21:57:21.644 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Creating container for image: testcontainers/ryuk:0.14.0
+21:57:21.806 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+21:57:21.923 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 is starting: 13a4d66de43ba9bac823f6f6c7be1505f27c5a4d303dd17d37e8ca7ee56df8ea
+21:57:22.348 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 started in PT0.703993S
+21:57:22.354 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+21:57:22.354 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+21:57:22.354 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+21:57:22.355 [main] INFO tc.postgres:16 -- Creating container for image: postgres:16
+21:57:22.404 [main] INFO tc.postgres:16 -- Container postgres:16 is starting: 70565d9901a60b7732dc9e7472a2ddcf5df588e6f8fb4b639f1066f74e90914b
+21:57:23.454 [main] INFO tc.postgres:16 -- Container postgres:16 started in PT1.098959S
+21:57:23.456 [main] INFO tc.postgres:16 -- Container is started (JDBC URL: jdbc:postgresql://localhost:60940/test?loggerLevel=OFF)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (<HOME>/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+21:57:24.478 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:60940/test?loggerLevel=OFF (PostgreSQL 16.15)
+21:57:24.525 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "public"."flyway_schema_history" does not exist yet
+21:57:24.527 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 3 migrations (execution time 00:00.012s)
+21:57:24.541 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "public"."flyway_schema_history" ...
+21:57:24.604 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": << Empty Schema >>
+21:57:24.613 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "1 - organization company site"
+21:57:24.636 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "2 - organization department position"
+21:57:24.651 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "3 - organization state change"
+21:57:24.665 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.020s)
+O2-EVIDENCE department: actual named UNIQUE mapped; actual PK/FK/CHECK preserved by production flush translation
+21:57:24.844 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:60940/test?loggerLevel=OFF (PostgreSQL 16.15)
+21:57:24.858 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 3 migrations (execution time 00:00.004s)
+21:57:24.876 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 3
+21:57:24.877 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Schema "public" is up to date. No migration necessary.
+O2-EVIDENCE position: actual named UNIQUE mapped; actual PK/FK/CHECK preserved by production flush translation
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.279 s -- in com.kflow.erp.organization.OrganizationConstraintTranslationIT
+[INFO] Running com.kflow.erp.organization.DepartmentPositionIT
+21:57:25.251 [main] INFO tc.postgres:16 -- Creating container for image: postgres:16
+21:57:25.411 [main] INFO tc.postgres:16 -- Container postgres:16 is starting: dbd2d78bfecfc1c956c3b0ac7adc54f9eaa79ac7aca0e240b3e3179b2ac858c3
+21:57:26.513 [main] INFO tc.postgres:16 -- Container postgres:16 started in PT1.262071S
+21:57:26.516 [main] INFO tc.postgres:16 -- Container is started (JDBC URL: jdbc:postgresql://localhost:60976/test?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:26.871+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.organization.DepartmentPositionIT  : Starting DepartmentPositionIT using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:26.872+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.organization.DepartmentPositionIT  : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:27.316+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:27.333+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:27.582+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60976/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:27.598+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:27.598+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:27.606+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:27.626+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:27.629+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:27.647+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:27.662+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:27.673+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.018s)
+2026-10-24T21:57:27.730+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:27.769+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-24T21:57:27.913+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:27.937+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-24T21:57:27.954+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@61ee9672
+2026-10-24T21:57:27.955+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-24T21:57:27.999+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60976/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:28.458+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:28.487+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:29.047+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:29.051+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.organization.DepartmentPositionIT  : Started DepartmentPositionIT in 2.344 seconds (process running for 8.498)
+2026-10-24T21:57:29.295+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-24T21:57:29.296+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-24T21:57:29.730+09:00  WARN 26645 --- [k-flow-erp] [pool-4-thread-2] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.731+09:00  WARN 26645 --- [k-flow-erp] [pool-4-thread-2] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_department_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, SALES) already exists.
+O2-EVIDENCE DEPARTMENT canonical registration: [Ref[id=4bb893a0-a458-4908-9338-33446314037b, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=SALES, name=이름, status=ACTIVE, version=0], DEPARTMENT_CODE_CONFLICT]
+2026-10-24T21:57:29.749+09:00  WARN 26645 --- [k-flow-erp] [pool-5-thread-2] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.749+09:00  WARN 26645 --- [k-flow-erp] [pool-5-thread-2] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_position_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, SALES) already exists.
+O2-EVIDENCE POSITION canonical registration: [Ref[id=531437d6-cd35-4eb7-9b0e-30bce167aa06, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=SALES, name=이름, status=ACTIVE, version=0], POSITION_CODE_CONFLICT]
+2026-10-24T21:57:29.812+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 42P01
+2026-10-24T21:57:29.812+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: relation "organization_department" does not exist
+  위치: 166
+2026-10-24T21:57:29.850+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 42P01
+2026-10-24T21:57:29.850+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: relation "organization_position" does not exist
+  위치: 166
+2026-10-24T21:57:29.871+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.871+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_department_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, COMMON) already exists.
+2026-10-24T21:57:29.878+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.878+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_department_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, COMMON) already exists.
+2026-10-24T21:57:29.914+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.914+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_position_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, COMMON) already exists.
+2026-10-24T21:57:29.920+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:29.920+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_position_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, COMMON) already exists.
+2026-10-24T21:57:29.961+09:00  WARN 26645 --- [k-flow-erp] [pool-6-thread-2] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+O2-EVIDENCE DEPARTMENT real rename: [Ref[id=c2b6e4ad-d231-4aff-907c-45d38af53e26, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=A, name=승자A, status=ACTIVE, version=1], VERSION_CONFLICT]
+2026-10-24T21:57:29.982+09:00  WARN 26645 --- [k-flow-erp] [pool-7-thread-1] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+O2-EVIDENCE POSITION real rename: [VERSION_CONFLICT, Ref[id=7fb496ab-afc5-4ef7-93c1-9e5883e43918, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=A, name=승자B, status=ACTIVE, version=1]]
+O2-EVIDENCE DEPARTMENT no-op commit-time conflict: VERSION_CONFLICT, competitor committed
+O2-EVIDENCE POSITION no-op commit-time conflict: VERSION_CONFLICT, competitor committed
+2026-10-24T21:57:30.060+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60976/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:30.101+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60976/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:30.113+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.004s)
+2026-10-24T21:57:30.131+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60976/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:30.142+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:30.153+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:30.154+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+O2-EVIDENCE DEPARTMENT concurrent no-op: both success, row unchanged
+O2-EVIDENCE POSITION concurrent no-op: both success, row unchanged
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.373 s -- in com.kflow.erp.organization.DepartmentPositionIT
+[INFO] Running com.kflow.erp.organization.OrganizationIT
+2026-10-24T21:57:30.635+09:00  INFO 26645 --- [k-flow-erp] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.kflow.erp.organization.OrganizationIT]: OrganizationIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-24T21:57:30.668+09:00  INFO 26645 --- [k-flow-erp] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.kflow.erp.KFlowErpApplication for test class com.kflow.erp.organization.OrganizationIT
+2026-10-24T21:57:30.671+09:00  INFO 26645 --- [k-flow-erp] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.kflow.erp.organization.OrganizationIT]: OrganizationIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-24T21:57:30.673+09:00  INFO 26645 --- [k-flow-erp] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.kflow.erp.KFlowErpApplication for test class com.kflow.erp.organization.OrganizationIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:30.736+09:00  INFO 26645 --- [k-flow-erp] [           main] c.kflow.erp.organization.OrganizationIT  : Starting OrganizationIT using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:30.737+09:00  INFO 26645 --- [k-flow-erp] [           main] c.kflow.erp.organization.OrganizationIT  : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:30.944+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:30.956+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:31.036+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-24T21:57:31.101+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: f86ea418685e7af04e41fed1bcbf34a720162238e50bae20c463418eb35728a8
+2026-10-24T21:57:32.254+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.217998S
+2026-10-24T21:57:32.255+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF)
+2026-10-24T21:57:32.349+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:32.365+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:32.366+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:32.374+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:32.401+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:32.404+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:32.419+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:32.433+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:32.444+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.015s)
+2026-10-24T21:57:32.465+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:32.491+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:32.492+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-10-24T21:57:32.506+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@29820c06
+2026-10-24T21:57:32.507+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-10-24T21:57:32.512+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60998/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:32.571+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:32.581+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:32.678+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:32.679+09:00  INFO 26645 --- [k-flow-erp] [           main] c.kflow.erp.organization.OrganizationIT  : Started OrganizationIT in 1.999 seconds (process running for 12.127)
+2026-10-24T21:57:32.684+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-24T21:57:32.685+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-24T21:57:32.710+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:32.710+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:32.815+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:32.820+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:32.849+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-10-24T21:57:32.862+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@5dc38bc
+2026-10-24T21:57:32.862+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-10-24T21:57:32.863+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:32.876+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.005s)
+2026-10-24T21:57:32.891+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:32.891+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:32.903+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:32.918+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:32.923+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60998/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:32.951+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:32.958+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:32.985+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:32.985+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.285 seconds (process running for 12.433)
+2026-10-24T21:57:32.999+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:33.001+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2026-10-24T21:57:33.017+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+ORG-EVIDENCE site no-op/stale unchanged xmin=773, row={id=a4d2f45d-e053-4959-9f35-0fbc7e0ade84, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=새 본사, status=ACTIVE, version=1, created_at=2026-10-24 21:57:33.109659, updated_at=2026-10-24 21:57:33.115751, state_changed_at=null, last_state_change_reason=null}
+2026-10-24T21:57:33.225+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:33.236+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:33.246+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:33.246+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:33.257+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:33.257+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:33.308+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:33.312+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:33.335+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-10-24T21:57:33.342+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection org.postgresql.jdbc.PgConnection@662d42e
+2026-10-24T21:57:33.342+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-10-24T21:57:33.343+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:33.354+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:33.365+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:33.366+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:33.376+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:33.389+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:33.394+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60998/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:33.420+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:33.431+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:33.453+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:33.453+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.204 seconds (process running for 12.901)
+2026-10-24T21:57:33.459+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:33.460+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2026-10-24T21:57:33.501+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+ORG-EVIDENCE migration/restart company={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=한결 인더스트리, version=0, created_at=2026-10-24 21:57:32.40231, updated_at=2026-10-24 21:57:32.40231}, sites=0
+2026-10-24T21:57:33.517+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:33.528+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:33.549+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:33.607+09:00  WARN 26645 --- [k-flow-erp] [ool-13-thread-1] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+ORG-EVIDENCE company rename race outcomes=[VERSION_CONFLICT, CompanyReference[companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HANGYEOL, name=승자B, version=1]], committed={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=승자B, version=1, created_at=2026-10-24 21:57:32.40231, updated_at=2026-10-24 21:57:33.593634}
+2026-10-24T21:57:33.628+09:00  WARN 26645 --- [k-flow-erp] [ool-14-thread-2] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+ORG-EVIDENCE site rename race outcomes=[SiteReference[siteId=68e2392d-d221-4c81-9f08-b5ca162e727b, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=승자A, status=ACTIVE, version=1], VERSION_CONFLICT], committed={id=68e2392d-d221-4c81-9f08-b5ca162e727b, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=승자A, status=ACTIVE, version=1, created_at=2026-10-24 21:57:33.621123, updated_at=2026-10-24 21:57:33.625187, state_changed_at=null, last_state_change_reason=null}
+2026-10-24T21:57:33.638+09:00  WARN 26645 --- [k-flow-erp] [ool-15-thread-1] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:33.638+09:00  WARN 26645 --- [k-flow-erp] [ool-15-thread-1] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_site_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, HQ) already exists.
+ORG-EVIDENCE code race outcomes=[SITE_CODE_CONFLICT, SiteReference[siteId=d4af09bf-7183-4f97-8207-b1d3b07977d1, companyId=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=동일 이름, status=ACTIVE, version=0]]
+2026-10-24T21:57:33.649+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:33.649+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_site_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, HQ) already exists.
+2026-10-24T21:57:33.652+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:33.652+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_site_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, HQ) already exists.
+2026-10-24T21:57:33.654+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:33.654+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_site_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, HQ) already exists.
+2026-10-24T21:57:33.657+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-24T21:57:33.657+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_organization_site_company_code"
+  세부 정보: Key (company_id, code)=(c04b2a3e-6c22-43a7-84f1-d7df625cb826, HQ) already exists.
+ORG-EVIDENCE company no-op stale rejected at commit; committed={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=경쟁 변경, version=1, created_at=2026-10-24 21:57:32.40231, updated_at=2026-10-24 21:57:33.71162}
+ORG-EVIDENCE site no-op stale rejected at commit; committed={id=f514bb8c-5333-4473-8fc4-4bfcbc02479a, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, code=HQ, name=경쟁 변경, status=ACTIVE, version=1, created_at=2026-10-24 21:57:33.721719, updated_at=2026-10-24 21:57:33.727106, state_changed_at=null, last_state_change_reason=null}
+2026-10-24T21:57:33.747+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:33.747+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:33.796+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:33.801+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:33.826+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2026-10-24T21:57:33.837+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection org.postgresql.jdbc.PgConnection@4a5dbec
+2026-10-24T21:57:33.837+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2026-10-24T21:57:33.838+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:33.848+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:33.862+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:33.863+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:33.875+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:33.889+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:33.893+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60998/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:33.922+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:33.933+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:33.969+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:33.970+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.231 seconds (process running for 13.417)
+2026-10-24T21:57:33.979+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-10-24T21:57:33.993+09:00 ERROR 26645 --- [k-flow-erp] [           main] o.s.boot.SpringApplication               : Application run failed
+
+com.kflow.erp.organization.api.OrganizationFailure: COMPANY_CONFIGURATION_INVALID
+	at com.kflow.erp.organization.application.OrganizationService.currentCompany(OrganizationService.java:28) ~[classes/:na]
+	at com.kflow.erp.organization.application.OrganizationService.lambda$getCompany$0(OrganizationService.java:42) ~[classes/:na]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:137) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.application.OrganizationService.getCompany(OrganizationService.java:42) ~[classes/:na]
+	at com.kflow.erp.organization.application.OrganizationStartupCheck.run(OrganizationStartupCheck.java:13) ~[classes/:na]
+	at org.springframework.boot.SpringApplication.lambda$callRunner$0(SpringApplication.java:788) ~[spring-boot-4.1.1.jar:4.1.1]
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82) ~[spring-core-7.0.9.jar:7.0.9]
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60) ~[spring-core-7.0.9.jar:7.0.9]
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86) ~[spring-core-7.0.9.jar:7.0.9]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:800) ~[spring-boot-4.1.1.jar:4.1.1]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:788) ~[spring-boot-4.1.1.jar:4.1.1]
+	at org.springframework.boot.SpringApplication.lambda$callRunners$0(SpringApplication.java:776) ~[spring-boot-4.1.1.jar:4.1.1]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184) ~[na:na]
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596) ~[na:na]
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:776) ~[spring-boot-4.1.1.jar:4.1.1]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:328) ~[spring-boot-4.1.1.jar:4.1.1]
+	at org.springframework.boot.builder.SpringApplicationBuilder.run(SpringApplicationBuilder.java:154) ~[spring-boot-4.1.1.jar:4.1.1]
+	at com.kflow.erp.organization.OrganizationIT.restart(OrganizationIT.java:64) ~[test-classes/:na]
+	at org.assertj.core.api.ThrowableAssert.catchThrowable(ThrowableAssert.java:66) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.AssertionsForClassTypes.catchThrowable(AssertionsForClassTypes.java:908) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.Assertions.catchThrowable(Assertions.java:1476) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.Assertions.assertThatThrownBy(Assertions.java:1319) ~[assertj-core-3.27.7.jar:na]
+	at com.kflow.erp.organization.OrganizationIT.failure(OrganizationIT.java:58) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationIT.missingCompanyFailsRuntimeAndStartupWithoutReseeding(OrganizationIT.java:97) ~[test-classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125) ~[surefire-api-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
+
+2026-10-24T21:57:33.998+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:33.998+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2026-10-24T21:57:34.038+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+ORG-EVIDENCE company no-op/stale unchanged xmin=880, row={id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, singleton_key=1, code=HANGYEOL, name=정정, version=1, created_at=2026-10-24 21:57:32.40231, updated_at=2026-10-24 21:57:34.047731}
+2026-10-24T21:57:34.074+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:34.074+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:34.124+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:34.130+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:34.160+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2026-10-24T21:57:34.170+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection org.postgresql.jdbc.PgConnection@342dc6d4
+2026-10-24T21:57:34.170+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2026-10-24T21:57:34.171+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:60998/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:34.182+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:34.194+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:34.195+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:34.205+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:34.219+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:34.225+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:60998/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:34.252+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:34.260+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:34.291+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:34.291+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.225 seconds (process running for 13.739)
+2026-10-24T21:57:34.298+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:34.298+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2026-10-24T21:57:34.326+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
+2026-10-24T21:57:34.361+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 42P01
+2026-10-24T21:57:34.361+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: relation "organization_site" does not exist
+  위치: 166
+2026-10-24T21:57:34.365+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 42P01
+2026-10-24T21:57:34.365+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: relation "organization_site" does not exist
+  위치: 166
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.101 s -- in com.kflow.erp.organization.OrganizationIT
+[INFO] Running com.kflow.erp.organization.OrganizationV3MigrationIT
+2026-10-24T21:57:34.738+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-24T21:57:34.847+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: 22f6c5525da28e858afc7a1be769c550b2f85cde93e92e9964eeb7e7e6c1f444
+2026-10-24T21:57:36.051+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.313209S
+2026-10-24T21:57:36.052+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF)
+2026-10-24T21:57:36.108+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.123+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:36.124+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:36.136+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:36.154+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:36.157+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:36.170+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:36.180+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "public", now at version v2 (execution time 00:00.011s)
+2026-10-24T21:57:36.294+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.305+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:36.319+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2026-10-24T21:57:36.324+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:36.334+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v3 (execution time 00:00.006s)
+2026-10-24T21:57:36.344+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.369+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.378+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:36.394+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.404+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:36.416+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:36.416+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:36.490+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:36.490+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:36.563+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:36.572+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:36.604+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2026-10-24T21:57:36.619+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-7 - Added connection org.postgresql.jdbc.PgConnection@47716014
+2026-10-24T21:57:36.619+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2026-10-24T21:57:36.621+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61044/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:36.638+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.005s)
+2026-10-24T21:57:36.649+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-10-24T21:57:36.649+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-24T21:57:36.667+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:36.686+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:36.711+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:61044/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:36.742+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:36.750+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:36.771+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:36.771+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.294 seconds (process running for 16.219)
+2026-10-24T21:57:36.776+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:36.777+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Shutdown initiated...
+2026-10-24T21:57:36.777+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Shutdown completed.
+O3-EVIDENCE V1/V2 checksums and existing Company/Site/Department/Position values preserved; V3 only adds nullable evidence pair; Flyway/Hibernate validated
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.239 s -- in com.kflow.erp.organization.OrganizationV3MigrationIT
+[INFO] Running com.kflow.erp.organization.OrganizationV2MigrationIT
+2026-10-24T21:57:36.978+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-24T21:57:37.088+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: 5846c0743a35be08a477307a4959b8890460966dfb6254b9bfc79959303f3195
+2026-10-24T21:57:38.240+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.262099S
+2026-10-24T21:57:38.242+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF)
+2026-10-24T21:57:38.283+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:38.295+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:38.296+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:38.302+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:38.320+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:38.323+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:38.335+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v1 (execution time 00:00.006s)
+2026-10-24T21:57:38.404+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:38.416+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:38.430+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 1
+2026-10-24T21:57:38.435+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:38.447+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.006s)
+2026-10-24T21:57:38.456+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:38.468+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.003s)
+2026-10-24T21:57:38.485+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:38.497+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.004s)
+2026-10-24T21:57:38.508+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2026-10-24T21:57:38.509+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:38.560+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:38.560+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:38.627+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:38.636+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:38.662+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
+2026-10-24T21:57:38.671+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-8 - Added connection org.postgresql.jdbc.PgConnection@6217dda0
+2026-10-24T21:57:38.671+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
+2026-10-24T21:57:38.672+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61082/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:38.683+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.004s)
+2026-10-24T21:57:38.697+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2026-10-24T21:57:38.701+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:38.714+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v3 (execution time 00:00.008s)
+2026-10-24T21:57:38.726+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:38.746+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:38.752+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:61082/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:38.786+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:38.793+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:38.817+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:38.817+09:00  INFO 26645 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 0.272 seconds (process running for 18.265)
+2026-10-24T21:57:38.842+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:38.842+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown initiated...
+2026-10-24T21:57:38.875+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown completed.
+O2-EVIDENCE V1 -> V2 upgrade: Company/Site rows and V1 checksum preserved, Flyway and Hibernate validated
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.178 s -- in com.kflow.erp.organization.OrganizationV2MigrationIT
+[INFO] Running com.kflow.erp.organization.OrganizationStateGuardIT
+2026-10-24T21:57:39.163+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-24T21:57:39.281+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: cec49b6b3745cd7f38bdface4f7f6ded19cf366210366e995cf244b8e3df164f
+2026-10-24T21:57:40.368+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.204647S
+2026-10-24T21:57:40.369+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:61108/test?loggerLevel=OFF)
+2026-10-24T21:57:40.419+09:00  INFO 26645 --- [k-flow-erp] [           main] org.testcontainers.ext.ScriptUtils       : Executing database script from org03-probe.sql
+2026-10-24T21:57:40.467+09:00  INFO 26645 --- [k-flow-erp] [           main] org.testcontainers.ext.ScriptUtils       : Executed database script from org03-probe.sql in 47 ms.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:40.507+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.o.OrganizationStateGuardIT         : Starting OrganizationStateGuardIT using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:40.507+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.o.OrganizationStateGuardIT         : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:40.584+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:40.589+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:40.679+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61108/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:40.690+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:40.691+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.002s)
+2026-10-24T21:57:40.699+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:40.719+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:40.721+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:40.744+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:40.761+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:40.773+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.027s)
+2026-10-24T21:57:40.793+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:40.816+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:40.817+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Starting...
+2026-10-24T21:57:40.825+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-9 - Added connection org.postgresql.jdbc.PgConnection@1a8f0b1b
+2026-10-24T21:57:40.825+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Start completed.
+2026-10-24T21:57:40.830+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:61108/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:40.868+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:40.880+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:41.036+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:41.038+09:00  INFO 26645 --- [k-flow-erp] [           main] c.k.e.o.OrganizationStateGuardIT         : Started OrganizationStateGuardIT in 0.543 seconds (process running for 20.485)
+2026-10-24T21:57:41.045+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-24T21:57:41.046+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+O3-EVIDENCE PostgreSQL blocked: update organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: update organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: update organization_position waiters=1
+O3-EVIDENCE root / guard / write same physical PID+XID: [{pid=70, xid=899}, {pid=70, xid=899}, {pid=70, xid=899}] guard=[{pid=70, xid=899}, {pid=70, xid=899}, {pid=70, xid=899}]
+O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+O3-SQL 71 956 LOG:  execute S_5: select status from organization_site where company_id = $1 and id = $2 FOR SHARE
+O3-SQL 71 956 LOG:  execute S_6: select status from organization_department where company_id = $1 and id = $2 FOR SHARE
+O3-SQL 71 956 LOG:  execute S_7: select status from organization_position where company_id = $1 and id = $2 FOR SHARE
+O3-EVIDENCE emitted SQL: FOR SHARE Site -> Department -> Position; concurrent guards coexisted; raw non-key UPDATE blocked. {pid=71, xid=956}
+2026-10-24T21:57:42.500+09:00  WARN 26645 --- [k-flow-erp] [ool-50-thread-1] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+2026-10-24T21:57:42.555+09:00  WARN 26645 --- [k-flow-erp] [ool-51-thread-1] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+2026-10-24T21:57:42.618+09:00  WARN 26645 --- [k-flow-erp] [ool-52-thread-1] org.hibernate.orm.session                : HHH90010101: Closing shared session with unprocessed transaction completion actions
+O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+2026-10-24T21:57:42.886+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 55P03
+2026-10-24T21:57:42.886+09:00  WARN 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: canceling statement due to lock timeout
+  위치: while locking tuple (0,59) in relation "organization_site"
+2026-10-24T21:57:42.899+09:00  WARN 26645 --- [k-flow-erp] [ool-54-thread-2] com.zaxxer.hikari.pool.ProxyConnection   : HikariPool-9 - Connection org.postgresql.jdbc.PgConnection@1a8f0b1b marked as broken because of SQLSTATE(57P01), ErrorCode(0)
+
+org.postgresql.util.PSQLException: FATAL: terminating connection due to administrator command
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:533) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:449) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:371) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:356) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:332) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.execSQLQuery(PgConnection.java:624) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.execSQLQuery(PgConnection.java:617) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.getTransactionIsolation(PgConnection.java:1082) ~[postgresql-42.7.13.jar:42.7.13]
+	at com.zaxxer.hikari.pool.ProxyConnection.getTransactionIsolation(ProxyConnection.java:443) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.getTransactionIsolation(HikariProxyConnection.java) ~[HikariCP-7.0.2.jar:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.lambda$requireWritableTransaction$0(JpaOrganizationLockStore.java:43) ~[classes/:na]
+	at org.hibernate.jdbc.WorkExecutor.executeWork(WorkExecutor.java:37) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.lambda$doWork$0(AbstractSharedSessionContract.java:1319) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.coordinateWork(JdbcCoordinatorImpl.java:345) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1330) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1318) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.SessionImpl.doWork(SessionImpl.java:158) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityHandlerInvocationHandler.invokeMethod(SharedEntityManagerCreator.java:239) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:392) ~[spring-orm-7.0.9.jar:7.0.9]
+	at jdk.proxy2/jdk.proxy2.$Proxy202.doWork(Unknown Source) ~[na:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.requireWritableTransaction(JpaOrganizationLockStore.java:41) ~[classes/:na]
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733) ~[na:na]
+	at org.mockito.internal.util.reflection.InstrumentationMemberAccessor$Dispatcher$ByteBuddy$4uPoKM9C.invokeWithArguments(Unknown Source) ~[na:na]
+	at org.mockito.internal.util.reflection.InstrumentationMemberAccessor.invoke(InstrumentationMemberAccessor.java:265) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.util.reflection.ModuleMemberAccessor.invoke(ModuleMemberAccessor.java:55) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.tryInvoke(MockMethodAdvice.java:333) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice$RealMethodCall.invoke(MockMethodAdvice.java:253) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:142) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:45) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.Answers.answer(Answers.java:90) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:111) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:34) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.access.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:84) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.handle(MockMethodAdvice.java:143) ~[mockito-core-5.23.0.jar:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.requireWritableTransaction(JpaOrganizationLockStore.java:33) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore$$SpringCGLIB$$0.requireWritableTransaction(<generated>) ~[classes/:na]
+	at com.kflow.erp.organization.application.OrganizationAssignmentService.lambda$requireAssignable$0(OrganizationAssignmentService.java:26) ~[classes/:na]
+	at org.springframework.transaction.support.TransactionOperations.lambda$executeWithoutResult$0(TransactionOperations.java:68) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:137) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.TransactionOperations.executeWithoutResult(TransactionOperations.java:67) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.application.OrganizationAssignmentService.requireAssignable(OrganizationAssignmentService.java:25) ~[classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$t16_lockTimeoutAndTerminatedConnectionRemainTechnicalFailures$78(OrganizationStateGuardIT.java:367) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$transaction$0(OrganizationStateGuardIT.java:72) ~[test-classes/:na]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:137) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.transaction(OrganizationStateGuardIT.java:72) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$t16_lockTimeoutAndTerminatedConnectionRemainTechnicalFailures$79(OrganizationStateGuardIT.java:365) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$job$2(OrganizationStateGuardIT.java:99) ~[test-classes/:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-10-24T21:57:42.901+09:00  WARN 26645 --- [k-flow-erp] [ool-54-thread-2] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 57P01
+2026-10-24T21:57:42.901+09:00  WARN 26645 --- [k-flow-erp] [ool-54-thread-2] org.hibernate.orm.jdbc.error             : FATAL: terminating connection due to administrator command
+2026-10-24T21:57:42.901+09:00  WARN 26645 --- [k-flow-erp] [ool-54-thread-2] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 57P01
+2026-10-24T21:57:42.901+09:00  WARN 26645 --- [k-flow-erp] [ool-54-thread-2] org.hibernate.orm.jdbc.error             : FATAL: terminating connection due to administrator command
+2026-10-24T21:57:42.901+09:00 ERROR 26645 --- [k-flow-erp] [ool-54-thread-2] o.s.t.support.TransactionTemplate        : Application exception overridden by rollback exception
+
+org.springframework.orm.jpa.JpaSystemException: Error executing work [FATAL: terminating connection due to administrator command] [n/a]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.convertHibernateAccessException(HibernateExceptionTranslator.java:223) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.convertHibernateAccessException(HibernateExceptionTranslator.java:131) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.translateExceptionIfPossible(HibernateExceptionTranslator.java:105) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:223) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:577) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:346) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:157) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore$$SpringCGLIB$$0.requireWritableTransaction(<generated>) ~[classes/:na]
+	at com.kflow.erp.organization.application.OrganizationAssignmentService.lambda$requireAssignable$0(OrganizationAssignmentService.java:26) ~[classes/:na]
+	at org.springframework.transaction.support.TransactionOperations.lambda$executeWithoutResult$0(TransactionOperations.java:68) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:137) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.TransactionOperations.executeWithoutResult(TransactionOperations.java:67) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.application.OrganizationAssignmentService.requireAssignable(OrganizationAssignmentService.java:25) ~[classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$t16_lockTimeoutAndTerminatedConnectionRemainTechnicalFailures$78(OrganizationStateGuardIT.java:367) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$transaction$0(OrganizationStateGuardIT.java:72) ~[test-classes/:na]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:137) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.transaction(OrganizationStateGuardIT.java:72) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$t16_lockTimeoutAndTerminatedConnectionRemainTechnicalFailures$79(OrganizationStateGuardIT.java:365) ~[test-classes/:na]
+	at com.kflow.erp.organization.OrganizationStateGuardIT.lambda$job$2(OrganizationStateGuardIT.java:99) ~[test-classes/:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: org.hibernate.exception.GenericJDBCException: Error executing work [FATAL: terminating connection due to administrator command] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:39) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.coordinateWork(JdbcCoordinatorImpl.java:351) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1330) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1318) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.SessionImpl.doWork(SessionImpl.java:158) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityHandlerInvocationHandler.invokeMethod(SharedEntityManagerCreator.java:239) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:392) ~[spring-orm-7.0.9.jar:7.0.9]
+	at jdk.proxy2/jdk.proxy2.$Proxy202.doWork(Unknown Source) ~[na:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.requireWritableTransaction(JpaOrganizationLockStore.java:41) ~[classes/:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.requireWritableTransaction(JpaOrganizationLockStore.java:33) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.9.jar:7.0.9]
+	... 18 common frames omitted
+Caused by: org.postgresql.util.PSQLException: FATAL: terminating connection due to administrator command
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:533) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:449) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:371) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:356) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:332) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.execSQLQuery(PgConnection.java:624) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.execSQLQuery(PgConnection.java:617) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.getTransactionIsolation(PgConnection.java:1082) ~[postgresql-42.7.13.jar:42.7.13]
+	at com.zaxxer.hikari.pool.ProxyConnection.getTransactionIsolation(ProxyConnection.java:443) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.getTransactionIsolation(HikariProxyConnection.java) ~[HikariCP-7.0.2.jar:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.lambda$requireWritableTransaction$0(JpaOrganizationLockStore.java:43) ~[classes/:na]
+	at org.hibernate.jdbc.WorkExecutor.executeWork(WorkExecutor.java:37) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.lambda$doWork$0(AbstractSharedSessionContract.java:1319) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.coordinateWork(JdbcCoordinatorImpl.java:345) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1330) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.doWork(AbstractSharedSessionContract.java:1318) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.internal.SessionImpl.doWork(SessionImpl.java:158) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityHandlerInvocationHandler.invokeMethod(SharedEntityManagerCreator.java:239) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:392) ~[spring-orm-7.0.9.jar:7.0.9]
+	at jdk.proxy2/jdk.proxy2.$Proxy202.doWork(Unknown Source) ~[na:na]
+	at com.kflow.erp.organization.infrastructure.JpaOrganizationLockStore.requireWritableTransaction(JpaOrganizationLockStore.java:41) ~[classes/:na]
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733) ~[na:na]
+	at org.mockito.internal.util.reflection.InstrumentationMemberAccessor$Dispatcher$ByteBuddy$4uPoKM9C.invokeWithArguments(Unknown Source) ~[na:na]
+	at org.mockito.internal.util.reflection.InstrumentationMemberAccessor.invoke(InstrumentationMemberAccessor.java:265) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.util.reflection.ModuleMemberAccessor.invoke(ModuleMemberAccessor.java:55) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.tryInvoke(MockMethodAdvice.java:333) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice$RealMethodCall.invoke(MockMethodAdvice.java:253) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:142) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:45) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.Answers.answer(Answers.java:90) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:111) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:34) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.access.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:84) ~[mockito-core-5.23.0.jar:na]
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.handle(MockMethodAdvice.java:143) ~[mockito-core-5.23.0.jar:na]
+	... 25 common frames omitted
+
+O3-EVIDENCE commit ACK loss injected after actual DB commit: persisted v1, no automatic retry or second rollback; re-read is not a receipt
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+2026-10-24T21:57:43.280+09:00  WARN 26645 --- [k-flow-erp] [ool-62-thread-2] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 40P01
+2026-10-24T21:57:43.280+09:00  WARN 26645 --- [k-flow-erp] [ool-62-thread-2] org.hibernate.orm.jdbc.error             : ERROR: deadlock detected
+  세부 정보: Process 72 waits for ShareLock on transaction 1238; blocked by process 70.
+Process 70 waits for ShareLock on transaction 1239; blocked by process 72.
+  힌트: See server log for query details.
+  위치: while locking tuple (0,5) in relation "organization_department"
+O3-EVIDENCE real PG deadlock: SQLSTATE 40P01, one root aborted, no business-error translation
+O3-LIMITATION FK permits direct reference to INACTIVE; provider guard blocks normal consumer. Real HR paths DEFERRED.
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+[INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.912 s -- in com.kflow.erp.organization.OrganizationStateGuardIT
+[INFO] Running com.kflow.erp.FoundationIT
+2026-10-24T21:57:44.077+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-24T21:57:44.186+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: 0cf1a2e87243e96d1515940f67982ca2c0ed0b35b6413273077b08f2914a1572
+2026-10-24T21:57:45.276+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.198894S
+2026-10-24T21:57:45.278+09:00  INFO 26645 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:61138/test?loggerLevel=OFF)
+2026-10-24T21:57:45.287+09:00  INFO 26645 --- [k-flow-erp] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.kflow.erp.FoundationIT]: FoundationIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-24T21:57:45.314+09:00  INFO 26645 --- [k-flow-erp] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.kflow.erp.KFlowErpApplication for test class com.kflow.erp.FoundationIT
+2026-10-24T21:57:45.315+09:00  INFO 26645 --- [k-flow-erp] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.kflow.erp.FoundationIT]: FoundationIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-24T21:57:45.320+09:00  INFO 26645 --- [k-flow-erp] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.kflow.erp.KFlowErpApplication for test class com.kflow.erp.FoundationIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-24T21:57:45.354+09:00  INFO 26645 --- [k-flow-erp] [           main] com.kflow.erp.FoundationIT               : Starting FoundationIT using Java 21.0.2 with PID 26645 (started by <USER> in <REPO>/backend)
+2026-10-24T21:57:45.354+09:00  INFO 26645 --- [k-flow-erp] [           main] com.kflow.erp.FoundationIT               : No active profile set, falling back to 1 default profile: "default"
+2026-10-24T21:57:45.507+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-24T21:57:45.528+09:00  INFO 26645 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 0 JPA repository interfaces.
+2026-10-24T21:57:45.700+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-24T21:57:45.709+09:00  INFO 26645 --- [k-flow-erp] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-24T21:57:45.710+09:00  INFO 26645 --- [k-flow-erp] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-24T21:57:45.756+09:00  INFO 26645 --- [k-flow-erp] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 401 ms
+2026-10-24T21:57:45.838+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61138/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:45.851+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-24T21:57:45.852+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.002s)
+2026-10-24T21:57:45.859+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-24T21:57:45.883+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-24T21:57:45.886+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-24T21:57:45.901+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-24T21:57:45.912+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-24T21:57:45.923+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.017s)
+2026-10-24T21:57:45.935+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-24T21:57:45.951+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-24T21:57:45.951+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Starting...
+2026-10-24T21:57:45.962+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-10 - Added connection org.postgresql.jdbc.PgConnection@6ba8590d
+2026-10-24T21:57:45.962+09:00  INFO 26645 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Start completed.
+2026-10-24T21:57:45.973+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:61138/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-24T21:57:45.999+09:00  INFO 26645 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-24T21:57:46.008+09:00  INFO 26645 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-24T21:57:46.123+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 61144 (http) with context path '/'
+2026-10-24T21:57:46.125+09:00  INFO 26645 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-24T21:57:46.126+09:00  INFO 26645 --- [k-flow-erp] [           main] com.kflow.erp.FoundationIT               : Started FoundationIT in 0.796 seconds (process running for 25.573)
+2026-10-24T21:57:46.131+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-24T21:57:46.131+09:00  WARN 26645 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-24T21:57:46.146+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61138/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:46.178+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61138/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:46.210+09:00  INFO 26645 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:61138/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-24T21:57:46.219+09:00  INFO 26645 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.002s)
+2026-10-24T21:57:46.313+09:00  INFO 26645 --- [k-flow-erp] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-24T21:57:46.313+09:00  INFO 26645 --- [k-flow-erp] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-24T21:57:46.313+09:00  INFO 26645 --- [k-flow-erp] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-10-24T21:57:46.427+09:00  INFO 26645 --- [k-flow-erp] [o-auto-1-exec-1] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 91 ms
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.660 s -- in com.kflow.erp.FoundationIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 101, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.6:verify (default) @ k-flow-erp ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.539 s
+[INFO] Finished at: 2026-10-24T21:57:47+09:00
+[INFO] ------------------------------------------------------------------------
+
+=== ACTUAL XML REPORT COUNTS (group / class / tests / failures / errors / skipped) ===
+surefire / com.kflow.erp.LayerArchitectureTest / 3 / 0 / 0 / 0
+surefire / com.kflow.erp.ModuleArchitectureTest / 1 / 0 / 0 / 0
+surefire / com.kflow.erp.organization.OrganizationContractTest / 3 / 0 / 0 / 0
+surefire / com.kflow.erp.organization.OrganizationValuesTest / 34 / 0 / 0 / 0
+surefire / com.kflow.erp.technical.web.FrameworkProblemHandlerTest / 3 / 0 / 0 / 0
+failsafe / com.kflow.erp.FoundationIT / 2 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.DepartmentPositionIT / 21 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.OrganizationConstraintTranslationIT / 3 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.OrganizationIT / 22 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.OrganizationStateGuardIT / 51 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.OrganizationV2MigrationIT / 1 / 0 / 0 / 0
+failsafe / com.kflow.erp.organization.OrganizationV3MigrationIT / 1 / 0 / 0 / 0
+
+=== INDIVIDUAL FILE SHA-256 AT FINAL LOCAL VERIFY ===
+aafcbb8193b0c3c7dbf0870f24bf6a7f9921a516914addc9260b3305991b8fa1  backend/src/main/java/com/kflow/erp/organization/api/OrganizationAssignmentGuard.java
+1150cfefff47a220b345ee4b6ba1d2f5a53262efe56a706b4dd7a5c72e4776c9  backend/src/main/java/com/kflow/erp/organization/api/OrganizationAssignmentTargets.java
+380a002910b9511ebbec41007eb0d0833f8a5dfc00ef35871ec67fc397da5bd8  backend/src/main/java/com/kflow/erp/organization/api/OrganizationFailure.java
+b917423400a94e361b3265a6c6c065ec339868c54df143638b2c78a693ea7b49  backend/src/main/java/com/kflow/erp/organization/api/package-info.java
+73313c6c4c541d9058425fe425c34e0d310b3924b684956692efee70698f063c  backend/src/main/java/com/kflow/erp/organization/application/OrganizationAssignmentService.java
+b82d19ac0b7f3365349c28e220c530430302a56e84ca30e3a94657de69ec75c4  backend/src/main/java/com/kflow/erp/organization/application/OrganizationLockStore.java
+ecf1f44f89b25a35c1d4ef6b602c1f4758475f197b9a771bd37fabf974a24bf1  backend/src/main/java/com/kflow/erp/organization/application/OrganizationStateResult.java
+560ed5894c3d98f4db8795ac96e0d11edb66984034ec7568a95fb40be59184a5  backend/src/main/java/com/kflow/erp/organization/application/OrganizationStateService.java
+95c1261a83b6003426c0d83d0f9d497b1444d547051dc6ea4a986a8e9e2fc029  backend/src/main/java/com/kflow/erp/organization/application/OrganizationTarget.java
+9296e2d0a382969ca1136ed5602ae9bf681ad704d63d14728a93253ea61b3e5f  backend/src/main/java/com/kflow/erp/organization/domain/Department.java
+307442e211be16c64bc80d477c371ca489318feb7918312e6d19053069ac2c88  backend/src/main/java/com/kflow/erp/organization/domain/OrganizationValues.java
+fc46ac15412331f4e1e30063604b07eb2983ae59c3528f0f376369fd370b5653  backend/src/main/java/com/kflow/erp/organization/domain/Position.java
+058e91d518ca0e2a74dbc95cef40ec2dca88f81724a46244c01dc0a2b939507e  backend/src/main/java/com/kflow/erp/organization/domain/Site.java
+cc9aed4f218563d884f0b4007012499b322f077ccb570d835d8c5503b92e6d41  backend/src/main/java/com/kflow/erp/organization/infrastructure/JpaOrganizationLockStore.java
+2bf4e0633a1ffe484fa7a563790af0f7573b105a30539a57392b4533255112c1  backend/src/main/resources/db/migration/V3__organization_state_change.sql
+0bbcaef9b1ab6821ab4e064c1537a25c503e85b602b2c05e3b4a1142817863c9  backend/src/test/java/com/kflow/erp/FoundationIT.java
+9dfa3e2e828737d2d25bbd63cae27b2ba905e7be119af38d3bf75967576e92c0  backend/src/test/java/com/kflow/erp/organization/DepartmentPositionIT.java
+b04ccd440542efa3ea27b35d83d8b8f2bcede88c0c711600b0249407790fed35  backend/src/test/java/com/kflow/erp/organization/OrganizationContractTest.java
+4ec7ad938f722e9f0e95d78d3839c9dfdda13279f88ef4ffe7a7831fff0241fc  backend/src/test/java/com/kflow/erp/organization/OrganizationStateGuardIT.java
+3c013026233364257bc24399026aee2538a005316c4dba6905b8c62caf415eb1  backend/src/test/java/com/kflow/erp/organization/OrganizationV2MigrationIT.java
+3573263766534e3d8354ce303fcddfa9c1a5f73167c3366d6951ac13a1c7b17d  backend/src/test/java/com/kflow/erp/organization/OrganizationV3MigrationIT.java
+731af568cf34efa8ad955fc73527dbec781d0ed5a0ab5bcbef21e3083ce05125  backend/src/test/java/org/kflow/testprobe/ManagedProbe.java
+34830e686f03d0ded9508195b93e99939e1dbe4cd65821798af62f2ea3d69fae  backend/src/test/java/org/kflow/testprobe/TestAssignmentConsumer.java
+949d3039af6efe6fc939006a5f9b888b35dee8379c4658e27815b353877a9fd9  backend/src/test/resources/org03-probe.sql
+
+=== PRESERVED DEVELOPMENT FAILURE EXCERPTS (NOT final verify) ===
+test-compile, exit 1: test generic Class inference error
+[ERROR] COMPILATION ERROR : 
+[ERROR] <REPO>/backend/src/test/java/com/kflow/erp/organization/OrganizationStateGuardIT.java:[297,26] no suitable method found for find(<none>,java.util.UUID)
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project k-flow-erp: Compilation failure
+[ERROR] <REPO>/backend/src/test/java/com/kflow/erp/organization/OrganizationStateGuardIT.java:[297,26] no suitable method found for find(<none>,java.util.UUID)
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(java.lang.Class<T>,java.lang.Object) is not applicable
+[ERROR]       (inference variable T has incompatible equality constraints com.kflow.erp.organization.domain.Position,com.kflow.erp.organization.domain.Department,com.kflow.erp.organization.domain.Site)
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(java.lang.Class<T>,java.lang.Object,java.util.Map<java.lang.String,java.lang.Object>) is not applicable
+[ERROR]       (cannot infer type-variable(s) T
+[ERROR]         (actual and formal argument lists differ in length))
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(java.lang.Class<T>,java.lang.Object,jakarta.persistence.LockModeType) is not applicable
+[ERROR]       (cannot infer type-variable(s) T
+[ERROR]         (actual and formal argument lists differ in length))
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(java.lang.Class<T>,java.lang.Object,jakarta.persistence.LockModeType,java.util.Map<java.lang.String,java.lang.Object>) is not applicable
+[ERROR]       (cannot infer type-variable(s) T
+[ERROR]         (actual and formal argument lists differ in length))
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(java.lang.Class<T>,java.lang.Object,jakarta.persistence.FindOption...) is not applicable
+[ERROR]       (inference variable T has incompatible equality constraints com.kflow.erp.organization.domain.Position,com.kflow.erp.organization.domain.Department,com.kflow.erp.organization.domain.Site)
+[ERROR]     method jakarta.persistence.EntityManager.<T>find(jakarta.persistence.EntityGraph<T>,java.lang.Object,jakarta.persistence.FindOption...) is not applicable
+[ERROR]       (cannot infer type-variable(s) T
+[ERROR]         (argument mismatch; java.lang.Class<com.kflow.erp.organization.domain.Site> cannot be converted to jakarta.persistence.EntityGraph<T>))
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+verify attempt 1, exit 1: test probe populated public before Flyway
+2026-10-24T21:55:12.434+09:00  WARN 26115 --- [k-flow-erp] [           main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/flyway/autoconfigure/FlywayAutoConfiguration$FlywayConfiguration.class]: Found non-empty schema(s) "public" but no schema history table. Use baseline() or set baselineOnMigrate to true to initialize the schema history table.
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 s -- in com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.092 s -- in com.kflow.erp.ModuleArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.527 s -- in com.kflow.erp.LayerArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.811 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.353 s -- in com.kflow.erp.organization.OrganizationConstraintTranslationIT
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.606 s -- in com.kflow.erp.organization.DepartmentPositionIT
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.248 s -- in com.kflow.erp.organization.OrganizationIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.581 s -- in com.kflow.erp.organization.OrganizationV3MigrationIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.535 s -- in com.kflow.erp.organization.OrganizationV2MigrationIT
+[ERROR] Tests run: 46, Failures: 0, Errors: 46, Skipped: 0, Time elapsed: 1.969 s <<< FAILURE! -- in com.kflow.erp.organization.OrganizationStateGuardIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.735 s -- in com.kflow.erp.FoundationIT
+[ERROR] Tests run: 96, Failures: 0, Errors: 46, Skipped: 0
+focused attempt 2, exit 1: injected test exception translated by Spring
+  org.springframework.dao.InvalidDataAccessApiUsageException: abort root
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[ERROR] Tests run: 46, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 9.497 s <<< FAILURE! -- in com.kflow.erp.organization.OrganizationStateGuardIT
+[ERROR] Tests run: 46, Failures: 3, Errors: 0, Skipped: 0
+
+=== REMOTE CI ACTUAL JOB LOG EXCERPTS (UTC timestamps retained) ===
+Implementation head: 3afc9ce6db4e99ab40bdf462439adcd5a50478a6
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40096472136
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40096472136/job/120879669377
+Fetch command: gh run view 40096472136 --repo kimini02/k-flow-erp --job 120879669377 --log
+Run conclusion: success
+Only test result/environment/observed SQL/evidence lines are selected below; not the complete CI log.
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:22.4026817Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.765 s -- in com.kflow.erp.LayerArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:23.6913452Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.369 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.3543614Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.656 s -- in com.kflow.erp.ModuleArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.3857032Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.kflow.erp.organization.OrganizationContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.5157665Z [INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s -- in com.kflow.erp.organization.OrganizationValuesTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:24.5531988Z [INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:26.4196981Z 13:03:26.387 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:40.9474098Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:44.6716968Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.39 s -- in com.kflow.erp.FoundationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:46.3749838Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:48.9896895Z [INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.321 s -- in com.kflow.erp.organization.DepartmentPositionIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:51.3946551Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:52.0112733Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:52.8086059Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:53.5206345Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:53.9169465Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:54.4411886Z [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.425 s -- in com.kflow.erp.organization.OrganizationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:56.1983525Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.790 s -- in com.kflow.erp.organization.OrganizationConstraintTranslationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:57.7351014Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.4593057Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.4804901Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.5540809Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.5542235Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.6285812Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.6286660Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.7266782Z O3-EVIDENCE PostgreSQL blocked: update organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.7705838Z O3-EVIDENCE PostgreSQL blocked: update organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.8164942Z O3-EVIDENCE PostgreSQL blocked: update organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:58.8554732Z O3-EVIDENCE root / guard / write same physical PID+XID: [{pid=72, xid=899}, {pid=72, xid=899}, {pid=72, xid=899}] guard=[{xid=899, pid=72}, {xid=899, pid=72}, {xid=899, pid=72}]
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.0605532Z O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.0633982Z O3-EVIDENCE PostgreSQL blocked: update organization_site set status waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1250868Z O3-SQL 73 956 LOG:  execute S_5: select status from organization_site where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1267766Z O3-SQL 73 956 LOG:  execute S_6: select status from organization_department where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1270818Z O3-SQL 73 956 LOG:  execute S_7: select status from organization_position where company_id = $1 and id = $2 FOR SHARE
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.1272958Z O3-EVIDENCE emitted SQL: FOR SHARE Site -> Department -> Position; concurrent guards coexisted; raw non-key UPDATE blocked. {pid=73, xid=956}
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.5826388Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.6353295Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:03:59.6852922Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.0023244Z O3-EVIDENCE commit ACK loss injected after actual DB commit: persisted v1, no automatic retry or second rollback; re-read is not a receipt
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.2666889Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.3489045Z O3-EVIDENCE real PG deadlock: SQLSTATE 40P01, one root aborted, no business-error translation
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.4059687Z O3-LIMITATION FK permits direct reference to INACTIVE; provider guard blocks normal consumer. Real HR paths DEFERRED.
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6248990Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6250250Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6672986Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.6988535Z O3-EVIDENCE PostgreSQL blocked: select status from organization_site waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.7673742Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.7746789Z O3-EVIDENCE PostgreSQL blocked: select status from organization_department waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.8599187Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:00.8601421Z O3-EVIDENCE PostgreSQL blocked: select status from organization_position waiters=1
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:01.1182743Z [INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.914 s -- in com.kflow.erp.organization.OrganizationStateGuardIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:02.8735163Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:02.9227772Z O3-EVIDENCE V1/V2 checksums and existing Company/Site/Department/Position values preserved; V3 only adds nullable evidence pair; Flyway/Hibernate validated
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:03.1651155Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.055 s -- in com.kflow.erp.organization.OrganizationV3MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:04.7945915Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.0792976Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.914 s -- in com.kflow.erp.organization.OrganizationV2MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.1822909Z [INFO] Tests run: 101, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-24T13:04:05.9321506Z [INFO] BUILD SUCCESS

@@ -87,7 +87,7 @@ class DepartmentPositionIT {
         assertThat(find(Kind.POSITION,company,d.id())).isEmpty();
         assertThat(jdbc.queryForMap("select * from organization_company")).isEqualTo(before);
         assertThat(jdbc.queryForObject("select count(*) from organization_site",Long.class)).isZero();
-        assertThat(flyway.info().current().getVersion().toString()).isEqualTo("2");
+        assertThat(flyway.info().current().getVersion().toString()).isEqualTo("3");
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(flyway.migrate().migrationsExecuted).isZero();
     }
@@ -106,7 +106,7 @@ class DepartmentPositionIT {
         assertThat(register(k,"OTHER","정정").id()).isNotEqualTo(first.id());
         assertThat(register(k,"001","정정").code()).isEqualTo("001");
         assertThat(register(k,"SALES-1","정정").code()).isNotEqualTo(register(k,"SALES_1","정정").code());
-        assertThatThrownBy(()->jdbc.update("insert into "+k.table()+" select ?,company_id,code,name,status,version,created_at,updated_at from "+k.table()+" where id=?",UUID.randomUUID(),first.id()))
+        assertThatThrownBy(()->jdbc.update("insert into "+k.table()+" (id,company_id,code,name,status,version,created_at,updated_at) select ?,company_id,code,name,status,version,created_at,updated_at from "+k.table()+" where id=?",UUID.randomUUID(),first.id()))
                 .isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
     }
     @ParameterizedTest @EnumSource(Kind.class)
