@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import static com.kflow.erp.hr.api.HrFailure.Code.HR_ASSIGNMENT_INTEGRITY_VIOLATION;
 
-/** Full timeline invariant, separate from a date lookup's local integrity check. No transfer command. */
+/** Full timeline invariant, separate from a date lookup's local integrity check. */
 public final class AssignmentTimeline {
     private AssignmentTimeline() {}
     public record Period(LocalDate from, LocalDate to) {}

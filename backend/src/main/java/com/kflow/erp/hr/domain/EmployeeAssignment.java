@@ -26,6 +26,23 @@ public class EmployeeAssignment {
         siteId=HrValues.reference(site); departmentId=HrValues.reference(department); positionId=HrValues.reference(position);
         effectiveFrom=HrValues.date(from); this.reason=HrValues.reason(reason); createdAt=now; updatedAt=now;
     }
+    public UUID companyId() { return companyId; }
+    public UUID employeeId() { return employeeId; }
+    public UUID siteId() { return siteId; }
+    public UUID departmentId() { return departmentId; }
+    public UUID positionId() { return positionId; }
+    public LocalDate effectiveFrom() { return effectiveFrom; }
+    public LocalDate effectiveTo() { return effectiveTo; }
+    public String reason() { return reason; }
+    public boolean sameDestination(UUID site, UUID department, UUID position) {
+        return siteId.equals(site) && departmentId.equals(department) && positionId.equals(position);
+    }
+    public void close(LocalDate date, Instant now) {
+        HrValues.date(date);
+        if (effectiveTo!=null || !effectiveFrom.isBefore(date))
+            throw new com.kflow.erp.hr.api.HrFailure(com.kflow.erp.hr.api.HrFailure.Code.HR_ASSIGNMENT_INTEGRITY_VIOLATION);
+        effectiveTo=date; updatedAt=java.util.Objects.requireNonNull(now);
+    }
     public UUID id() { return id; }
     public long version() { return version; }
 }
