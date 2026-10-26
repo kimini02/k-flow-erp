@@ -2412,3 +2412,18 @@ a36c93adea7a01804af94576414f4491f52a4dc4713c1348eb9fbf5cc1a874fa  backend/src/te
 16e0fcdbc143df6a1c3cb358e9be97aab7217519429306cf4a823e98e42b4472  backend/src/test/java/com/kflow/erp/hr/HrAssignmentContractTest.java
 dfe748ffd422d9d5b251b94fa388da3ee346d1580fee01721c46658117e04438  backend/src/test/java/com/kflow/erp/hr/HrContractTest.java
 6b29e15fbcaa44fc5e2ca21952b7386772c5877cb47e6ebb115f7cf732a1df66  backend/src/test/java/com/kflow/erp/hr/HrMigrationIT.java
+
+Remote code-commit evidence (literal selected output lines, not full remote log)
+Commit: 78a7df68b4e96ae92a4f222a5265ed12da862141
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40422884249
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40422884249/job/121921367258
+Result: SUCCESS; subsequent documentation-only HEAD is verified separately in PR/final report.
+verify	Compile, architecture checks and PostgreSQL integration tests	﻿2026-10-26T23:54:28.2004702Z ##[group]Run ./mvnw -B -ntp verify
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:54:42.3898825Z [INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:54:44.4136501Z 23:54:44.404 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:54:57.2327319Z 2026-10-26T23:54:57.138Z  INFO 2447 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:32769/test?loggerLevel=OFF (PostgreSQL 16.15)
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:54:57.6350258Z 2026-10-26T23:54:57.581Z  INFO 2447 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:55:08.0903849Z H34-EVIDENCE Hibernate=7.4.5.Final DB/DTO Employee 0->1 exactly one version SQL; old assignment 0->1, new 0; updatedAt unchanged
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:55:36.1583076Z [INFO] Tests run: 214, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:55:36.2454589Z [INFO] BUILD SUCCESS
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T23:55:36.2465702Z [INFO] Finished at: 2026-10-26T23:55:36Z
