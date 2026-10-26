@@ -1928,3 +1928,39 @@ dfe748ffd422d9d5b251b94fa388da3ee346d1580fee01721c46658117e04438  backend/src/te
 0d99bc88e78f3483cb888c816e304c729fb5de6e097b1c8c5312bf3c76655d9d  backend/src/test/java/com/kflow/erp/FoundationIT.java
 68614f5be48a66ffbf0edbb79ec36c432603a53ef59154ae78b960ea38f0abff  backend/src/test/java/com/kflow/erp/organization/DepartmentPositionIT.java
 5d008603967a991e19a6f2af60b390ddddd4df50750f1e99b076f77a0c25927a  backend/src/test/java/com/kflow/erp/organization/OrganizationV3MigrationIT.java
+
+
+Actual remote CODE COMMIT run excerpts (not a new local execution)
+Commit: a9180f117e1ab09fd10ab4d5fd5dd06e023cc3ad
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40332808129
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40332808129/job/121606349619
+Command: ./mvnw -B -ntp verify
+Extraction: unchanged matching log lines from gh run view 40332808129 --log
+
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:17.1877485Z [INFO] Tests run: 49, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:22.4598366Z 13:42:22.423 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:33.8793107Z 2026-10-26T13:42:33.867Z  INFO 2554 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:32769/test?loggerLevel=OFF (PostgreSQL 16.15)
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:40.3041737Z H12-EVIDENCE V1/V2/V3 rows and checksums preserved; V4+V5 applied; btree_gist and NOT DEFERRABLE EXCLUDE present; Hibernate validate passed
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:44.3615650Z H12-EVIDENCE ACK wrapper after actual COMMIT: pair retained, no retry/second rollback; not a real network-loss test
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:44.5003315Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:44.5618137Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:44.6304956Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.2254798Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.2787182Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.3330890Z H12-EVIDENCE actual PostgreSQL wait: for share
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.6480983Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.7004837Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.7525046Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:45.9316821Z H12-EVIDENCE stale managed Employee v0 retained; single HR SQL scalar projection returned Employee v1 + new Assignment target
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.0428361Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.0940637Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.1445094Z H12-EVIDENCE actual PostgreSQL wait: for update
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.2314790Z H12-EVIDENCE actual PostgreSQL wait: insert into hr_employee_assignment
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.2315906Z H12-EVIDENCE EXCLUDE waiter on committed Employee: blocker COMMIT -> 23P01
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.2749261Z H12-EVIDENCE actual PostgreSQL wait: insert into hr_employee_assignment
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.2764973Z H12-EVIDENCE EXCLUDE waiter on committed Employee: blocker ROLLBACK -> waiting INSERT committed
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.5695076Z H12-EVIDENCE actual EXCLUDE deadlock SQLSTATE 40P01 remains technical; victim transaction rolled back
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.8930215Z H12-EVIDENCE same physical HR/Guard/write transaction [{xid=1270, pid=71}, {xid=1270, pid=71}, {xid=1270, pid=71}, {xid=1270, pid=71}, {xid=1270, pid=71}, {xid=1270, pid=71}] rollback=false; managed probe preserved
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:42:46.9631825Z H12-EVIDENCE same physical HR/Guard/write transaction [{xid=1281, pid=71}, {xid=1281, pid=71}, {xid=1281, pid=71}, {xid=1281, pid=71}, {xid=1281, pid=71}, {xid=1281, pid=71}] rollback=true; managed probe preserved
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:43:05.1736350Z [INFO] Tests run: 154, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-26T13:43:05.5949111Z [INFO] BUILD SUCCESS
