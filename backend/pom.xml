@@ -53,7 +53,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
+      <!-- Structured SQLSTATE/constraint metadata is used by the HR PostgreSQL adapter. -->
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
