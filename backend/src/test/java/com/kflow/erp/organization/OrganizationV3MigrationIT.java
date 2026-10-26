@@ -30,7 +30,7 @@ class OrganizationV3MigrationIT {
         }
         var oldCompany=jdbc.queryForMap("select * from organization_company");
         var checksums=jdbc.queryForList("select version,checksum from flyway_schema_history order by installed_rank");
-        var flyway=Flyway.configure().dataSource(ds).load();assertThat(flyway.migrate().migrationsExecuted).isEqualTo(1);
+        var flyway=Flyway.configure().dataSource(ds).target("3").load();assertThat(flyway.migrate().migrationsExecuted).isEqualTo(1);
         assertThat(flyway.info().current().getVersion().toString()).isEqualTo("3");
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();assertThat(flyway.migrate().migrationsExecuted).isZero();
         assertThat(jdbc.queryForMap("select * from organization_company")).isEqualTo(oldCompany);
