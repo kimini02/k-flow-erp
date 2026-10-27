@@ -1,7 +1,7 @@
 # IAM-01 — 직원 연결 계정 및 AN-03 AM-01 User writer Test Evidence
 
 - 작성: 2026-10-27 (Asia/Seoul).
-- 상태: **LOCAL VERIFIED / 원격 CI 확인 전**. PM3 코드 리뷰·병합 판정 대기. main에 병합하지 않음.
+- 상태: **LOCAL + REMOTE VERIFIED (아래 코드 커밋 CI)**. PM3 코드 리뷰·병합 판정 대기. main에 병합하지 않음.
 - 기준 main: `2fa852fba1c01fd967b302b8ac7537cac51005bb`. 착수 및 구현 중 GitHub에서 재조회. 선행 [main CI](https://github.com/kimini02/k-flow-erp/actions/runs/40431363057) SUCCESS.
 - 브랜치: `codex/iam-01-employee-account`.
 - 범위: IAM 내부 계정 생성·관리 상태·조회, HR 소유 직원 연결 Guard, AM-01 User generation writer. 로그인·세션·권한 부여 또는 철회 완료가 아니다.
@@ -135,7 +135,11 @@ H34-T33의 **실제 계정 생성 대 퇴사 경쟁**은 이번 T09~12로 검증
 
 ## 8. 제출·한계
 
-- 원격 CI는 아직 실행 전이다. 이 로컬 PASS를 원격 PASS로 대체하지 않는다. Commit/Push/Draft PR 후 실제 원격 근거를 동기화한다.
+- 코드 커밋: `c6b5b624c61239d4366605e765c7d63e2b5a704a`. [작업 브랜치](https://github.com/kimini02/k-flow-erp/tree/codex/iam-01-employee-account), [Draft PR #7](https://github.com/kimini02/k-flow-erp/pull/7), base main, 30개 제출 파일.
+- 해당 코드 HEAD의 독립 원격 실행: [Backend Run](https://github.com/kimini02/k-flow-erp/actions/runs/40440774006) / [verify Job](https://github.com/kimini02/k-flow-erp/actions/runs/40440774006/job/121980321996), event `pull_request`, **SUCCESS**.
+- 실제 `./mvnw -B -ntp verify`: Surefire **58**, Failsafe **338**, 전체 **396 PASS**, failures/errors/skipped **0**, **BUILD SUCCESS** (2026-10-27 02:52:13 UTC).
+- 실제 원격 로그: PostgreSQL **16.15**, Testcontainers **2.0.5**, Hibernate **7.4.5.Final**. 핵심 원문은 iam-01-run.txt 끝에 명시적 발췌로 보존한다.
+- 이 문서의 원격 근거는 위 코드 SHA의 실행이다. Evidence 동기화 커밋 뒤 최종 HEAD의 Run/Job은 PR 설명과 최종 제출 보고에서 별도로 확인한다. 서로 다른 실행 결과를 동일 실행으로 표시하지 않는다.
 
 - main 병합하지 않음. PM3가 코드·V7·동시성·Evidence를 독립 리뷰하여 GO/NO-GO 결정한다.
 - I1-T31~33 DEFERRED, T34 DOCUMENTED LIMITATION 유지. 실제 네트워크 ACK 유실·commit-window 장애 전수 시험이 아니다. test-only wrapper와 DB 강제 종료 시험의 보장 범위를 운영 전체로 확대하지 않는다.

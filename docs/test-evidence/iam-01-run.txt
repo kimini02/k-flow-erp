@@ -4287,3 +4287,18 @@ cb3aee58f7a588a259a3be573484c6fba6795dda2294b35077cbb3e7383ec662  backend/src/te
 500dfddf344755f6a757126543ca4c592f5e6a53cc94da50f8a0e49d6372abc0  backend/src/test/java/com/kflow/erp/organization/DepartmentPositionIT.java
 
 V1-V6 source bytes match base main git objects.
+
+REMOTE CODE-COMMIT CI (separate from local run)
+Head: c6b5b624c61239d4366605e765c7d63e2b5a704a
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40440774006
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40440774006/job/121980321996
+Event: pull_request
+Conclusion: success
+[VERBATIM EXCERPTS FROM GH RUN LOG; intervening output omitted]
+verify	Compile, architecture checks and PostgreSQL integration tests	﻿2026-10-27T02:50:50.3537026Z ##[group]Run ./mvnw -B -ntp verify
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:51:05.8243251Z [INFO] Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:51:07.8081900Z 02:51:07.794 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:51:20.9276293Z 2026-10-27T02:51:20.924Z  INFO 2791 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:51:21.4314195Z 	Database version: 16.15
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:52:13.3283470Z [INFO] Tests run: 338, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T02:52:13.5305714Z [INFO] BUILD SUCCESS
