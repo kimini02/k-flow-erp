@@ -3658,3 +3658,15 @@ b04ccd440542efa3ea27b35d83d8b8f2bcede88c0c711600b0249407790fed35  backend/src/te
 731af568cf34efa8ad955fc73527dbec781d0ed5a0ab5bcbef21e3083ce05125  backend/src/test/java/org/kflow/testprobe/ManagedProbe.java
 34830e686f03d0ded9508195b93e99939e1dbe4cd65821798af62f2ea3d69fae  backend/src/test/java/org/kflow/testprobe/TestAssignmentConsumer.java
 949d3039af6efe6fc939006a5f9b888b35dee8379c4658e27815b353877a9fd9  backend/src/test/resources/org03-probe.sql
+
+Remote CODE commit CI — exact output excerpts (not the full remote log)
+Commit: 7a20ede9810f693031397b3b63a14f322b759bbe
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40428769167
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40428769167/job/121941052889
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:49:19.5672539Z [INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:50:22.8840727Z [INFO] Tests run: 266, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:50:23.3840131Z [INFO] BUILD SUCCESS
+verify	Compile, architecture checks and PostgreSQL integration tests	﻿2026-10-27T00:49:05.2381569Z ##[group]Run ./mvnw -B -ntp verify
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:49:21.1108848Z 00:49:21.065 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:49:35.5336430Z 2026-10-27T00:49:35.472Z  INFO 2320 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:32769/test?loggerLevel=OFF (PostgreSQL 16.15)
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-27T00:49:35.8377384Z 2026-10-27T00:49:35.801Z  INFO 2320 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
