@@ -7,6 +7,7 @@ import java.util.UUID;
 
 /** HR-internal persistence operations. Not a Published Port or arbitrary assignment CRUD. */
 public interface HrAssignmentStore {
+    void requireWritableTransaction();
     void boundRootWaits(int timeoutSeconds);
     Employee lockEmployee(UUID company, UUID employee);
     List<EmployeeAssignment> freshTimeline(UUID company, UUID employee);
