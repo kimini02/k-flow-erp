@@ -267,7 +267,7 @@ class EmployeeCoreIT {
         for(String date:List.of("'infinity'::date","'-infinity'::date","'2026-10-26'::date","'2026-10-25'::date"))
             sqlFailure("23514","ck_hr_assignment_period",()->jdbc.update("update hr_employee_assignment set effective_to="+date+" where id=?",e.assignmentId()));
         sqlFailure("23502",null,()->jdbc.update("update hr_employee_assignment set effective_from=null where id=?",e.assignmentId()));
-        sqlFailure("23514","ck_hr_employee_employment_dates",()->jdbc.update("update hr_employee set employment_status='TERMINATED' where id=?",e.employee().id()));
+        sqlFailure("23514","ck_hr_employee_employment_dates",()->jdbc.update("update hr_employee set employment_status='TERMINATED',termination_reason='synthetic test termination' where id=?",e.employee().id()));
         sqlFailure("23514","ck_hr_employee_employment_dates",()->jdbc.update("update hr_employee set termination_effective_on=? where id=?",today.plusDays(1),e.employee().id()));
     }
     @Test void t13_t14_halfOpenDateBoundariesAndLocalVersusFullTimelineChecks() {
@@ -276,7 +276,7 @@ class EmployeeCoreIT {
         assertThat(queries.findAssignmentAt(company,e.employee().id(),today.plusDays(10)).orElseThrow().assignmentId()).isEqualTo(next);
         assertThat(queries.currentDetails(company,e.employee().id()).assignment().orElseThrow().effectiveTo()).isEqualTo(today.plusDays(10));
         assertThat(queries.findAssignmentAt(company,e.employee().id(),today.minusDays(1))).isEmpty();
-        close(next,today.plusDays(20));jdbc.update("update hr_employee set employment_status='TERMINATED',termination_effective_on=? where id=?",today.plusDays(20),e.employee().id());
+        close(next,today.plusDays(20));jdbc.update("update hr_employee set employment_status='TERMINATED',termination_reason='synthetic test termination',termination_effective_on=? where id=?",today.plusDays(20),e.employee().id());
         assertThat(queries.findAssignmentAt(company,e.employee().id(),today.plusDays(20))).isEmpty();
         // Raw SQL gaps are a documented limit; a valid date lookup does not attest the whole timeline.
         jdbc.update("update hr_employee_assignment set effective_from=? where id=?",today.plusDays(11),next);

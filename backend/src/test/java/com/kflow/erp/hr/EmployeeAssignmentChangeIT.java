@@ -225,7 +225,7 @@ class EmployeeAssignmentChangeIT {
         var e=create("A");HrFailure.Code code;
         if(kind.equals("ON_LEAVE")) {jdbc.update("update hr_employee set employment_status='ON_LEAVE' where id=?",e.employee().id());code=EMPLOYMENT_STATE_UNSUPPORTED;}
         else if(kind.equals("TERMINATED")) {
-            close(e.assignmentId(),today);jdbc.update("update hr_employee set employment_status='TERMINATED',termination_effective_on=? where id=?",today,e.employee().id());code=EMPLOYEE_TERMINATED;
+            close(e.assignmentId(),today);jdbc.update("update hr_employee set employment_status='TERMINATED',termination_reason='synthetic test termination',termination_effective_on=? where id=?",today,e.employee().id());code=EMPLOYEE_TERMINATED;
         } else {close(e.assignmentId(),today.plusDays(1));fixtureAssignment(e.employee().id(),today.plusDays(1),null);code=HR_TIMELINE_CHANGE_UNSUPPORTED;}
         var before=employee(e.employee().id());var rows=history(e.employee().id());
         failure(code,()->service.changeAssignment(input(e)));unchanged(e,before,rows);

@@ -15,6 +15,8 @@ public class Employee {
     @Column(nullable=false,length=16) private String employmentStatus;
     @Column(nullable=false,updatable=false) private LocalDate joinedOn;
     private LocalDate terminationEffectiveOn;
+    @Column(length=500) private String terminationReason;
+    @Column(nullable=false) private long authRevocationGeneration;
     @Version @Column(nullable=false) private Long version;
     @Column(nullable=false,updatable=false) private Instant createdAt;
     @Column(nullable=false) private Instant updatedAt;
@@ -23,6 +25,21 @@ public class Employee {
         id=UUID.randomUUID(); companyId=HrValues.reference(company);
         this.employeeNo=HrValues.employeeNo(employeeNo); displayName=HrValues.displayName(name);
         employmentStatus="EMPLOYED"; joinedOn=HrValues.date(joined); createdAt=now; updatedAt=now;
+    }
+    /** Internal HR transition. The Application owns locking, expectedVersion and complete timeline checks. */
+    public void terminate(LocalDate end, String reason, Instant now) {
+        if (!"EMPLOYED".equals(employmentStatus))
+            throw new com.kflow.erp.hr.api.HrFailure("TERMINATED".equals(employmentStatus)
+                    ? com.kflow.erp.hr.api.HrFailure.Code.ALREADY_TERMINATED
+                    : com.kflow.erp.hr.api.HrFailure.Code.EMPLOYMENT_STATE_UNSUPPORTED);
+        HrValues.date(end);
+        if (!joinedOn.isBefore(end)) throw new com.kflow.erp.hr.api.HrFailure(
+                com.kflow.erp.hr.api.HrFailure.Code.SAME_DAY_TERMINATION_UNSUPPORTED);
+        String normalized=HrValues.terminationReason(reason);
+        long nextGeneration=Math.incrementExact(authRevocationGeneration); // Never wrap a revocation generation.
+        java.util.Objects.requireNonNull(now);
+        employmentStatus="TERMINATED"; terminationEffectiveOn=end; terminationReason=normalized;
+        authRevocationGeneration=nextGeneration; updatedAt=now;
     }
     public UUID id() { return id; }
     public EmployeeIdentity identity() {

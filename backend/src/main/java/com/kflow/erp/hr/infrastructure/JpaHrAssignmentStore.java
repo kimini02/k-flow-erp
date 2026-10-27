@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import java.sql.Connection;
 import java.util.*;
 import static com.kflow.erp.hr.api.HrFailure.Code.EMPLOYEE_NOT_FOUND;
 
@@ -14,9 +17,30 @@ import static com.kflow.erp.hr.api.HrFailure.Code.EMPLOYEE_NOT_FOUND;
 public class JpaHrAssignmentStore implements HrAssignmentStore {
     private final EntityManager em;
     private final int lockTimeoutMs;
-    public JpaHrAssignmentStore(EntityManager em, @Value("${kflow.hr.assignment-lock-timeout-ms:5000}") int lockTimeoutMs) {
+    private final EntityManagerFactory factory;
+    public JpaHrAssignmentStore(EntityManager em, EntityManagerFactory factory, @Value("${kflow.hr.assignment-lock-timeout-ms:5000}") int lockTimeoutMs) {
         if (lockTimeoutMs < 1) throw new IllegalArgumentException("HR lock timeout must be positive");
-        this.em=em; this.lockTimeoutMs=lockTimeoutMs;
+        this.em=em; this.factory=factory; this.lockTimeoutMs=lockTimeoutMs;
+    }
+    /** Guard-free termination must validate its own actual JPA/DB transaction. */
+    public void requireWritableTransaction() {
+        Integer isolation=TransactionSynchronizationManager.getCurrentTransactionIsolationLevel();
+        Object resource=TransactionSynchronizationManager.getResource(factory);
+        if (!TransactionSynchronizationManager.isActualTransactionActive()
+                || TransactionSynchronizationManager.isCurrentTransactionReadOnly()
+                || (isolation!=null && isolation!=Connection.TRANSACTION_READ_COMMITTED)
+                || !(resource instanceof EntityManagerHolder holder)
+                || !holder.getEntityManager().isJoinedToTransaction() || !em.isJoinedToTransaction())
+            throw new HrFailure(HrFailure.Code.TRANSACTION_BOUNDARY_VIOLATION);
+        em.unwrap(Session.class).doWork(c -> {
+            if (c.getAutoCommit() || c.isReadOnly() || c.getTransactionIsolation()!=Connection.TRANSACTION_READ_COMMITTED)
+                throw new HrFailure(HrFailure.Code.TRANSACTION_BOUNDARY_VIOLATION);
+            try (var stmt=c.createStatement(); var rows=stmt.executeQuery(
+                    "select current_setting('transaction_isolation'),current_setting('transaction_read_only')")) {
+                if (!rows.next() || !"read committed".equals(rows.getString(1)) || !"off".equals(rows.getString(2)))
+                    throw new HrFailure(HrFailure.Code.TRANSACTION_BOUNDARY_VIOLATION);
+            }
+        });
     }
     public void boundRootWaits(int timeoutSeconds) {
         // Transaction-local limits also cover Hibernate/JDBC statements using this same physical connection.

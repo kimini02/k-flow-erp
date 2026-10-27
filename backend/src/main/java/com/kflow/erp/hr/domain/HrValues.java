@@ -16,6 +16,7 @@ public final class HrValues {
     }
     public static String displayName(String value) { return text(value, 100, INVALID_DISPLAY_NAME); }
     public static String reason(String value) { return text(value, 500, INVALID_ASSIGNMENT_REASON); }
+    public static String terminationReason(String value) { return text(value, 500, INVALID_TERMINATION_REASON); }
     private static String text(String value, int max, HrFailure.Code code) {
         String v = trim(value);
         if (v == null || v.isEmpty() || v.codePointCount(0,v.length()) > max
