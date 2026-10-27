@@ -1,0 +1,856 @@
+IAM-01 development evidence — actual Maven output/excerpts
+Personal home and local username redacted. No invented historical failures.
+Run 2 is explicitly excerpted because repeated ApplicationContext failures produced 61,816 lines;
+line ranges and the SHA-256 of the original local raw file are recorded. Other failures are retained in full.
+
+
+===== DEVELOPMENT RUN 1 — iam01-development-verify-1.log =====
+Original raw SHA-256: 9619773e6ad4ce1b8898ddbfaf8152b74e059914d5c1c63253afdb6951e3ade0
+Command (backend/): JAVA_HOME=<JDK21> ./mvnw -B -ntp verify
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.kflow:k-flow-erp >------------------------
+[INFO] Building K-Flow ERP Backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ k-flow-erp ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ k-flow-erp ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ k-flow-erp ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ k-flow-erp ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 25 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] <LOCAL_HOME>/Projects/k-flow-erp/backend/src/test/java/com/kflow/erp/iam/IamUserIT.java:[41,46] reference to Timeout is ambiguous
+  both class org.junit.jupiter.api.Timeout in org.junit.jupiter.api and class jakarta.persistence.Timeout in jakarta.persistence match
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.611 s
+[INFO] Finished at: 2026-10-27T11:33:44+09:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project k-flow-erp: Compilation failure
+[ERROR] <LOCAL_HOME>/Projects/k-flow-erp/backend/src/test/java/com/kflow/erp/iam/IamUserIT.java:[41,46] reference to Timeout is ambiguous
+[ERROR]   both class org.junit.jupiter.api.Timeout in org.junit.jupiter.api and class jakarta.persistence.Timeout in jakarta.persistence match
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+===== DEVELOPMENT RUN 2 — iam01-development-verify-2.log =====
+Original raw SHA-256: c01166985e158288749a937f79b5425848f990053b6202ae6b7208d53e90b57b
+Command (backend/): JAVA_HOME=<JDK21> ./mvnw -B -ntp verify
+
+[VERBATIM EXCERPT original lines 1-83; intervening lines omitted]
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.kflow:k-flow-erp >------------------------
+[INFO] Building K-Flow ERP Backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ k-flow-erp ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ k-flow-erp ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ k-flow-erp ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ k-flow-erp ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 25 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Running com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.119 s -- in com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Running com.kflow.erp.iam.IamContractTest
+11:34:08.225 [main] INFO com.tngtech.archunit.core.PluginLoader -- Detected Java version 21.0.2
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.231 s -- in com.kflow.erp.iam.IamContractTest
+[INFO] Running com.kflow.erp.ModuleArchitectureTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.835 s -- in com.kflow.erp.ModuleArchitectureTest
+[INFO] Running com.kflow.erp.hr.HrAssignmentContractTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.kflow.erp.hr.HrAssignmentContractTest
+[INFO] Running com.kflow.erp.hr.HrTerminationContractTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.kflow.erp.hr.HrTerminationContractTest
+[INFO] Running com.kflow.erp.hr.HrContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in com.kflow.erp.hr.HrContractTest
+[INFO] Running com.kflow.erp.LayerArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.733 s -- in com.kflow.erp.LayerArchitectureTest
+[INFO] Running com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+11:34:11.338 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+11:34:11.536 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:34:11.536 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:34:11.537 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+11:34:11.583 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:34:11.583 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:34:11.583 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+11:34:11.839 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:34:11.839 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:34:11.840 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.848 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ k-flow-erp ---
+[INFO] Building jar: <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ k-flow-erp ---
+[INFO] Replacing main artifact <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar.original
+[INFO] 
+[INFO] --- failsafe:3.5.6:integration-test (default) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.organization.OrganizationConstraintTranslationIT
+
+[VERBATIM EXCERPT original lines 172-191; intervening lines omitted]
+2026-10-27T11:34:56.276+09:00  INFO 75009 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:61892/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-27T11:34:56.861+09:00  INFO 75009 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-27T11:34:56.915+09:00  INFO 75009 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-27T11:34:57.917+09:00  WARN 75009 --- [k-flow-erp] [           main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'moments' defined in class path resource [org/springframework/modulith/moments/autoconfigure/MomentsAutoConfiguration.class]: Failed to instantiate [org.springframework.modulith.moments.support.Moments]: Factory method 'moments' threw exception with message: No qualifying bean of type 'java.time.Clock' available: expected single matching bean but found 2: hrClock,iamClock
+2026-10-27T11:34:57.921+09:00  INFO 75009 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-27T11:34:57.923+09:00  INFO 75009 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-27T11:34:57.925+09:00  INFO 75009 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+
+
+[VERBATIM EXCERPT original lines 1341-1364; intervening lines omitted]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.modulith.moments.support.Moments]: Factory method 'moments' threw exception with message: No qualifying bean of type 'java.time.Clock' available: expected single matching bean but found 2: hrClock,iamClock
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:183) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:72) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:152) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-7.0.9.jar:7.0.9]
+	... 163 common frames omitted
+Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'java.time.Clock' available: expected single matching bean but found 2: hrClock,iamClock
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveNotUnique(DependencyDescriptor.java:192) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1746) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory$DependencyObjectProvider.getIfAvailable(DefaultListableBeanFactory.java:2575) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.beans.factory.ObjectProvider.getIfAvailable(ObjectProvider.java:144) ~[spring-beans-7.0.9.jar:7.0.9]
+	at org.springframework.modulith.moments.autoconfigure.MomentsAutoConfiguration.moments(MomentsAutoConfiguration.java:47) ~[spring-modulith-moments-2.1.1.jar:2.1.1]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:155) ~[spring-beans-7.0.9.jar:7.0.9]
+	... 166 common frames omitted
+
+2026-10-27T11:34:57.995+09:00  WARN 75009 --- [k-flow-erp] [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [com.kflow.erp.organization.DepartmentPositionIT@2af87d7a]
+
+java.lang.IllegalStateException: ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@295f5dd5 testClass = com.kflow.erp.organization.DepartmentPositionIT, locations = [], classes = [com.kflow.erp.KFlowErpApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.web.server.context.SpringBootTestRandomPortContextCustomizer@56ba8e8c, org.springframework.boot.test.context.PropertyMappingContextCustomizer@0, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@76ed7573, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4dffff9, org.springframework.boot.test.autoconfigure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportContextCustomizer@69b1e8f8, org.springframework.test.context.bean.override.BeanOverrideContextCustomizer@a019bb92, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0, org.springframework.boot.testcontainers.service.connection.ServiceConnectionContextCustomizer@84e86510, org.springframework.boot.test.context.SpringBootTestAnnotation@50506eb8], resourceBasePath = "src/main/webapp", contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:157) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:128) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:200) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:139) ~[spring-test-7.0.9.jar:7.0.9]
+
+[VERBATIM EXCERPT original lines 61796-61816; intervening lines omitted]
+[ERROR] Tests run: 313, Failures: 0, Errors: 309, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.6:verify (default) @ k-flow-erp ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:42 min
+[INFO] Finished at: 2026-10-27T11:35:45+09:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:3.5.6:verify (default) on project k-flow-erp: 
+[ERROR] 
+[ERROR] See <LOCAL_HOME>/Projects/k-flow-erp/backend/target/failsafe-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+===== DEVELOPMENT RUN 3 — iam01-development-verify-3.log =====
+Original raw SHA-256: 078ead7f449d79ab80ddff921ad910e390da0a4839c2e06c70f32ea958aed526
+Command (backend/): JAVA_HOME=<JDK21> ./mvnw -B -ntp -Dit.test='Iam*IT' verify
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.kflow:k-flow-erp >------------------------
+[INFO] Building K-Flow ERP Backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ k-flow-erp ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ k-flow-erp ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 163 source files with javac [debug parameters release 21] to target/classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] Extracting Javadoc into <LOCAL_HOME>/Projects/k-flow-erp/backend/./target/generated-spring-modulith/javadoc.json.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ k-flow-erp ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ k-flow-erp ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 25 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.organization.OrganizationContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.090 s -- in com.kflow.erp.organization.OrganizationContractTest
+[INFO] Running com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.108 s -- in com.kflow.erp.organization.OrganizationValuesTest
+[INFO] Running com.kflow.erp.iam.IamContractTest
+11:39:19.649 [main] INFO com.tngtech.archunit.core.PluginLoader -- Detected Java version 21.0.2
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.142 s -- in com.kflow.erp.iam.IamContractTest
+[INFO] Running com.kflow.erp.ModuleArchitectureTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.688 s -- in com.kflow.erp.ModuleArchitectureTest
+[INFO] Running com.kflow.erp.hr.HrAssignmentContractTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in com.kflow.erp.hr.HrAssignmentContractTest
+[INFO] Running com.kflow.erp.hr.HrTerminationContractTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.kflow.erp.hr.HrTerminationContractTest
+[INFO] Running com.kflow.erp.hr.HrContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.kflow.erp.hr.HrContractTest
+[INFO] Running com.kflow.erp.LayerArchitectureTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.713 s -- in com.kflow.erp.LayerArchitectureTest
+[INFO] Running com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+11:39:22.415 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+11:39:22.565 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:39:22.566 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:39:22.567 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+11:39:22.602 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:39:22.602 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:39:22.603 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+11:39:22.752 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+11:39:22.752 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+11:39:22.752 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.588 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ k-flow-erp ---
+[INFO] Building jar: <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ k-flow-erp ---
+[INFO] Replacing main artifact <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to <LOCAL_HOME>/Projects/k-flow-erp/backend/target/k-flow-erp-0.0.1-SNAPSHOT.jar.original
+[INFO] 
+[INFO] --- failsafe:3.5.6:integration-test (default) @ k-flow-erp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.kflow.erp.iam.IamMigrationIT
+11:39:23.953 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+11:39:23.955 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+11:39:23.978 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+11:39:24.131 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+11:39:24.438 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+11:39:24.438 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+11:39:24.468 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 27.4.0
+  API Version: 1.47
+  Operating System: Docker Desktop
+  Total Memory: 3919 MB
+  Labels: 
+    com.docker.desktop.address=unix://<LOCAL_HOME>/Library/Containers/com.docker.docker/Data/docker-cli.sock
+11:39:24.616 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Creating container for image: testcontainers/ryuk:0.14.0
+11:39:54.654 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.14.0, configFile: <LOCAL_HOME>/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Timed out waiting for Process[pid=75770, exitValue="not exited"] to finish, timeout: 30 seconds, executed command [docker-credential-desktop, get]
+11:39:54.882 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 is starting: b73967494733ff9a333eaca4c677a4e45ee028956206b6de79bf087b812de19d
+11:39:55.449 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 started in PT30.833012S
+11:39:55.460 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+11:39:55.460 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+11:39:55.461 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+11:39:55.461 [main] INFO tc.postgres:16 -- Creating container for image: postgres:16
+11:39:55.518 [main] INFO tc.postgres:16 -- Container postgres:16 is starting: 4740416bce26517a50feaf9fc418b3d55427c84109756b3a95ae626a03d8b4cb
+11:39:56.773 [main] INFO tc.postgres:16 -- Container postgres:16 started in PT1.311505S
+11:39:56.783 [main] INFO tc.postgres:16 -- Container is started (JDBC URL: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF)
+11:39:57.151 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+11:39:57.201 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "public"."flyway_schema_history" does not exist yet
+11:39:57.203 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 7 migrations (execution time 00:00.014s)
+11:39:57.216 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "public"."flyway_schema_history" ...
+11:39:57.255 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": << Empty Schema >>
+11:39:57.264 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "1 - organization company site"
+11:39:57.290 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "2 - organization department position"
+11:39:57.305 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "3 - organization state change"
+11:39:57.322 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "4 - organization company scoped references"
+11:39:57.336 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "5 - hr employee and initial assignment"
+11:39:57.385 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "6 - hr termination and auth revocation generation"
+11:39:57.397 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.064s)
+11:39:57.633 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+11:39:57.649 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 7 migrations (execution time 00:00.007s)
+11:39:57.662 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 6
+11:39:57.665 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "7 - iam employee linked user"
+11:39:57.677 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 1 migration to schema "public", now at version v7 (execution time 00:00.006s)
+11:39:57.713 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+11:39:57.725 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 7 migrations (execution time 00:00.004s)
+11:39:57.743 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+11:39:57.758 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 7 migrations (execution time 00:00.005s)
+11:39:57.771 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 7
+11:39:57.771 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Schema "public" is up to date. No migration necessary.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-27T11:39:58.089+09:00  INFO 75764 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Starting ForkedBooter v3.5.6 using Java 21.0.2 with PID 75764 (started by <LOCAL_USER> in <LOCAL_HOME>/Projects/k-flow-erp/backend)
+2026-10-27T11:39:58.089+09:00  INFO 75764 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : No active profile set, falling back to 1 default profile: "default"
+2026-10-27T11:39:58.442+09:00  INFO 75764 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-27T11:39:58.481+09:00  INFO 75764 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 28 ms. Found 0 JPA repository interfaces.
+2026-10-27T11:39:58.663+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-27T11:39:58.683+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1041ebba
+2026-10-27T11:39:58.684+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-27T11:39:58.690+09:00  INFO 75764 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-27T11:39:58.705+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.004s)
+2026-10-27T11:39:58.719+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 7
+2026-10-27T11:39:58.720+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-27T11:39:58.791+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-27T11:39:58.838+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-27T11:39:59.066+09:00  INFO 75764 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-27T11:39:59.122+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:62756/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-27T11:39:59.719+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-27T11:39:59.760+09:00  INFO 75764 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-27T11:40:00.147+09:00  INFO 75764 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-27T11:40:00.150+09:00  INFO 75764 --- [k-flow-erp] [           main] o.a.maven.surefire.booter.ForkedBooter   : Started ForkedBooter in 2.248 seconds (process running for 36.654)
+2026-10-27T11:40:00.415+09:00  INFO 75764 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:62756/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-27T11:40:00.465+09:00  INFO 75764 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-27T11:40:00.468+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-27T11:40:00.478+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+I1 T30 V6->V7 existing ORG/HR all rows/constraints/V1-V6 checksums byte values preserved; no User seed; generation default0; Flyway/Hibernate validate passed
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.84 s -- in com.kflow.erp.iam.IamMigrationIT
+[INFO] Running com.kflow.erp.iam.IamUserIT
+2026-10-27T11:40:00.804+09:00  INFO 75764 --- [k-flow-erp] [           main] tc.postgres:16                           : Creating container for image: postgres:16
+2026-10-27T11:40:00.925+09:00  INFO 75764 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 is starting: 2c8ebd4b1814bf825302e84db3ad3a553e3070e9dc9e9ca30d73ab1e5597fa37
+2026-10-27T11:40:02.273+09:00  INFO 75764 --- [k-flow-erp] [           main] tc.postgres:16                           : Container postgres:16 started in PT1.469517S
+2026-10-27T11:40:02.278+09:00  INFO 75764 --- [k-flow-erp] [           main] tc.postgres:16                           : Container is started (JDBC URL: jdbc:postgresql://localhost:62808/test?loggerLevel=OFF)
+2026-10-27T11:40:02.332+09:00  INFO 75764 --- [k-flow-erp] [           main] org.testcontainers.ext.ScriptUtils       : Executing database script from org03-probe.sql
+2026-10-27T11:40:02.376+09:00  INFO 75764 --- [k-flow-erp] [           main] org.testcontainers.ext.ScriptUtils       : Executed database script from org03-probe.sql in 43 ms.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-27T11:40:02.518+09:00  INFO 75764 --- [k-flow-erp] [           main] com.kflow.erp.iam.IamUserIT              : Starting IamUserIT using Java 21.0.2 with PID 75764 (started by <LOCAL_USER> in <LOCAL_HOME>/Projects/k-flow-erp/backend)
+2026-10-27T11:40:02.518+09:00  INFO 75764 --- [k-flow-erp] [           main] com.kflow.erp.iam.IamUserIT              : No active profile set, falling back to 1 default profile: "default"
+2026-10-27T11:40:02.767+09:00  INFO 75764 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-27T11:40:02.775+09:00  INFO 75764 --- [k-flow-erp] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 JPA repository interfaces.
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (<LOCAL_HOME>/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-27T11:40:03.583+09:00  INFO 75764 --- [k-flow-erp] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:62808/test?loggerLevel=OFF (PostgreSQL 16.15)
+2026-10-27T11:40:03.611+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-27T11:40:03.614+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.010s)
+2026-10-27T11:40:03.629+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-27T11:40:03.686+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-27T11:40:03.693+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization company site"
+2026-10-27T11:40:03.726+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - organization department position"
+2026-10-27T11:40:03.748+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization state change"
+2026-10-27T11:40:03.772+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - organization company scoped references"
+2026-10-27T11:40:03.790+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - hr employee and initial assignment"
+2026-10-27T11:40:03.843+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - hr termination and auth revocation generation"
+2026-10-27T11:40:03.856+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - iam employee linked user"
+2026-10-27T11:40:03.871+09:00  INFO 75764 --- [k-flow-erp] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 7 migrations to schema "public", now at version v7 (execution time 00:00.110s)
+2026-10-27T11:40:03.907+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-27T11:40:03.947+09:00  INFO 75764 --- [k-flow-erp] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-27T11:40:03.948+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-10-27T11:40:03.961+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@6cdadc3
+2026-10-27T11:40:03.962+09:00  INFO 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-10-27T11:40:03.968+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:62808/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 16.15
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-27T11:40:04.052+09:00  INFO 75764 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-27T11:40:04.072+09:00  INFO 75764 --- [k-flow-erp] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-27T11:40:04.808+09:00  INFO 75764 --- [k-flow-erp] [           main] o.s.s.config.TaskSchedulerRouter         : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2026-10-27T11:40:04.811+09:00  INFO 75764 --- [k-flow-erp] [           main] com.kflow.erp.iam.IamUserIT              : Started IamUserIT in 2.315 seconds (process running for 41.315)
+2026-10-27T11:40:04.829+09:00  WARN 75764 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-27T11:40:04.829+09:00  WARN 75764 --- [k-flow-erp] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=06ab84d7-3d29-453d-a789-85a5409a90b9 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+I1 T19/T20 enable {A={pid=70, xid=757}, B={pid=72, xid=758}} final={id=366a465c-1f58-403a-88d7-dac1a2cb969c, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=06ab84d7-3d29-453d-a789-85a5409a90b9, login_key=account, account_status=ENABLED, version=1, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=state reason, status_changed_at=2026-10-11 12:00:00.0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=bcecea4d-1fc6-4a69-9941-b7714c025e8d v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+I1 T19/T20 disable {A={pid=70, xid=774}, B={pid=72, xid=775}} final={id=98bdc32a-2526-4306-b5f4-199d2274293a, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=bcecea4d-1fc6-4a69-9941-b7714c025e8d, login_key=account, account_status=DISABLED, version=2, auth_revocation_generation=1, creation_reason=creation reason, last_status_reason=state reason, status_changed_at=2026-10-11 12:00:00.0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=52d4a4a5-3cdb-43de-a185-15323112867d v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+I1 T19/T20 twoNoops {A={pid=70, xid=790}, B={pid=72, xid=791}} final={id=3cd5e381-1d5c-41cc-b2e0-752728d2de1f, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=52d4a4a5-3cdb-43de-a185-15323112867d, login_key=account, account_status=DISABLED, version=0, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=null, status_changed_at=null, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=d45628e3-e8f7-4639-a80a-3703764b406c v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+I1 T19/T20 noopFirst {A={pid=70, xid=806}, B={pid=72, xid=807}} final={id=ec2394a6-8d09-43af-84a0-ff4b4cc5acfd, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=d45628e3-e8f7-4639-a80a-3703764b406c, login_key=account, account_status=ENABLED, version=1, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=state reason, status_changed_at=2026-10-11 12:00:00.0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=e4d75818-c4b8-4e0a-8bda-b1b1093ef2ca v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+I1 T19/T20 changeFirst {A={pid=70, xid=822}, B={pid=72, xid=823}} final={id=b2580126-1092-47e8-840a-b2827aed73f8, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=e4d75818-c4b8-4e0a-8bda-b1b1093ef2ca, login_key=account, account_status=ENABLED, version=1, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=state reason, status_changed_at=2026-10-11 12:00:00.0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=f0027a16-8fe3-467b-b427-b5cd5d2e8157 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select id from iam_user where company_id=$1 and id=$2 FOR UPDATE}
+2026-10-27T11:40:06.379+09:00  WARN 75764 --- [k-flow-erp] [         worker] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 55P03
+2026-10-27T11:40:06.381+09:00  WARN 75764 --- [k-flow-erp] [         worker] org.hibernate.orm.jdbc.error             : ERROR: canceling statement due to lock timeout
+  위치: while locking tuple (0,11) in relation "iam_user"
+I1 T27 actual timeout55P03 no business-error translation; finite lock5s/statement30s defaults
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=cd73a60a-7063-41a2-8e2c-4d632acf643e v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=72, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+2026-10-27T11:40:07.399+09:00  WARN 75764 --- [k-flow-erp] [         worker] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 55P03
+2026-10-27T11:40:07.399+09:00  WARN 75764 --- [k-flow-erp] [         worker] org.hibernate.orm.jdbc.error             : ERROR: canceling statement due to lock timeout
+  위치: while locking tuple (0,7) in relation "hr_employee"
+I1 T27 actual timeout55P03 no business-error translation; finite lock5s/statement30s defaults
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=77438023-c991-441f-a07e-2093e21ea6ea v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=ac276aa0-98c9-4cd9-adb6-d86fc6eb32dc v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=25613c9b-0628-4405-85f2-3b992f0be21d v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=20348dcf-d1b3-4761-abcf-6a3599552a2c v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=8c2f2137-14fb-406d-9637-542806770371 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=f09cb3b7-2f94-47a1-a87a-1a19484882de v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=insert into iam_user (account_status,auth_revocation_generation,company_id,created_at,creation_reason,employee_id,last_status_reason,login_key,status_changed_at,updated_at,version,id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)}
+2026-10-27T11:40:07.880+09:00  WARN 75764 --- [k-flow-erp] [              B] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-27T11:40:07.881+09:00  WARN 75764 --- [k-flow-erp] [              B] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_iam_user_employee"
+  세부 정보: Key (employee_id)=(f09cb3b7-2f94-47a1-a87a-1a19484882de) already exists.
+I1 T04/T05 both actual Guards reached protected region BEFORE insert; independent {A={pid=70, xid=917}, B={pid=71, xid=916}} firstCommit=true sameEmployee=true User rows=[{id=9842f25f-ab4a-4eae-892b-cd689f452b5d, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=f09cb3b7-2f94-47a1-a87a-1a19484882de, login_key=same.key, account_status=DISABLED, version=0, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=null, status_changed_at=null, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}]
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=1c494bcc-f9f1-4db1-ad79-ad291d9db3da v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=70, blockers={71}, query=insert into iam_user (account_status,auth_revocation_generation,company_id,created_at,creation_reason,employee_id,last_status_reason,login_key,status_changed_at,updated_at,version,id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)}
+I1 T04/T05 both actual Guards reached protected region BEFORE insert; independent {A={pid=71, xid=931}, B={pid=70, xid=932}} firstCommit=false sameEmployee=true User rows=[{id=3d91b823-ad99-4360-860c-3a12245c39f0, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=1c494bcc-f9f1-4db1-ad79-ad291d9db3da, login_key=other.key, account_status=DISABLED, version=0, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=null, status_changed_at=null, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}]
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=2d23eafa-3865-4e04-97da-e458c4e7eaa0 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=afa2c6ad-1c9a-4107-af9a-585d0b74845d v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=70, blockers={71}, query=insert into iam_user (account_status,auth_revocation_generation,company_id,created_at,creation_reason,employee_id,last_status_reason,login_key,status_changed_at,updated_at,version,id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)}
+2026-10-27T11:40:08.052+09:00  WARN 75764 --- [k-flow-erp] [              B] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-27T11:40:08.052+09:00  WARN 75764 --- [k-flow-erp] [              B] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_iam_user_login_key"
+  세부 정보: Key (login_key)=(same.key) already exists.
+I1 T04/T05 both actual Guards reached protected region BEFORE insert; independent {A={pid=71, xid=947}, B={pid=70, xid=948}} firstCommit=true sameEmployee=false User rows=[{id=b460e986-bdee-42b2-8071-592fd2ae9f63, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=2d23eafa-3865-4e04-97da-e458c4e7eaa0, login_key=same.key, account_status=DISABLED, version=0, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=null, status_changed_at=null, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}]
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=d8148904-5f90-4ca9-a2fe-9682fffca0ec v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=d59650cb-e811-4327-9fb1-a94e8c04c827 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=insert into iam_user (account_status,auth_revocation_generation,company_id,created_at,creation_reason,employee_id,last_status_reason,login_key,status_changed_at,updated_at,version,id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)}
+I1 T04/T05 both actual Guards reached protected region BEFORE insert; independent {A={pid=70, xid=964}, B={pid=71, xid=963}} firstCommit=false sameEmployee=false User rows=[{id=f2171ee8-41fc-4d3f-9e0f-ba88bf0d8cfd, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=d59650cb-e811-4327-9fb1-a94e8c04c827, login_key=same.key, account_status=DISABLED, version=0, auth_revocation_generation=0, creation_reason=creation reason, last_status_reason=null, status_changed_at=null, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}]
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=365f5114-7afe-44bd-a615-7aca76cb1c17 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=164ec4d4-8ce2-4785-9739-23cfb2204f9e v0/tail0; separate competition Clock d=2026-10-11
+2026-10-27T11:40:08.214+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-27T11:40:08.214+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_iam_user_employee"
+  세부 정보: Key (employee_id)=(365f5114-7afe-44bd-a615-7aca76cb1c17) already exists.
+I1 T24 isolated PK/FK/CHECK/NOTNULL, exact duplicate mappings and RESTRICT/nondeferrable validated
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=97fb2e2d-a23b-4c94-a32d-b92145498964 v0/tail0; separate competition Clock d=2026-10-11
+I1 T18 AM01 one dirty UPDATE v+1, disable g+1 / enable g unchanged {pid=72, xid=1000}
+72 1000 LOG:  execute S_6: select u1_0.id,u1_0.account_status,u1_0.auth_revocation_generation,u1_0.company_id,u1_0.created_at,u1_0.creation_reason,u1_0.employee_id,u1_0.last_status_reason,u1_0.login_key,u1_0.status_changed_at,u1_0.updated_at,u1_0.version from iam_user u1_0 where u1_0.id=$1
+72 1000 DETAIL:  parameters: $1 = '24f390de-22ce-41b6-9d0c-d336888c1352'
+72 1000 LOG:  execute S_7: select u1_0.id,u1_0.account_status,u1_0.auth_revocation_generation,u1_0.company_id,u1_0.created_at,u1_0.creation_reason,u1_0.employee_id,u1_0.last_status_reason,u1_0.login_key,u1_0.status_changed_at,u1_0.updated_at,u1_0.version from iam_user u1_0 where u1_0.id=$1 for no key update of u1_0
+72 1000 DETAIL:  parameters: $1 = '24f390de-22ce-41b6-9d0c-d336888c1352'
+72 1000 LOG:  execute <unnamed>: update iam_user set account_status=$1,auth_revocation_generation=$2,last_status_reason=$3,status_changed_at=$4,updated_at=$5,version=$6 where id=$7 and version=$8
+72 1000 DETAIL:  parameters: $1 = 'ENABLED', $2 = '0', $3 = 'state reason', $4 = '2026-10-11 12:00:00+09', $5 = '2026-10-11 12:00:00+09', $6 = '1', $7 = '24f390de-22ce-41b6-9d0c-d336888c1352', $8 = '0'
+72 1000 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+72 1000 LOG:  execute S_2: COMMIT
+
+I1 T18 AM01 one dirty UPDATE v+1, disable g+1 / enable g unchanged {pid=72, xid=1001}
+72 1001 LOG:  execute S_6: select u1_0.id,u1_0.account_status,u1_0.auth_revocation_generation,u1_0.company_id,u1_0.created_at,u1_0.creation_reason,u1_0.employee_id,u1_0.last_status_reason,u1_0.login_key,u1_0.status_changed_at,u1_0.updated_at,u1_0.version from iam_user u1_0 where u1_0.id=$1
+72 1001 DETAIL:  parameters: $1 = '24f390de-22ce-41b6-9d0c-d336888c1352'
+72 1001 LOG:  execute S_7: select u1_0.id,u1_0.account_status,u1_0.auth_revocation_generation,u1_0.company_id,u1_0.created_at,u1_0.creation_reason,u1_0.employee_id,u1_0.last_status_reason,u1_0.login_key,u1_0.status_changed_at,u1_0.updated_at,u1_0.version from iam_user u1_0 where u1_0.id=$1 for no key update of u1_0
+72 1001 DETAIL:  parameters: $1 = '24f390de-22ce-41b6-9d0c-d336888c1352'
+72 1001 LOG:  execute <unnamed>: update iam_user set account_status=$1,auth_revocation_generation=$2,last_status_reason=$3,status_changed_at=$4,updated_at=$5,version=$6 where id=$7 and version=$8
+72 1001 DETAIL:  parameters: $1 = 'DISABLED', $2 = '1', $3 = 'state reason', $4 = '2026-10-11 12:00:00+09', $5 = '2026-10-11 12:00:00+09', $6 = '2', $7 = '24f390de-22ce-41b6-9d0c-d336888c1352', $8 = '1'
+72 1001 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+72 1001 LOG:  execute S_2: COMMIT
+
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=2a2ed8f6-8935-4fa5-a5d9-0674d8505532 v0/tail0; separate competition Clock d=2026-10-11
+I1 T13 stale managed Employee retained; latest locking scalar refused; {pid=70, xid=1017}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=03f4eb28-bf87-4aaf-b513-99fbb2aef797 v0/tail0; separate competition Clock d=2026-10-11
+I1 T23 actual 23514 named reason CHECKs, paired NULL checks; 23502 required reason; separate501 varchar22001; valid1/500/emoji500
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=78f42170-6bc1-4631-99d9-267adab8a454 v0/tail0; separate competition Clock d=2026-10-11
+2026-10-27T11:40:08.602+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-27T11:40:08.602+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_iam_user_employee"
+  세부 정보: Key (employee_id)=(78f42170-6bc1-4631-99d9-267adab8a454) already exists.
+I1 T26 actual commit+test ACK wrapper; no automatic retry/compensation; create UNIQUE or changed HR precondition; not real network/receipt proof
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=67b3916b-6e0f-40e4-8605-254d40c8e639 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=afd268a8-0fa4-4acb-9b7d-3d44761893cf v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=15717997-33d0-489a-a4d2-83e711235210 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=1133a597-c9ae-4a4a-bf34-75948a6e4835 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=2fadc35c-3fac-49f1-b16a-b4de8a9257b3 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=56bed3a7-3ca2-49e3-9663-437f5135f538 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=5853679d-99a4-464d-adbf-3122406419bd v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=1e19c3fb-3417-484e-87d7-fb7d32624b72 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=2339a2b2-31af-4e64-a07f-3d4e375f5f66 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=ac62c313-de7c-450b-a245-ad905d16f8f4 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=65fa168d-3edb-49a9-968b-d4dc7187736f v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=7c8b73ae-9d16-4067-ac93-299c9b967bee v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=3b614607-e449-43dd-9fb1-5a426ae671a6 v0/tail0; separate competition Clock d=2026-10-11
+I1 T01/T14/T16: same PID/XID [{pid=72, xid=1239}, {pid=72, xid=1239}, {pid=72, xid=1239}]; HR unchanged; initial v0/g0
+72 1239 LOG:  execute S_3: select c1_0.id,c1_0.code,c1_0.created_at,c1_0.name,c1_0.singleton_key,c1_0.updated_at,c1_0.version from organization_company c1_0 fetch first $1 rows only
+72 1239 DETAIL:  parameters: $1 = '2'
+72 1239 LOG:  execute S_4: select set_config('lock_timeout',$1,true),set_config('statement_timeout',$2,true)
+72 1239 DETAIL:  parameters: $1 = '5000ms', $2 = '30000ms'
+72 1239 LOG:  execute <unnamed>: SHOW TRANSACTION ISOLATION LEVEL
+72 1239 LOG:  execute <unnamed>: select current_setting('transaction_isolation'),current_setting('transaction_read_only')
+72 1239 LOG:  execute <unnamed>: show lock_timeout
+72 1239 LOG:  execute S_21: select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE
+72 1239 DETAIL:  parameters: $1 = '3b614607-e449-43dd-9fb1-5a426ae671a6'
+72 1239 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+72 1239 LOG:  execute <unnamed>: select count(*) from iam_user
+72 1239 LOG:  execute S_22: insert into iam_user (account_status,auth_revocation_generation,company_id,created_at,creation_reason,employee_id,last_status_reason,login_key,status_changed_at,updated_at,version,id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+72 1239 DETAIL:  parameters: $1 = 'DISABLED', $2 = '0', $3 = 'c04b2a3e-6c22-43a7-84f1-d7df625cb826', $4 = '2026-10-11 12:00:00+09', $5 = 'creation reason', $6 = '3b614607-e449-43dd-9fb1-5a426ae671a6', $7 = NULL, $8 = 'min.a', $9 = NULL, $10 = '2026-10-11 12:00:00+09', $11 = '0', $12 = '5106e2f0-b599-4045-891d-e341d41761f1'
+72 1239 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+72 1239 LOG:  execute S_2: COMMIT
+
+2026-10-27T11:40:09.468+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-10-27T11:40:09.469+09:00  WARN 75764 --- [k-flow-erp] [           main] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uq_iam_user_employee"
+  세부 정보: Key (employee_id)=(3b614607-e449-43dd-9fb1-5a426ae671a6) already exists.
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=e24d9d1f-1058-4e47-b64e-1aa54dd0c3b4 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=update hr_employee set version=version+1 where id=$1}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=a7576afa-2747-4b16-94a8-71444c14435d v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=be9a425e-06db-42ab-af90-e00dece9650b v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select id from iam_user where id=$1 FOR UPDATE}
+I1 T27 actual deadlock40P01 via test-only reverse locker; no automatic retry
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=64a1e556-93e4-4172-bf3d-594be628c001 v0/tail0; separate competition Clock d=2026-10-11
+I1 T25 whole IAM root rollback after actual flush; mode=create; independent DB v/g/reason/time/HR baseline preserved
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=972dc7d1-7eef-4af2-b9c7-64df6f60c14a v0/tail0; separate competition Clock d=2026-10-11
+I1 T25 whole IAM root rollback after actual flush; mode=enable; independent DB v/g/reason/time/HR baseline preserved
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=84be37b4-88bf-4300-bbd2-8a849631f317 v0/tail0; separate competition Clock d=2026-10-11
+I1 T25 whole IAM root rollback after actual flush; mode=disable; independent DB v/g/reason/time/HR baseline preserved
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=eb8d8153-3120-40aa-a8e9-0b8b40c0e456 v0/tail0; separate competition Clock d=2026-10-11
+I1 T25 whole IAM root rollback after actual flush; mode=terminated; independent DB v/g/reason/time/HR baseline preserved
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=f1f3754e-8ccf-45a1-ad9b-5182a15e0f9e v0/tail0; separate competition Clock d=2026-10-11
+I1 T25 whole IAM root rollback after actual flush; mode=leave; independent DB v/g/reason/time/HR baseline preserved
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=cb92d36b-747b-4450-b622-3be0f5169c5e v0/tail0; separate competition Clock d=2026-10-11
+I1 T15 caught Guard rejection marks root rollback-only; even test-only User INSERT+flush cannot commit
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=36dd95d7-678f-42b5-826d-e8198bb76e3c v0/tail0; separate competition Clock d=2026-10-11
+I1 T25/T27 real commit-time abort23514; no success DTO and all IAM writes rolled back
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=4f65280c-2ad9-4ca8-8460-4e88a1d229b6 v0/tail0; separate competition Clock d=2026-10-11
+I1 T25/T27 real commit-time abort23514; no success DTO and all IAM writes rolled back
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=81d91c19-984b-4ff1-ad8a-ee58f70f5b60 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=541c1fad-89c3-47e5-b49f-0ef946aefad1 v0/tail0; separate competition Clock d=2026-10-11
+AM01 Java exact overflow entire root failure, DB negative23514 and overflow22003, no HR generation write
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=122b9d8f-bf32-4276-ab03-2ce9e8e717ad v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=dfb99dea-63c5-4569-91d3-1c88473c076a v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=711b85c7-1d75-4290-84e3-debd2be08894 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=b9dcce89-3fab-40ce-a6f9-d42b9e53847a v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select id from hr_employee where company_id=$1 and id=$2 FOR UPDATE}
+I1 T09-12/T17 terminate=true IAM-first=true firstCommit=true roots={IAM={pid=70, xid=1496}, HR={pid=71, xid=1497}} HR={id=b9dcce89-3fab-40ce-a6f9-d42b9e53847a, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=TERMINATED, joined_on=2026-10-01, termination_effective_on=2026-10-11, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0, termination_reason=termination reason, auth_revocation_generation=1} history=[{id=b180e929-1c39-43c4-a1fc-f2c97e7975b5, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=b9dcce89-3fab-40ce-a6f9-d42b9e53847a, site_id=09b7b48b-fcd8-474f-9cea-75d96f77ed7c, department_id=094f929c-28f6-409b-8ee9-12d5ba2aa2ed, position_id=be22148e-076d-4a1a-b28d-b702bb378e1c, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=1
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=73a1a8c6-ce4e-4e4d-afb6-4ee94d3b3cb0 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select id from hr_employee where company_id=$1 and id=$2 FOR UPDATE}
+I1 T09-12/T17 terminate=true IAM-first=true firstCommit=false roots={IAM={pid=70, xid=1511}, HR={pid=71, xid=1512}} HR={id=73a1a8c6-ce4e-4e4d-afb6-4ee94d3b3cb0, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=TERMINATED, joined_on=2026-10-01, termination_effective_on=2026-10-11, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0, termination_reason=termination reason, auth_revocation_generation=1} history=[{id=fdbaaa35-6130-438a-9d03-c3888353ab60, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=73a1a8c6-ce4e-4e4d-afb6-4ee94d3b3cb0, site_id=90f5fcb7-3d58-47c1-acaa-d1e689b2c3d1, department_id=c5e259fc-1b57-4c47-85f9-bdd7ce7ecdb1, position_id=4678b824-f7f2-4853-a6a1-564c05f1f905, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=0
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=8287c56e-52b2-4051-adc8-7dd4b060ee3a v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+I1 T09-12/T17 terminate=true IAM-first=false firstCommit=true roots={IAM={pid=71, xid=1526}, HR={pid=70, xid=1525}} HR={id=8287c56e-52b2-4051-adc8-7dd4b060ee3a, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=TERMINATED, joined_on=2026-10-01, termination_effective_on=2026-10-11, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0, termination_reason=termination reason, auth_revocation_generation=1} history=[{id=6fde21f5-2ac8-478d-9a09-e977a5bfb873, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=8287c56e-52b2-4051-adc8-7dd4b060ee3a, site_id=ae8c01d3-d65d-4a42-94ec-08f6ef77dd89, department_id=73f52745-9b39-498f-85a3-0277d9d61610, position_id=2c1beac1-119c-4fc4-8666-5ee08ec280de, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=0
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=d3dc83b1-e4ac-4b5d-8758-d65eaea011e2 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+I1 T09-12/T17 terminate=true IAM-first=false firstCommit=false roots={IAM={pid=71, xid=1540}, HR={pid=70, xid=1539}} HR={id=d3dc83b1-e4ac-4b5d-8758-d65eaea011e2, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=EMPLOYED, joined_on=2026-10-01, termination_effective_on=null, version=0, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0, termination_reason=null, auth_revocation_generation=0} history=[{id=1811b018-b41a-4892-816e-468236131dbe, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=d3dc83b1-e4ac-4b5d-8758-d65eaea011e2, site_id=7130442a-037e-45ad-8286-01e9e7eb4d7a, department_id=0fe27b75-c0db-43c1-bdf4-4f5b0d7426ef, position_id=fcdabfd1-f45d-4ceb-85c1-d623d75fe2f6, effective_from=2026-10-01, effective_to=null, reason=original reason, version=0, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0}] User count=1
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=7daf1ecb-e7e0-436d-8cd7-da1486ebfa08 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select id from hr_employee where company_id=$1 and id=$2 FOR UPDATE}
+I1 T09-12/T17 terminate=false IAM-first=true firstCommit=true roots={IAM={pid=70, xid=1554}, HR={pid=71, xid=1555}} HR={id=7daf1ecb-e7e0-436d-8cd7-da1486ebfa08, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=EMPLOYED, joined_on=2026-10-01, termination_effective_on=null, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0, termination_reason=null, auth_revocation_generation=0} history=[{id=64d2e21f-d30f-40a3-9877-276f3dc2e7b0, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=7daf1ecb-e7e0-436d-8cd7-da1486ebfa08, site_id=162eb4b7-141a-43b8-96ca-acd8ab9e838b, department_id=fbf9adc6-aacd-4422-9162-41fa3dbb2246, position_id=bdd4ebf0-3e11-4e12-8e69-d067a39f0e47, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}, {id=2854910f-e48a-47ce-95e9-70091f3f0a7d, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=7daf1ecb-e7e0-436d-8cd7-da1486ebfa08, site_id=f5dde13e-a9f0-45c1-8374-4b1a2ca40554, department_id=d0f289bf-2447-41d3-b9c8-502d221454bd, position_id=e9a045aa-2bcc-4822-a5e6-defb6a470f38, effective_from=2026-10-11, effective_to=null, reason=transfer reason, version=0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=1
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=aa8b3abd-d48d-4954-aa8f-2355de2abc71 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select id from hr_employee where company_id=$1 and id=$2 FOR UPDATE}
+I1 T09-12/T17 terminate=false IAM-first=true firstCommit=false roots={IAM={pid=70, xid=1569}, HR={pid=71, xid=1570}} HR={id=aa8b3abd-d48d-4954-aa8f-2355de2abc71, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=EMPLOYED, joined_on=2026-10-01, termination_effective_on=null, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0, termination_reason=null, auth_revocation_generation=0} history=[{id=6564e0f8-9b79-4585-90b1-5f30d6b67a40, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=aa8b3abd-d48d-4954-aa8f-2355de2abc71, site_id=593e21a8-d943-45c4-b6f7-3671afe75981, department_id=780f2dc0-5807-468d-bd1f-a615910f1972, position_id=10eba3c3-4c09-4717-8612-2c768ca051b5, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}, {id=1f824908-7bed-4910-8efc-952c0056efbb, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=aa8b3abd-d48d-4954-aa8f-2355de2abc71, site_id=cd040906-01c1-4e97-a827-afe27b293a86, department_id=fb5c4c4d-7ba4-430c-a7d2-989dc658108c, position_id=70ddc0c4-c04c-43df-9662-839d45b494fd, effective_from=2026-10-11, effective_to=null, reason=transfer reason, version=0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=0
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=170d32c7-d871-46c8-b6e0-db9977ade470 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+I1 T09-12/T17 terminate=false IAM-first=false firstCommit=true roots={IAM={pid=71, xid=1584}, HR={pid=70, xid=1583}} HR={id=170d32c7-d871-46c8-b6e0-db9977ade470, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=EMPLOYED, joined_on=2026-10-01, termination_effective_on=null, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0, termination_reason=null, auth_revocation_generation=0} history=[{id=0ceea45d-0a73-47be-97f0-a93f04d08797, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=170d32c7-d871-46c8-b6e0-db9977ade470, site_id=e3f12641-16b7-4d42-8cd9-3a40c267549f, department_id=ab69fa14-e5ba-45e9-85c4-4056849a0739, position_id=bcf3aa9d-6268-48cd-8ade-11969d1c5ac8, effective_from=2026-10-01, effective_to=2026-10-11, reason=original reason, version=1, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-11 12:00:00.0}, {id=46df2fa9-0898-4a02-8839-8af1c4b81fb5, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=170d32c7-d871-46c8-b6e0-db9977ade470, site_id=1994bd9c-7eb6-4746-a014-bb9b2aa4c42a, department_id=bca8480c-01e3-46fb-935a-75056b5e8f4b, position_id=d1ca2a8c-e0b2-4c5e-882a-7e667dd5e8d2, effective_from=2026-10-11, effective_to=null, reason=transfer reason, version=0, created_at=2026-10-11 12:00:00.0, updated_at=2026-10-11 12:00:00.0}] User count=1
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=0dbe4404-ec12-4018-b2cb-7281833ce236 v0/tail0; separate competition Clock d=2026-10-11
+I1 actual PG blocker {pid=71, blockers={70}, query=select company_id,employment_status,joined_on,termination_effective_on,version from hr_employee where id=$1 FOR SHARE}
+I1 T09-12/T17 terminate=false IAM-first=false firstCommit=false roots={IAM={pid=71, xid=1599}, HR={pid=70, xid=1598}} HR={id=0dbe4404-ec12-4018-b2cb-7281833ce236, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_no=A, display_name=synthetic employee, employment_status=EMPLOYED, joined_on=2026-10-01, termination_effective_on=null, version=0, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0, termination_reason=null, auth_revocation_generation=0} history=[{id=73fb06f0-87bd-40ac-ad50-37c633a31e6a, company_id=c04b2a3e-6c22-43a7-84f1-d7df625cb826, employee_id=0dbe4404-ec12-4018-b2cb-7281833ce236, site_id=f2a67792-c98c-4149-8ad8-2db06d8eaf70, department_id=0c7028f9-8937-406c-9859-8ba9b3910fd7, position_id=f987d12c-b3f2-4fdb-871a-4aa8f22d786e, effective_from=2026-10-01, effective_to=null, reason=original reason, version=0, created_at=2026-10-01 12:00:00.0, updated_at=2026-10-01 12:00:00.0}] User count=1
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=a1eedb60-4889-4f9c-82ea-18efd2a216d0 v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=75d656d1-ffa0-482f-9f7d-5a12c3dbad9f v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=43d1b80c-2be7-4c55-85ea-c3138dd973fd v0/tail0; separate competition Clock d=2026-10-11
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=0253ac19-1813-492c-8842-1e4a018493aa v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=70, xid=1662}, HR={pid=71, xid=1663}} enable=true IAMfirst=true firstCommit=true; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=5373c1af-d3be-4311-8522-11b37c6e62c5 v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=70, xid=1678}, HR={pid=71, xid=1679}} enable=true IAMfirst=true firstCommit=false; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=ef5ba0dd-5adf-4233-b848-13276bca0363 v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=71, xid=1695}, HR={pid=70, xid=1694}} enable=true IAMfirst=false firstCommit=true; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=452b2ba5-90fb-421f-b87f-cd3b265ce05d v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=71, xid=1711}, HR={pid=70, xid=1710}} enable=true IAMfirst=false firstCommit=false; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=a61af7d7-107e-4762-9854-71cdce8b7050 v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=70, xid=1727}, HR={pid=71, xid=1728}} enable=false IAMfirst=true firstCommit=true; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=79440f9b-b805-4f1f-99e8-d4d9e2c5c60c v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=70, xid=1744}, HR={pid=71, xid=1745}} enable=false IAMfirst=true firstCommit=false; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=26ac366f-8dfc-4308-b8ea-6262e12caa87 v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=71, xid=1762}, HR={pid=70, xid=1761}} enable=false IAMfirst=false firstCommit=true; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=71598a5b-7508-4184-ac8d-1611c154b106 v0/tail0; separate competition Clock d=2026-10-11
+I1 T21B/T25 independent real roots {IAM={pid=71, xid=1779}, HR={pid=70, xid=1778}} enable=false IAMfirst=false firstCommit=false; second committed BEFORE releasing first lock
+I1 R2 baseline: registration Root committed at d=2026-10-01, Employee=f3e2495f-2e49-47c5-86da-3aa2ea77fd72 v0/tail0; separate competition Clock d=2026-10-11
+2026-10-27T11:40:12.019+09:00  WARN 75764 --- [k-flow-erp] [           main] com.zaxxer.hikari.pool.ProxyConnection   : HikariPool-2 - Connection org.postgresql.jdbc.PgConnection@39379890 marked as broken because of SQLSTATE(57P01), ErrorCode(0)
+
+org.postgresql.util.PSQLException: FATAL: terminating connection due to administrator command
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:403) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.executeTransactionCommand(PgConnection.java:1022) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.commit(PgConnection.java:1044) ~[postgresql-42.7.13.jar:42.7.13]
+	at com.zaxxer.hikari.pool.ProxyConnection.commit(ProxyConnection.java:378) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.commit(HikariProxyConnection.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.resource.jdbc.internal.AbstractLogicalConnectionImplementor.commitConnection(AbstractLogicalConnectionImplementor.java:95) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.resource.jdbc.internal.AbstractLogicalConnectionImplementor.commit(AbstractLogicalConnectionImplementor.java:82) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commitNoRollbackOnly(JdbcResourceLocalTransactionCoordinatorImpl.java:273) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:242) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:89) ~[hibernate-core-7.4.5.Final.jar:7.4.5.Final]
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:552) ~[spring-orm-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:794) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:757) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:149) ~[spring-tx-7.0.9.jar:7.0.9]
+	at com.kflow.erp.iam.application.UserService.createUser(UserService.java:33) ~[classes/:na]
+	at com.kflow.erp.iam.IamUserIT.lambda$t27_connectionFailureAfterInsertIsNotEmptyOrConflict$117(IamUserIT.java:405) ~[test-classes/:na]
+	at org.assertj.core.api.ThrowableAssert.catchThrowable(ThrowableAssert.java:66) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.AssertionsForClassTypes.catchThrowable(AssertionsForClassTypes.java:908) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.Assertions.catchThrowable(Assertions.java:1476) ~[assertj-core-3.27.7.jar:na]
+	at org.assertj.core.api.Assertions.assertThatThrownBy(Assertions.java:1319) ~[assertj-core-3.27.7.jar:na]
+	at com.kflow.erp.iam.IamUserIT.t27_connectionFailureAfterInsertIsNotEmptyOrConflict(IamUserIT.java:405) ~[test-classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.SameThreadTimeoutInvocation.proceed(SameThreadTimeoutInvocation.java:51) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125) ~[surefire-api-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
+
+I1 T27 actual connection terminated after insert flush; confirmed abort/User0, no fabricated duplicate
+[ERROR] Tests run: 67, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 11.49 s <<< FAILURE! -- in com.kflow.erp.iam.IamUserIT
+[ERROR] com.kflow.erp.iam.IamUserIT.t17_shareBlocksBareNonKeyUpdateUntilRootRollback -- Time elapsed: 0.273 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual:
+  "70 1256 LOG:  execute <unnamed>: select set_config('lock_timeout',$1,true)
+70 1256 DETAIL:  parameters: $1 = '0'
+70 1256 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+70 1256 LOG:  execute S_8: ROLLBACK
+"
+to contain:
+  "FOR SHARE" 
+	at com.kflow.erp.iam.IamUserIT.t17_shareBlocksBareNonKeyUpdateUntilRootRollback(IamUserIT.java:176)
+
+[ERROR] com.kflow.erp.iam.IamUserIT.t14_rootDateCapturedOnceAcrossMidnightLockWait -- Time elapsed: 0.068 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: 1
+ but was: 2
+	at com.kflow.erp.iam.IamUserIT.t14_rootDateCapturedOnceAcrossMidnightLockWait(IamUserIT.java:410)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   IamUserIT.t14_rootDateCapturedOnceAcrossMidnightLockWait:410 
+expected: 1
+ but was: 2
+[ERROR]   IamUserIT.t17_shareBlocksBareNonKeyUpdateUntilRootRollback:176 
+Expecting actual:
+  "70 1256 LOG:  execute <unnamed>: select set_config('lock_timeout',$1,true)
+70 1256 DETAIL:  parameters: $1 = '0'
+70 1256 LOG:  execute <unnamed>: select pg_backend_pid(),pg_current_xact_id()::text
+70 1256 LOG:  execute S_8: ROLLBACK
+"
+to contain:
+  "FOR SHARE" 
+[INFO] 
+[ERROR] Tests run: 68, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.6:verify (default) @ k-flow-erp ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  58.575 s
+[INFO] Finished at: 2026-10-27T11:40:12+09:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:3.5.6:verify (default) on project k-flow-erp: There are test failures.
+[ERROR] 
+[ERROR] See <LOCAL_HOME>/Projects/k-flow-erp/backend/target/failsafe-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+===== DEVELOPMENT RUN 4 — full suite passed before final QA additions =====
+Command (backend/): JAVA_HOME=<JDK21> ./mvnw -B -ntp verify
+Original raw SHA-256: 0cb2d1fc4d7a8020932d09b3d84422b7fb61eb9575766273ddeac5e3e5f9455f
+[VERBATIM EXCERPT last 16 lines]
+2026-10-27T11:42:27.406+09:00  INFO 76125 --- [k-flow-erp] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-17 - Shutdown completed.
+H12-EVIDENCE V1/V2/V3 rows and checksums preserved; V4+V5+V6+V7 applied; btree_gist and NOT DEFERRABLE EXCLUDE present; Hibernate validate passed
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.493 s -- in com.kflow.erp.hr.HrMigrationIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 335, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.6:verify (default) @ k-flow-erp ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:44 min
+[INFO] Finished at: 2026-10-27T11:42:27+09:00
+[INFO] ------------------------------------------------------------------------

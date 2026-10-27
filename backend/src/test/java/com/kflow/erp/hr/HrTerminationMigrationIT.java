@@ -38,7 +38,7 @@ class HrTerminationMigrationIT {
             before.put(t,jdbc.queryForList("select * from "+t+" order by id"));
         var sums=jdbc.queryForList("select version,checksum from flyway_schema_history order by installed_rank");
         var constraints=jdbc.queryForList("select conname,pg_get_constraintdef(oid) definition from pg_constraint where conrelid in ('hr_employee'::regclass,'hr_employee_assignment'::regclass) order by conname");
-        var migration=Flyway.configure().dataSource(ds).load();assertThat(migration.migrate().migrationsExecuted).isEqualTo(1);migration.validate();
+        var migration=Flyway.configure().dataSource(ds).target("6").load();assertThat(migration.migrate().migrationsExecuted).isEqualTo(1);migration.validate();
         assertThat(migration.migrate().migrationsExecuted).isZero();
         before.forEach((table,rows)->{var after=jdbc.queryForList("select * from "+table+" order by id");
             if(table.equals("hr_employee"))after.forEach(r->{assertThat(r.remove("auth_revocation_generation")).isEqualTo(0L);assertThat(r.remove("termination_reason")).isNull();});
@@ -48,7 +48,7 @@ class HrTerminationMigrationIT {
         assertThat(jdbc.queryForList("select conname,pg_get_constraintdef(oid) definition from pg_constraint where conrelid in ('hr_employee'::regclass,'hr_employee_assignment'::regclass) and conname not in ('ck_hr_employee_auth_revocation_generation','ck_hr_employee_termination_reason') order by conname")).isEqualTo(constraints);
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE)
                 .properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()) {
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("6");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("7");
         }
         System.out.println("H34-04 EVIDENCE T32 V5->V6: existing Employee/Assignment/ORG all columns preserved; generation0/reasonNULL; V1-V5 checksums and old constraints identical; Flyway and Hibernate validate passed");
     }
