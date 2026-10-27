@@ -32,7 +32,7 @@ class FoundationIT {
     @Value("${local.server.port}") int port;
 
     @Test
-    void bootsOnPostgresWithOnlyApprovedOrganizationAndHrSchema() throws Exception {
+    void bootsOnPostgresWithOnlyApprovedOrganizationHrAndIamSchema() throws Exception {
         assertThat(postgres.isRunning()).isTrue();
         try (var connection = dataSource.getConnection()) {
             assertThat(connection.getMetaData().getDatabaseProductName()).isEqualTo("PostgreSQL");
@@ -43,15 +43,15 @@ class FoundationIT {
                          + "and table_name <> 'flyway_schema_history'")) {
                 var tables = new java.util.ArrayList<String>();
                 while (result.next()) tables.add(result.getString(1));
-                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment");
+                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment", "iam_user");
             }
         }
-        assertThat(flyway.info().applied()).hasSize(6);
+        assertThat(flyway.info().applied()).hasSize(7);
         assertThat(flyway.info().pending()).isEmpty();
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(entityManagerFactory.isOpen()).isTrue();
         assertThat(entityManagerFactory.getMetamodel().getEntities()).extracting(jakarta.persistence.metamodel.EntityType::getName)
-                .containsExactlyInAnyOrder("Company", "Site", "Department", "Position", "Employee", "EmployeeAssignment");
+                .containsExactlyInAnyOrder("Company", "Site", "Department", "Position", "Employee", "EmployeeAssignment", "IamUser");
         assertThat(environment.getProperty("spring.jpa.hibernate.ddl-auto")).isEqualTo("validate");
         assertThat(environment.getProperty("spring.jpa.open-in-view", Boolean.class)).isFalse();
     }
