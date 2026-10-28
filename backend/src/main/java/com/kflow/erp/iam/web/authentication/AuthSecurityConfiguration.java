@@ -23,6 +23,18 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
         org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET)
 public class AuthSecurityConfiguration {
   @Bean
+  org.springframework.boot.web.servlet.FilterRegistrationBean<SynchronousAccessBoundary>
+      synchronousAccessBoundary() {
+    var registration =
+        new org.springframework.boot.web.servlet.FilterRegistrationBean<>(
+            new SynchronousAccessBoundary());
+    registration.setDispatcherTypes(java.util.EnumSet.allOf(jakarta.servlet.DispatcherType.class));
+    registration.setAsyncSupported(false);
+    registration.setOrder(org.springframework.core.Ordered.HIGHEST_PRECEDENCE + 5);
+    return registration;
+  }
+
+  @Bean
   SessionCookie cookieSerializer(@Qualifier("sessionClock") Clock clock) {
     return new SessionCookie(clock);
   }
@@ -67,7 +79,8 @@ public class AuthSecurityConfiguration {
       HttpSessionCsrfTokenRepository csrf,
       HttpSessionSecurityContextRepository contexts,
       @Qualifier("sessionClock") Clock clock,
-      AuthSettings settings)
+      AuthSettings settings,
+      com.kflow.erp.iam.application.authentication.RequestIdentityResolver resolver)
       throws Exception {
     http.formLogin(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
@@ -105,6 +118,9 @@ public class AuthSecurityConfiguration {
                 .accessDeniedHandler((r, s, e) -> AuthResponses.write(s, 403, "ACCESS_DENIED")));
     http.addFilterBefore(
         new SessionValidityFilter(clock, settings), SecurityContextHolderFilter.class);
+    http.addFilterBefore(
+        new RequestIdentityFilter(resolver, clock),
+        org.springframework.security.web.access.intercept.AuthorizationFilter.class);
     return http.build();
   }
 }
