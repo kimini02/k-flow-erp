@@ -10,3 +10,13 @@ spring:
     locations: classpath:db/migration
   modulith:
     detection-strategy: explicitly-annotated
+
+# Credential hashes/digests must not enter ORM exception DETAIL or bind/extract logs.
+# Safe CredentialStorageFailure keeps SQLSTATE; operational logging overrides require review.
+logging:
+  level:
+    org.hibernate.orm.jdbc.error: OFF
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
+    org.hibernate.orm.jdbc.bind: OFF
+    org.hibernate.orm.jdbc.extract: OFF
+    org.springframework.web.filter.CommonsRequestLoggingFilter: OFF

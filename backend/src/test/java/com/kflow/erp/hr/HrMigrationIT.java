@@ -28,7 +28,7 @@ class HrMigrationIT {
         }
         before.put("organization_company",jdbc.queryForList("select * from organization_company"));
         var sums=jdbc.queryForList("select version,checksum from flyway_schema_history order by installed_rank");
-        var latest=Flyway.configure().dataSource(ds).load();assertThat(latest.migrate().migrationsExecuted).isEqualTo(6);
+        var latest=Flyway.configure().dataSource(ds).load();assertThat(latest.migrate().migrationsExecuted).isEqualTo(7);
         assertThat(latest.validateWithResult().validationSuccessful).isTrue();assertThat(latest.migrate().migrationsExecuted).isZero();
         before.forEach((table,rows)->assertThat(jdbc.queryForList("select * from "+table+" order by id")).isEqualTo(rows));
         assertThat(jdbc.queryForList("select version,checksum from flyway_schema_history where version in ('1','2','3') order by installed_rank")).isEqualTo(sums);
@@ -38,7 +38,7 @@ class HrMigrationIT {
         assertThat(jdbc.queryForObject("select count(*) from hr_employee",Integer.class)).isZero();
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE)
                 .properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()) {
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("9");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("10");
         }
         System.out.println("H12-EVIDENCE V1/V2/V3 rows and checksums preserved; V4+V5+V6+V7+V8 applied; btree_gist and NOT DEFERRABLE EXCLUDE present; Hibernate validate passed");
     }

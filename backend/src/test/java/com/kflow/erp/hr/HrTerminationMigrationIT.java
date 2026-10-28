@@ -48,7 +48,7 @@ class HrTerminationMigrationIT {
         assertThat(jdbc.queryForList("select conname,pg_get_constraintdef(oid) definition from pg_constraint where conrelid in ('hr_employee'::regclass,'hr_employee_assignment'::regclass) and conname not in ('ck_hr_employee_auth_revocation_generation','ck_hr_employee_termination_reason') order by conname")).isEqualTo(constraints);
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE)
                 .properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()) {
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("9");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("10");
         }
         System.out.println("H34-04 EVIDENCE T32 V5->V6: existing Employee/Assignment/ORG all columns preserved; generation0/reasonNULL; V1-V5 checksums and old constraints identical; Flyway and Hibernate validate passed");
     }

@@ -14,6 +14,9 @@ public record EmployeeLinkFacts(UUID companyId, String status, LocalDate joinedO
     public void requireGrantableEmployee(UUID company,LocalDate date) {
         requireEligible(company,date,ON_LEAVE_ROLE_GRANT_UNSUPPORTED);
     }
+    public void requireCredentialEligibleEmployee(UUID company,LocalDate date) {
+        requireEligible(company,date,ON_LEAVE_CREDENTIAL_UNSUPPORTED);
+    }
     private void requireEligible(UUID company,LocalDate date,HrFailure.Code onLeaveFailure) {
         if (!company.equals(companyId)) throw new HrFailure(EMPLOYEE_COMPANY_MISMATCH);
         if (joinedOn==null || joinedOn.getYear()<1 || joinedOn.getYear()>9999 || version<0
