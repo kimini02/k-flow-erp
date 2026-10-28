@@ -32,7 +32,7 @@ class IamMigrationIT {
         assertThat(jdbc.queryForList("select version,checksum from flyway_schema_history where version in ('1','2','3','4','5','6') order by installed_rank")).isEqualTo(sums);assertThat(jdbc.queryForObject("select count(*) from iam_user",Integer.class)).isZero();
         assertThat(jdbc.queryForObject("select column_default from information_schema.columns where table_name='iam_user' and column_name='auth_revocation_generation'",String.class)).isEqualTo("0");
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE).properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()){
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("10");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("11");
         }
         System.out.println("I1 T30 V6->V7 existing ORG/HR all rows/constraints/V1-V6 checksums byte values preserved; no User seed; generation default0; Flyway/Hibernate validate passed");
     }

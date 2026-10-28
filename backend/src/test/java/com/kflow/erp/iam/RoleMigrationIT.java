@@ -39,7 +39,7 @@ class RoleMigrationIT {
         assertThat(jdbc.queryForObject("select count(*) from information_schema.columns where table_name='iam_role' and is_nullable='NO'",Integer.class)).isEqualTo(9);
         System.out.println("I2 T27 preserved V1-V7 Flyway checksum rows="+sums+"; preserved old constraints="+constraints+"; existing rows="+before+"; Role table empty/only PK+code indexes");
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE).properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()){
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("10");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("11");
         }
         System.out.println("I2 T27 V7->V8 existing ORG/HR/IAM all rows, original constraints, V1-V7 checksums preserved; no Role seed; Flyway/Hibernate validate passed");
     }

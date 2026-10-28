@@ -47,6 +47,8 @@ public class CredentialHttpBoundary implements Filter {
     var request = (HttpServletRequest) raw;
     var response = (HttpServletResponse) out;
     String path = request.getRequestURI().substring(request.getContextPath().length());
+    // AN-02 performs its own closed transport/origin/admission boundary before Spring Session.
+    if (com.kflow.erp.iam.web.authentication.AuthHttpBoundary.accepted(request)) { chain.doFilter(raw, out); return; }
     if ("GET".equals(request.getMethod())
         && (path.equals("/v3/api-docs")
             || path.equals("/v3/api-docs/swagger-config")

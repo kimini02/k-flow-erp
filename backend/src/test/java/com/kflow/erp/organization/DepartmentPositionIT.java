@@ -87,7 +87,7 @@ class DepartmentPositionIT {
         assertThat(find(Kind.POSITION,company,d.id())).isEmpty();
         assertThat(jdbc.queryForMap("select * from organization_company")).isEqualTo(before);
         assertThat(jdbc.queryForObject("select count(*) from organization_site",Long.class)).isZero();
-        assertThat(flyway.info().current().getVersion().toString()).isEqualTo("10");
+        assertThat(flyway.info().current().getVersion().toString()).isEqualTo("11");
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(flyway.migrate().migrationsExecuted).isZero();
     }
