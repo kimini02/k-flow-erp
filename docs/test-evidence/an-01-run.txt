@@ -16394,3 +16394,21 @@ fbf6a8e2b143cf04866c0391b92312436acb8d0faf692e2d4857e01e54c9e42c  backend/src/ma
 7a8bba4860fc00c069d718f2d62e9a8e4923cbb9c65dae046aa6befbfb3153d9  backend/src/main/resources/db/migration/V7__iam_employee_linked_user.sql  [byte-identical to base]
 87c596351ca618b904771ad3a309ca0860016045f2582bf2287dda6edf0abe69  backend/src/main/resources/db/migration/V8__iam_role.sql  [byte-identical to base]
 0e024dd4bfa8a2bb019df38f202e6fd86cb338bf9efa527c7e166d5e11ea4694  backend/src/main/resources/db/migration/V9__iam_user_role_grants.sql  [byte-identical to base]
+
+--- REMOTE CODE COMMIT CI: ACTUAL EXCERPTS, NOT FINAL DOC HEAD CI ---
+HEAD d99de18199fb66d0801c4713744d41f40e056f83
+Event push
+Run https://github.com/kimini02/k-flow-erp/actions/runs/40637459595
+Job https://github.com/kimini02/k-flow-erp/actions/runs/40637459595/job/122647610296
+Conclusion success
+Full remote log is available at the Run URL. Original downloaded log line numbers follow.
+160: verify	Compile, architecture checks and PostgreSQL integration tests	﻿2026-10-28T05:21:00.5749543Z ##[group]Run ./mvnw -B -ntp verify
+249: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:21:33.7578757Z A1 cost candidate m=65536KiB,t=3,p=1 encode_ms=263.829 matches_ms=142.175; single local sample, NOT production SLA
+256: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:21:33.9070346Z [INFO] Tests run: 92, Failures: 0, Errors: 0, Skipped: 0
+275: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:21:38.6776273Z 05:21:38.628 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+374: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:21:52.8997482Z 2026-10-28T05:21:52.802Z  INFO 2371 --- [k-flow-erp] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+15279: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:23:51.3422209Z I2 actual runtime Java=21.0.12.1 SpringBoot=4.1.1 SpringFramework=7.0.9 Hibernate=7.4.5.Final PG=16.15 (Debian 16.15-1.pgdg13+2) image=postgres:16
+16172: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:24:11.0682387Z [INFO] Tests run: 700, Failures: 0, Errors: 0, Skipped: 0
+16177: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:24:11.4534344Z [INFO] BUILD SUCCESS
+16179: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:24:11.4563281Z [INFO] Total time:  03:09 min
+16180: verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T05:24:11.4563678Z [INFO] Finished at: 2026-10-28T05:24:11Z
