@@ -30,7 +30,7 @@ class RoleMigrationIT {
         var before=new LinkedHashMap<String,List<Map<String,Object>>>();for(String t:List.of("organization_company","organization_site","organization_department","organization_position","hr_employee","hr_employee_assignment","iam_user"))before.put(t,jdbc.queryForList("select * from "+t+" order by id"));
         var sums=jdbc.queryForList("select version,checksum from flyway_schema_history order by installed_rank");
         String oldConstraints="select conname,pg_get_constraintdef(oid) definition from pg_constraint where conrelid in ('organization_company'::regclass,'organization_site'::regclass,'organization_department'::regclass,'organization_position'::regclass,'hr_employee'::regclass,'hr_employee_assignment'::regclass,'iam_user'::regclass) order by conname";
-        var constraints=jdbc.queryForList(oldConstraints);var latest=Flyway.configure().dataSource(ds).load();assertThat(latest.migrate().migrationsExecuted).isEqualTo(1);latest.validate();assertThat(latest.migrate().migrationsExecuted).isZero();
+        var constraints=jdbc.queryForList(oldConstraints);var latest=Flyway.configure().dataSource(ds).target("8").load();assertThat(latest.migrate().migrationsExecuted).isEqualTo(1);latest.validate();assertThat(latest.migrate().migrationsExecuted).isZero();
         before.forEach((t,rows)->assertThat(jdbc.queryForList("select * from "+t+" order by id")).isEqualTo(rows));assertThat(jdbc.queryForList(oldConstraints)).isEqualTo(constraints);
         assertThat(jdbc.queryForList("select version,checksum from flyway_schema_history where version in ('1','2','3','4','5','6','7') order by installed_rank")).isEqualTo(sums);assertThat(jdbc.queryForObject("select count(*) from iam_role",Integer.class)).isZero();
         assertThat(jdbc.queryForList("select conname from pg_constraint where conrelid='iam_role'::regclass and contype in ('p','f','u','c') order by conname").stream().map(r->r.get("conname"))).containsExactlyInAnyOrder("pk_iam_role","fk_iam_role_company","uq_iam_role_company_code","ck_iam_role_code","ck_iam_role_name","ck_iam_role_status","ck_iam_role_version","ck_iam_role_creation_reason","ck_iam_role_last_change","ck_iam_role_timestamps");
@@ -39,7 +39,7 @@ class RoleMigrationIT {
         assertThat(jdbc.queryForObject("select count(*) from information_schema.columns where table_name='iam_role' and is_nullable='NO'",Integer.class)).isEqualTo(9);
         System.out.println("I2 T27 preserved V1-V7 Flyway checksum rows="+sums+"; preserved old constraints="+constraints+"; existing rows="+before+"; Role table empty/only PK+code indexes");
         try(var context=new SpringApplicationBuilder(KFlowErpApplication.class).web(WebApplicationType.NONE).properties("spring.datasource.url="+postgres.getJdbcUrl(),"spring.datasource.username="+postgres.getUsername(),"spring.datasource.password="+postgres.getPassword(),"spring.jpa.hibernate.ddl-auto=validate").run()){
-            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("8");
+            assertThat(context.getBean(Flyway.class).info().current().getVersion().toString()).isEqualTo("9");
         }
         System.out.println("I2 T27 V7->V8 existing ORG/HR/IAM all rows, original constraints, V1-V7 checksums preserved; no Role seed; Flyway/Hibernate validate passed");
     }
