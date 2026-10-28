@@ -1,7 +1,7 @@
 # IAM-02 — Role 기준정보 Test Evidence
 
 - 작성: 2026-10-28 (Asia/Seoul).
-- 상태: **LOCAL VERIFIED / 원격 CI 확인 전**. PM3 독립 코드 리뷰·병합 판정 대기. main 병합 없음.
+- 상태: **LOCAL + REMOTE VERIFIED (아래 코드 커밋 CI)**. PM3 독립 코드 리뷰·병합 판정 대기. main 병합 없음.
 - 기준 main: `c6e7c3fd90bf09bf1f8abd094ee8fac58f7aaa61`. 착수 시 GitHub에서 재조회. 선행 [main CI](https://github.com/kimini02/k-flow-erp/actions/runs/40453630163) SUCCESS.
 - 작업 브랜치: `codex/iam-02-role-master`.
 - 범위: IAM 내부 Role 생성·rename·activate/deactivate·단건/코드/목록 조회. **Role-only** 완료 범위이며 UserRole 철회·Authentication·Authorization·외부 API 완료가 아니다.
@@ -115,7 +115,7 @@ IAM 경로는 `backend/src/main/java/com/kflow/erp/iam/` 기준이다.
 | T25 | REQUIRED PASS | t25 실제 HR10월1일 등록 commit→IAM10월11일 계정 생성 baseline, Role 명령 전후 Org/HR/User 모든 값·두 generation·다른 Role 불변, SQL/모듈 경계, UserRole 테이블 부재 |
 | T26 | REQUIRED PASS | t26 실제55P03/40P01/연결종료, 확정 실패 full rollback·기술오류 유지; t18 commit abort와 t15 commit 후 ACK wrapper를 구분. read 오류는 empty로 바꾸지 않음 |
 | T27 | REQUIRED PASS | [RoleMigrationIT](../../backend/src/test/java/com/kflow/erp/iam/RoleMigrationIT.java): V7→V8 모든 기존 행/제약/checksum·no seed·10개 제약/2개 index/C collation/NOT NULL. Foundation fresh8 tables/entities/Flyway·Hibernate validate |
-| T28 | REQUIRED PASS (local) | 전체457 PASS, 기존396 유지. 원격 결과는 §8. 외부 업무 API 없음(OpenAPI paths empty), UserRole/철회 stub 없음 |
+| T28 | REQUIRED PASS (local + code HEAD CI) | 전체457 PASS, 기존396 유지. 원격 결과는 §8. 외부 업무 API 없음(OpenAPI paths empty), UserRole/철회 stub 없음 |
 | T29 | DEFERRED | 실제 신규 grant/Role 재활성 후 기존 grants 비복원은 IAM-03 통합 |
 | T30 | DEFERRED | 실제 grant↔deactivate 네 일정, 같은 ACTIVE Role의 두 grant SHARE 공존·비키 UPDATE 충돌은 IAM-03 |
 | T31 | DEFERRED | DISABLED/TERMINATED 이후 남은 미철회까지 정확한 ID 집합·전체 원자 철회·부분/전체 flush rollback·비대상 보존은 IAM-03 |
@@ -142,7 +142,11 @@ T19 세 시험은 동일 행 대기와 다른 행 비경합을 섞지 않는다.
 
 ## 8. GitHub 제출·후속 경계
 
-원격 제출 및 최종 HEAD CI는 실제 실행 후 동기화한다. 로컬 PASS를 원격 PASS로 기록하지 않는다.
+- 코드 커밋: `70f6c04e9fac317f6b4030b103b819d5490e07f8`. [작업 브랜치](https://github.com/kimini02/k-flow-erp/tree/codex/iam-02-role-master), [Draft PR #8](https://github.com/kimini02/k-flow-erp/pull/8), base main, 25개 파일.
+- 해당 코드 HEAD의 독립 원격 PR CI: [Run 40611593214](https://github.com/kimini02/k-flow-erp/actions/runs/40611593214) / [verify Job 122564163615](https://github.com/kimini02/k-flow-erp/actions/runs/40611593214/job/122564163615), event `pull_request`, **SUCCESS**.
+- 실제 `./mvnw -B -ntp verify`: Surefire **63**, Failsafe **394**, 전체 **457 PASS**, failures/errors/skipped **0**, **BUILD SUCCESS**, 2026-10-28 00:54:36 UTC.
+- 실제 원격 Java **21.0.12.1**, Spring Boot **4.1.1**, Spring Framework **7.0.9**, PostgreSQL **16.15**, Testcontainers **2.0.5**, Hibernate **7.4.5.Final**. 로컬 JDK patch 버전과 구분한다. 원문 발췌는 iam-02-run.txt 끝에 별도 표시했다.
+- 이 문서의 원격 근거는 위 코드 SHA의 실행이다. Evidence 동기화 커밋 뒤 **최종 HEAD의 CI Run/Job은 PR 설명과 최종 제출 보고에서 별도로 확인**한다. 서로 다른 실행을 동일 실행처럼 표시하지 않는다.
 
 - PM3 리뷰 후 별도 병합 판단. 이번 작업에서 main 병합하지 않는다.
 - IAM-03이 들어올 때 **동일 deactivateRole Root에 전체 미철회 grant 처리**를 연결해야 한다. Role-only artifact와 신규 grant writer의 혼합 배포, 이전 상태만 바꾸는 우회 경로, NoOp revoke adapter는 허용하지 않는다.

@@ -5328,3 +5328,43 @@ fbf6a8e2b143cf04866c0391b92312436acb8d0faf692e2d4857e01e54c9e42c  backend/src/ma
 
 Actual local docker image inspect postgres:16 --format {{json .RepoDigests}}
 ["postgres@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54"]
+
+REMOTE CODE HEAD CI — actual selected log lines (not full remote log)
+Head: 70f6c04e9fac317f6b4030b103b819d5490e07f8
+Event: pull_request
+Run: https://github.com/kimini02/k-flow-erp/actions/runs/40611593214
+Job: https://github.com/kimini02/k-flow-erp/actions/runs/40611593214/job/122564163615
+Result: success
+verify	Compile, architecture checks and PostgreSQL integration tests	﻿2026-10-28T00:53:11.6629853Z ##[group]Run ./mvnw -B -ntp verify
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:21.4305388Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.761 s -- in com.kflow.erp.LayerArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:22.3674492Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.983 s -- in com.kflow.erp.technical.web.FrameworkProblemHandlerTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:22.9826450Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.607 s -- in com.kflow.erp.ModuleArchitectureTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.0038874Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s -- in com.kflow.erp.hr.HrAssignmentContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.0114660Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.kflow.erp.hr.HrTerminationContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.0315910Z [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.kflow.erp.hr.HrContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.0505143Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.kflow.erp.organization.OrganizationContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.1195218Z [INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.kflow.erp.organization.OrganizationValuesTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.3877384Z [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.270 s -- in com.kflow.erp.iam.IamContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.3976402Z [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.kflow.erp.iam.RoleContractTest
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:23.4863882Z [INFO] Tests run: 63, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:24.8514326Z 00:53:24.778 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:44.3875145Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.67 s -- in com.kflow.erp.FoundationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:46.4472825Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.043 s -- in com.kflow.erp.hr.HrMigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:54.1035282Z [INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.671 s -- in com.kflow.erp.hr.EmployeeAssignmentChangeIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:53:59.1086293Z [INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.008 s -- in com.kflow.erp.hr.EmployeeTerminationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:02.7631241Z [INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.653 s -- in com.kflow.erp.hr.EmployeeCoreIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:04.9928321Z [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.232 s -- in com.kflow.erp.hr.HrTerminationMigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:07.3355108Z [INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.340 s -- in com.kflow.erp.organization.DepartmentPositionIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:11.0916048Z [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.751 s -- in com.kflow.erp.organization.OrganizationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:12.7345207Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.644 s -- in com.kflow.erp.organization.OrganizationConstraintTranslationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:16.4782737Z [INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.742 s -- in com.kflow.erp.organization.OrganizationStateGuardIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:18.4165207Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.938 s -- in com.kflow.erp.organization.OrganizationV3MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:20.1852282Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.769 s -- in com.kflow.erp.organization.OrganizationV2MigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:22.0062242Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.820 s -- in com.kflow.erp.iam.IamMigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:23.9655756Z [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.958 s -- in com.kflow.erp.iam.RoleMigrationIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:31.0409984Z [INFO] Tests run: 71, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.070 s -- in com.kflow.erp.iam.IamUserIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:32.5507230Z I2 actual runtime Java=21.0.12.1 SpringBoot=4.1.1 SpringFramework=7.0.9 Hibernate=7.4.5.Final PG=16.15 (Debian 16.15-1.pgdg13+2) image=postgres:16
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:35.6225553Z [INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.582 s -- in com.kflow.erp.iam.RoleIT
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:35.7472982Z [INFO] Tests run: 394, Failures: 0, Errors: 0, Skipped: 0
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:36.0770494Z [INFO] BUILD SUCCESS
+verify	Compile, architecture checks and PostgreSQL integration tests	2026-10-28T00:54:36.0780137Z [INFO] Finished at: 2026-10-28T00:54:36Z
