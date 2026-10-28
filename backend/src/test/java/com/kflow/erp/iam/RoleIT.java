@@ -48,6 +48,7 @@ class RoleIT {
     @Autowired RoleService service;
     @Autowired RoleQueryService queries;
     @MockitoSpyBean RoleStore store;
+    @Autowired UserRoleStore userRoleStore;
     @MockitoSpyBean OrganizationService organization;
     @Autowired PlatformTransactionManager manager;
     @Autowired JdbcTemplate jdbc;
@@ -184,7 +185,7 @@ class RoleIT {
         finally{jdbc.execute("drop trigger iam02_abort on iam_role");jdbc.execute("drop function iam02_abort_commit()");}
         System.out.println("I2 T18/T26 "+op+" actual deferred commit abort23514 after successful flush; no DTO returned, full rollback");
     }
-    RoleService withManager(PlatformTransactionManager m){return new RoleService(store,organization,m,clock,30);}
+    RoleService withManager(PlatformTransactionManager m){return new RoleService(store,userRoleStore,organization,m,clock,30);}
     @Test void t15_actualCommitThenAckWrapperWithRetry(){
         var commits=new AtomicInteger();var rolls=new AtomicInteger();var wrapped=withManager(new PlatformTransactionManager(){
             public TransactionStatus getTransaction(TransactionDefinition d){return manager.getTransaction(d);}
@@ -304,8 +305,8 @@ class RoleIT {
         var other=service.createRole(create("OTHER"));var otherRow=row(other.roleId());var ids=new ArrayList<Map<String,Object>>();doAnswer(c->{c.callRealMethod();ids.add(physical());return null;}).when(store).requireWritableTransaction();
         var r=service.createRole(create("ADMIN"));r=action("rename",r,0);r=action("activate",r,1);r=action("deactivate",r,2);r=action("activate",r,3);
         baseline.forEach((table,rows)->assertThat(jdbc.queryForList("select * from "+table+" order by id")).isEqualTo(rows));assertThat(row(other.roleId())).isEqualTo(otherRow);
-        for(var id:ids)assertThat(sql(id)).doesNotContain("hr_employee","iam_user","update organization_","FOR SHARE");
-        assertThat(jdbc.queryForObject("select to_regclass('iam_user_role') is null",Boolean.class)).isTrue();System.out.println("I2 T25 actual committed HR/User baseline preserved including AM01/AM02 generations; other Role unchanged; no UserRole table/writer; Role ADMIN is ordinary stored definition; User="+user.userId());
+        for(var id:ids)assertThat(sql(id)).doesNotContain("hr_employee","from iam_user where","update iam_user set","update organization_","FOR SHARE");
+        assertThat(jdbc.queryForObject("select count(*) from iam_user_role",Integer.class)).isZero();System.out.println("I2 T25 actual committed HR/User baseline preserved including AM01/AM02 generations; other Role unchanged; IAM-03 table present but Role lifecycle creates no UserRole grant; Role ADMIN is ordinary stored definition; User="+user.userId());
     }
     @Autowired org.springframework.context.ApplicationContext context;
     @Test void t26_lockTimeoutIsTechnicalAndFinite(){
