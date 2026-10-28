@@ -43,10 +43,10 @@ class FoundationIT {
                          + "and table_name <> 'flyway_schema_history'")) {
                 var tables = new java.util.ArrayList<String>();
                 while (result.next()) tables.add(result.getString(1));
-                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment", "iam_user", "iam_role", "iam_user_role", "iam_password_credential", "iam_credential_enrollment", "iam_bootstrap_record");
+                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment", "iam_user", "iam_role", "iam_user_role", "iam_password_credential", "iam_credential_enrollment", "iam_bootstrap_record", "spring_session", "spring_session_attributes");
             }
         }
-        assertThat(flyway.info().applied()).hasSize(10);
+        assertThat(flyway.info().applied()).hasSize(11);
         assertThat(flyway.info().pending()).isEmpty();
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(entityManagerFactory.isOpen()).isTrue();
@@ -64,8 +64,13 @@ class FoundationIT {
         assertThat(spec.statusCode()).isEqualTo(200);
         assertThat(spec.body()).contains("\"openapi\"");
         var paths=tools.jackson.databind.json.JsonMapper.builder().build().readTree(spec.body()).get("paths");
-        assertThat(paths.size()).isEqualTo(1);
+        assertThat(paths.size()).isEqualTo(5);
         assertThat(paths.get("/api/credential-enrollments/consume").propertyNames()).containsExactly("post");
+        assertThat(paths.get("/api/auth/csrf").propertyNames()).containsExactly("get");
+        assertThat(paths.get("/api/auth/login").propertyNames()).containsExactly("post");
+        assertThat(paths.get("/api/auth/logout").propertyNames()).containsExactly("post");
+        assertThat(paths.get("/api/auth/session").propertyNames()).containsExactly("get");
+        assertThat(environment.getProperty("spring.session.jdbc.initialize-schema")).isEqualTo("never");
         var ui = client.send(HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/swagger-ui.html")).GET().build(),
                 HttpResponse.BodyHandlers.ofString());
         assertThat(ui.statusCode()).isEqualTo(200);

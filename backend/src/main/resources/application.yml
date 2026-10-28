@@ -5,6 +5,9 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+  session:
+    jdbc:
+      initialize-schema: never
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -20,3 +23,9 @@ logging:
     org.hibernate.orm.jdbc.bind: OFF
     org.hibernate.orm.jdbc.extract: OFF
     org.springframework.web.filter.CommonsRequestLoggingFilter: OFF
+
+    org.springframework.session: OFF
+    org.springframework.security.web.authentication.session: OFF
+    org.springframework.security.web.csrf: OFF
+    org.springframework.jdbc.core: OFF
+    org.springframework.jdbc.support: OFF

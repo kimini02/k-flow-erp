@@ -113,7 +113,7 @@ class CredentialMigrationIT {
             + " pg_constraint where connamespace='public'::regnamespace and conrelid not in"
             + " ('flyway_schema_history'::regclass) order by conname";
     var constraints = jdbc.queryForList(catalog);
-    var latest = Flyway.configure().dataSource(ds).load();
+    var latest = Flyway.configure().dataSource(ds).target("10").load();
     assertThat(latest.migrate().migrationsExecuted).isEqualTo(1);
     latest.validate();
     assertThat(latest.migrate().migrationsExecuted).isZero();
@@ -139,7 +139,7 @@ class CredentialMigrationIT {
                 "spring.jpa.hibernate.ddl-auto=validate")
             .run()) {
       assertThat(context.getBean(Flyway.class).info().current().getVersion().toString())
-          .isEqualTo("10");
+          .isEqualTo("11");
     }
     System.out.println(
         "A1 T34 V9 -> V10 exact original rows and constraints preserved; V1-V9 checksums="

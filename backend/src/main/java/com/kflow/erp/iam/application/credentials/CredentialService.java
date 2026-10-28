@@ -218,13 +218,7 @@ public class CredentialService {
     var row = store.findCredential(Objects.requireNonNull(user)).orElse(null);
     if (row == null || !"NFC_V1".equals(row.inputPolicy()))
       return PasswordHash.Result.UNSUPPORTED_OR_CORRUPT;
-    String normalized;
-    try {
-      normalized = PasswordPolicy.normalize(raw);
-    } catch (CredentialFailure e) {
-      return PasswordHash.Result.MISMATCH;
-    }
-    return budget.execute(() -> hash.matches(normalized, row.encodedPassword()));
+    return new PasswordVerifier(hash, budget).verify(raw, row.inputPolicy(), row.encodedPassword());
   }
 
   private OperatingApproval.Verified approve(
