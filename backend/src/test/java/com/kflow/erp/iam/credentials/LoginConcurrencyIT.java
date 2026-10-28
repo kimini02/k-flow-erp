@@ -182,7 +182,7 @@ class LoginConcurrencyIT extends AuthenticationTestSupport {
     assertThat(persisted.userGenerationAtLogin()).isZero();
     assertThat(persisted.employeeGenerationAtLogin()).isZero();
     assertThat(persisted.credentialVersionAtLogin()).isZero();
-    // Historic authentication only. No claim that AN-03's latest-state Q is implemented.
+    // AN-03 now rejects the unchanged historic stamp on every new protected request.
     var response =
         mvc.perform(
                 http("GET", "/api/auth/session")
@@ -191,13 +191,13 @@ class LoginConcurrencyIT extends AuthenticationTestSupport {
                             com.kflow.erp.iam.web.authentication.SessionCookie.NAME, s.getId())))
             .andReturn()
             .getResponse();
-    assertThat(response.getStatus()).isEqualTo(200);
+    assertThat(response.getStatus()).isEqualTo(401);
     assertThat(mvc.perform(http("GET", "/api/admin")).andReturn().getResponse().getStatus())
         .isEqualTo(403);
     System.out.println(
         "A2 T20 late S observed after "
             + change
-            + "; V2 stamp unchanged; AN-03 new-request revocation DEFERRED");
+            + "; V2 stamp unchanged; AN-03 new-request revocation 401 verified");
   }
 
   @Test

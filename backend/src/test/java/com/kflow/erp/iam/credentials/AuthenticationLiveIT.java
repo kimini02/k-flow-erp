@@ -21,7 +21,7 @@ import org.junit.jupiter.api.*;
  * Independent JVMs, real Tomcat TLS/HTTP/PG. Optional locally available Chrome is separately
  * reported.
  */
-@Timeout(180)
+@Timeout(300)
 class AuthenticationLiveIT extends AuthenticationTestSupport {
   Path temporary, keys;
   String keyPassword;
@@ -113,8 +113,10 @@ class AuthenticationLiveIT extends AuthenticationTestSupport {
         });
     browserOrigin.start();
     String origins = one + "," + two + "," + browserUrl;
-    var first = start(p1, origins, "one");
-    var second = start(p2, origins, "two");
+    Path legacy = An03ColdCutover.previousArtifact(temporary);
+    Path current = Path.of("target/k-flow-erp-0.0.1-SNAPSHOT.jar").toAbsolutePath();
+    String approvedDigest = An03ColdCutover.digest(current);
+    var oldProcess = startJar(p1, origins, "legacy", legacy);
     var cookies = new CookieManager(null, CookiePolicy.ACCEPT_ALL);
     var client =
         HttpClient.newBuilder()
@@ -122,7 +124,56 @@ class AuthenticationLiveIT extends AuthenticationTestSupport {
             .cookieHandler(cookies)
             .connectTimeout(Duration.ofSeconds(3))
             .build();
+    awaitReady(client, one, oldProcess);
+    String oldCsrf =
+        JSON.readTree(send(client, one, "GET", "/api/auth/csrf", null, null).body())
+            .get("token")
+            .asString();
+    assertThat(
+            send(
+                    client,
+                    one,
+                    "POST",
+                    "/api/auth/login",
+                    JSON.writeValueAsString(Map.of("loginKey", u.loginKey(), "password", PASSWORD)),
+                    oldCsrf)
+                .statusCode())
+        .isEqualTo(200);
+    assertThat(send(client, one, "GET", "/api/auth/session", null, null).statusCode())
+        .isEqualTo(200);
+    var legacyBytes =
+        jdbc.queryForList("select attribute_bytes from spring_session_attributes", byte[].class);
+    assertThat(legacyBytes)
+        .isNotEmpty(); // kept separate from artifact and later backup; never printed.
+    assertThatThrownBy(
+            () ->
+                An03ColdCutover.requireColdGate(
+                    current, approvedDigest, children, count("spring_session")))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("Drain/stop incomplete");
+    oldProcess.destroy();
+    assertThat(oldProcess.waitFor(10, TimeUnit.SECONDS)).isTrue();
+    assertThatThrownBy(
+            () ->
+                An03ColdCutover.requireColdGate(
+                    current, approvedDigest, children, count("spring_session")))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("Session purge incomplete");
+    jdbc.update("delete from spring_session");
+    assertThatThrownBy(() -> An03ColdCutover.requireColdGate(legacy, approvedDigest, children, 0))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("Unapproved/old artifact blocked");
+    An03ColdCutover.requireColdGate(current, approvedDigest, children, count("spring_session"));
+    var first = start(p1, origins, "one");
+    var second = start(p2, origins, "two");
     awaitReady(client, one, first);
+    assertThat(send(client, one, "GET", "/api/auth/session", null, null).statusCode())
+        .isEqualTo(401);
+    System.out.println(
+        "A3 T33/T34 isolated Gate: actual AN-02 JVM/session -> mixed live PID denied -> stop ->"
+            + " unpurged session denied -> purge -> old artifact SHA denied -> current artifact"
+            + " start; old cookie 401; current artifact SHA256="
+            + approvedDigest);
     awaitReady(client, two, second);
     var c = send(client, one, "GET", "/api/auth/csrf", null, null);
     assertThat(c.statusCode()).isEqualTo(200);
@@ -183,18 +234,111 @@ class AuthenticationLiveIT extends AuthenticationTestSupport {
               + " persistent Cookie after browser process restart, second-node restore and logout"
               + " replay 401 PASS; self-signed test TLS, operating ingress OPEN");
     }
+    // AN-03 T32/T34: both real nodes use Q, then stop/drain and restore an isolated PG backup.
+    var freshCsrf = send(client, one, "GET", "/api/auth/csrf", null, null);
+    String freshToken = JSON.readTree(freshCsrf.body()).get("token").asString();
+    assertThat(
+            send(
+                    client,
+                    one,
+                    "POST",
+                    "/api/auth/login",
+                    JSON.writeValueAsString(Map.of("loginKey", u.loginKey(), "password", PASSWORD)),
+                    freshToken)
+                .statusCode())
+        .isEqualTo(200);
+    var currentSessions =
+        jdbc.queryForList(
+            "select session_id from spring_session order by session_id", String.class);
+    var businessCounts =
+        Map.of(
+            "users",
+            count("iam_user"),
+            "employees",
+            count("hr_employee"),
+            "assignments",
+            count("hr_employee_assignment"));
+    var dump =
+        postgres.execInContainer(
+            "pg_dump",
+            "-U",
+            postgres.getUsername(),
+            "-d",
+            postgres.getDatabaseName(),
+            "-Fc",
+            "-f",
+            "/tmp/a3-cold-backup.dump");
+    assertThat(dump.getExitCode()).isZero();
+    var disabled =
+        users.disableUser(
+            new com.kflow.erp.iam.application.ChangeUserStatus(
+                company, u.userId(), u.version(), "revoke both nodes"));
+    users.enableUser(
+        new com.kflow.erp.iam.application.ChangeUserStatus(
+            company, u.userId(), disabled.version(), "reenable management"));
+    for (String node : List.of(one, two))
+      assertThat(send(client, node, "GET", "/api/auth/session", null, null).statusCode())
+          .isEqualTo(401);
+    for (Process child : children) {
+      child.destroy();
+      assertThat(child.waitFor(10, TimeUnit.SECONDS)).isTrue();
+    }
+    assertThat(children).allMatch(p -> !p.isAlive());
+    var restore =
+        postgres.execInContainer(
+            "pg_restore",
+            "-U",
+            postgres.getUsername(),
+            "-d",
+            postgres.getDatabaseName(),
+            "--clean",
+            "--if-exists",
+            "/tmp/a3-cold-backup.dump");
+    assertThat(restore.getExitCode()).isZero();
+    assertThat(
+            jdbc.queryForList(
+                "select session_id from spring_session order by session_id", String.class))
+        .isEqualTo(currentSessions);
+    assertThat(
+            jdbc.queryForObject(
+                "select auth_revocation_generation from iam_user where id=?",
+                Long.class,
+                u.userId()))
+        .isZero();
+    // Restoring a generation is NOT intrinsically safe: remove all restored bearer rows before
+    // restart.
+    jdbc.update("delete from spring_session");
+    assertThat(count("spring_session_attributes")).isZero();
+    assertThat(count("iam_user")).isEqualTo(businessCounts.get("users"));
+    assertThat(count("hr_employee")).isEqualTo(businessCounts.get("employees"));
+    assertThat(count("hr_employee_assignment")).isEqualTo(businessCounts.get("assignments"));
+    An03ColdCutover.requireColdGate(current, approvedDigest, children, count("spring_session"));
+    var cold = start(p1, origins, "cold-restored");
+    awaitReady(client, one, cold);
+    assertThat(send(client, one, "GET", "/api/auth/session", null, null).statusCode())
+        .isEqualTo(401);
+    assertThat(authenticatedCount()).isZero();
+    postgres.execInContainer("rm", "/tmp/a3-cold-backup.dump");
+    System.out.println(
+        "A3 T32/T34 actual two-JVM Q revocation 401 on both after disable-enable; all old PIDs"
+            + " stopped; pg_dump/pg_restore generation rollback observed; exact Session set"
+            + " restored then purged; business counts preserved; old Cookie 401 after cold restart."
+            + " Isolated rehearsal only / operating T40 DEFERRED");
   }
 
   Process start(int port, String origins, String name) throws Exception {
+    return startJar(
+        port, origins, name, Path.of("target/k-flow-erp-0.0.1-SNAPSHOT.jar").toAbsolutePath());
+  }
+
+  Process startJar(int port, String origins, String name, Path artifact) throws Exception {
     var args =
         new ArrayList<>(
             List.of(
                 Path.of(System.getProperty("java.home"), "bin", "java").toString(),
                 "-Xmx384m",
-                "-cp",
-                System.getProperty(
-                    "surefire.test.class.path", System.getProperty("java.class.path")),
-                AuthenticationNode.class.getName(),
+                "-jar",
+                artifact.toString(),
                 "--server.address=127.0.0.1",
                 "--server.port=" + port,
                 "--server.ssl.enabled=true",

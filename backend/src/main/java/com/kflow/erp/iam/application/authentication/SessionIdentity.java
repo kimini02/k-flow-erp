@@ -3,7 +3,7 @@ package com.kflow.erp.iam.application.authentication;
 import java.time.*;
 import java.util.*;
 
-/** Immutable L stamp. S must not refresh generations; AN-03 Q is not implemented here. */
+/** Immutable L stamp. S never refreshes generations; AN-03 Q compares current facts. */
 public record SessionIdentity(
     UUID userId,
     UUID companyId,
