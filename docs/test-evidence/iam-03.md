@@ -1,6 +1,6 @@
 # IAM-03 UserRole 구현 및 검증 Evidence
 
-- 상태: **LOCAL VERIFIED / 원격 최종 HEAD 검증 대기 / PM3 리뷰 전**. main 병합하지 않음.
+- 상태: **LOCAL + CODE HEAD CI VERIFIED / 최종 Evidence HEAD CI 확인은 PR 기록 참조 / PM3 리뷰 전**. main 병합하지 않음.
 - 기준 main: `5c813f0e7ef823c207a976c1efca7a2977c3f68c`; 착수·제출 준비 시 GitHub 재조회 일치.
 - 작업 브랜치: `codex/iam-03-user-role`.
 - 기존 baseline 457 PASS는 IAM-03 결과로 재사용하지 않았다.
@@ -124,10 +124,10 @@ I3-T39~42 DEFERRED 및 T43 DOCUMENTED LIMITATION 유지. 실제 AN/AZ Session·�
 | I3-T30 | REQUIRED | Critical | PASS | `UserRoleContractTest.t30_hrGrantPurposeDoesNotInheritAccountLinkOnLeaveFailure`; `UserRoleHrIT.t30_guardEligibilityAndDistinctPurpose`; `UserRoleHrIT.t30_t31_midnightKeepsActualPostLockDateAndSameDayRules` |
 | I3-T31 | REQUIRED | Critical | PASS | `UserRoleHrIT.t31_threeIndependentRootsSixRequiredSchedules`; `UserRoleHrIT.t31_grantAndRealTerminationBothDirections`; `UserRoleHrIT.t30_t31_midnightKeepsActualPostLockDateAndSameDayRules` |
 | I3-T32 | REQUIRED | High | PASS | `UserRoleHrIT.t32_realTransferAndUserStateRaces`; `UserRoleHrIT.t32_employeeShareBlocksBareNonKeyVersionUpdate` |
-| I3-T33 | REQUIRED | High | PASS | `UserRoleContractTest.t25_t33_onlyTwoExactUniqueConstraintsAndOptimisticAreTranslated`; `UserRoleHrIT.t33_actualRoleWaitFailuresReleaseEmployeeShare`; `UserRoleHrIT.t33_realDeadlockIsTechnicalWithOneVictimAndNoRetry`; `UserRoleHrIT.t33_actualCommitAbortAfterFlushPreservesAllRows` |
+| I3-T33 | REQUIRED | High | PASS | `UserRoleContractTest.t25_t33_onlyTwoExactUniqueConstraintsAndOptimisticAreTranslated`; `UserRoleHrIT.t33_actualRoleWaitFailuresReleaseEmployeeShare`; `UserRoleHrIT.t33_realDeadlockIsTechnicalWithOneVictimAndNoRetry`; `UserRoleHrIT.t33_actualCommitAbortAfterFlushPreservesAllRows`; `UserRoleIT.t27_t28_actualCommitAckWrapperAndPreciseRetries` |
 | I3-T34 | REQUIRED | Medium | PASS | `UserRoleContractTest.t34_t37_narrowPublicCommandsDerivedStateAndNoAuthorizationSurface`; `UserRoleIT.t26_t34_singleScalarFreshReadRetainsStaleManagedObjects`; `UserRoleIT.t34_t35_historyFiltersPaginationTieBreakersAndErrors` |
 | I3-T35 | REQUIRED | Medium | PASS | `UserRoleIT.t34_t35_historyFiltersPaginationTieBreakersAndErrors` |
-| I3-T36 | REQUIRED | Critical | PASS | `UserRoleMigrationIT.t36_v8UpgradePreservesEveryOriginalRowAndChecksumAdditiveParentKeysAndEmptyGrants` |
+| I3-T36 | REQUIRED | Critical | PASS | `UserRoleMigrationIT.t36_v8UpgradePreservesEveryOriginalRowAndChecksumAdditiveParentKeysAndEmptyGrants`; `FoundationIT.bootsOnPostgresWithOnlyApprovedOrganizationHrAndIamSchema` (빈 DB) |
 | I3-T37 | REQUIRED | Critical | PASS | `UserRoleContractTest.t34_t37_narrowPublicCommandsDerivedStateAndNoAuthorizationSurface`; `ModuleArchitectureTest`, `LayerArchitectureTest`, `FrameworkProblemHandlerTest`, 아래 범위·배포 경로 점검 |
 | I3-T38 | REQUIRED | High | 계측·회귀 PASS / 운영 최대 규모 OPEN | `UserRoleHrIT.t38_measuredBoundedGrantSetSuccessAndRollback`; 전체 verify 및 원격 CI 절 |
 | I3-T39 | DEFERRED | Critical | 미구현·미검증 유지 | Authentication/Authorization/Session 실제 접근 판정 후속 |
@@ -191,4 +191,11 @@ I3 T38 measured N=128 success_ms=260.303833 lock_acquired_to_return_upper_ms=256
 
 ## 제출·최종 원격 검증
 
-원격 결과는 실행 후 이 절과 PR에 실제 링크로 기록한다. 로컬 PASS만으로 최종 원격 CI 완료를 주장하지 않는다. 최종 Evidence 커밋 자체의 CI는 이전 코드 커밋 CI와 구분하여 PR 기록에 남긴다.
+- [작업 브랜치](https://github.com/kimini02/k-flow-erp/tree/codex/iam-03-user-role), [Draft PR #9](https://github.com/kimini02/k-flow-erp/pull/9), base `main`. 제출33개 파일이며 `.idea`·Frontend·무관한 문서는 제외했다.
+- 코드 커밋: `250b1d108fcfc820b8d8ffce8b82605231a60375`.
+- 해당 HEAD의 원격 PR CI: [Run 40618984807](https://github.com/kimini02/k-flow-erp/actions/runs/40618984807) / [verify Job 122588092147](https://github.com/kimini02/k-flow-erp/actions/runs/40618984807/job/122588092147), event `pull_request`, **SUCCESS**.
+- 원격 실제 명령 `./mvnw -B -ntp verify`: **Surefire69 + Failsafe504 = 573 PASS**, Failures/Errors/Skipped 각각0, BUILD SUCCESS. Job 완료 `2026-10-28T02:08:44Z`.
+- 실제 원격 PostgreSQL16.15 / Testcontainers2.0.5 / Hibernate7.4.5.Final / Java21.0.12.1. 로컬 Java21.0.2와 구분한다. 실행 원문 발췌는 성공 로그 파일 끝에 별도 보존했다.
+- 같은 코드 HEAD의 push CI도 [Run40618970705](https://github.com/kimini02/k-flow-erp/actions/runs/40618970705) SUCCESS를 조회했다. 위 테스트 집계의 원문 근거는 PR CI다.
+- 이 절은 **코드 SHA의 실제 실행 결과**다. 이 Evidence를 담는 후속 커밋의 최종 HEAD CI는 이전 실행과 구분하여 **PR 설명과 최종 제출 보고에 실제 SHA·Run·Job 링크로 기록**한다. 자기 커밋의 미실행 CI를 이 문서에서 미리 PASS로 주장하지 않는다.
+- PM3 독립 코드 리뷰 대기. main 병합·운영 배포·다음 Slice 착수하지 않았다. I3-T39~42 DEFERRED/T43 LIMITATION, T38 운영 최대 규모 OPEN을 유지한다.
