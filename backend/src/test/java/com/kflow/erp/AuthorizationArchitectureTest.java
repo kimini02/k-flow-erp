@@ -7,7 +7,7 @@ import com.tngtech.archunit.core.importer.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.bind.annotation.RestController;
 
-/** AZ-01 entry inventory. New external callers require explicit review with AZ-02/03. */
+/** AZ-02 exact entry inventory. No other fact-return or writer entry is authorized. */
 class AuthorizationArchitectureTest {
   final com.tngtech.archunit.core.domain.JavaClasses classes =
       new ClassFileImporter()
@@ -31,14 +31,14 @@ class AuthorizationArchitectureTest {
   }
 
   @Test
-  void noSiteFactReturnEntryAndNoAdditionalHttpControllersAreOpened() {
-    // getCompany callers are legitimate internal facts; findSite has no production web caller yet.
+  void onlyAuthorizedSiteFacadeCanReadFactsAndOnlyItsControllerCanExposeIt() {
+    // getCompany remains an internal fact. Site reads have exactly one secured facade.
     for (var type : classes)
       for (var call : type.getMethodCallsFromSelf()) {
         if (call.getTarget().getName().equals("findSite")
             && call.getTargetOwner()
                 .isAssignableTo(com.kflow.erp.organization.api.OrganizationReferenceQueries.class))
-          fail("AZ-02 has not approved a production Site return entry: " + call.getDescription());
+          assertThat(type.getName()).isEqualTo("com.kflow.erp.technical.site.AuthorizedSiteRead");
       }
     assertThat(
             classes.stream()
@@ -47,6 +47,16 @@ class AuthorizationArchitectureTest {
                 .toList())
         .containsExactlyInAnyOrder(
             "com.kflow.erp.iam.web.authentication.AuthController",
-            "com.kflow.erp.iam.web.credentials.CredentialConsumeController");
+            "com.kflow.erp.iam.web.credentials.CredentialConsumeController",
+            "com.kflow.erp.technical.web.SiteReadController");
+    noClasses()
+        .that()
+        .doNotHaveFullyQualifiedName("com.kflow.erp.technical.web.SiteReadController")
+        .and()
+        .doNotHaveFullyQualifiedName("com.kflow.erp.technical.site.AuthorizedSiteRead")
+        .should()
+        .accessClassesThat()
+        .haveFullyQualifiedName("com.kflow.erp.technical.site.AuthorizedSiteRead")
+        .check(classes);
   }
 }
