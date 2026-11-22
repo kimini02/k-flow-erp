@@ -64,7 +64,8 @@ class FoundationIT {
         assertThat(spec.statusCode()).isEqualTo(200);
         assertThat(spec.body()).contains("\"openapi\"");
         var paths=tools.jackson.databind.json.JsonMapper.builder().build().readTree(spec.body()).get("paths");
-        assertThat(paths.size()).isEqualTo(5);
+        assertThat(paths.size()).isEqualTo(6);
+        assertThat(paths.get("/api/organization/sites/{siteId}").propertyNames()).containsExactly("get");
         assertThat(paths.get("/api/credential-enrollments/consume").propertyNames()).containsExactly("post");
         assertThat(paths.get("/api/auth/csrf").propertyNames()).containsExactly("get");
         assertThat(paths.get("/api/auth/login").propertyNames()).containsExactly("post");

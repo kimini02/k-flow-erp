@@ -101,6 +101,7 @@ public class AuthSecurityConfiguration {
             c.requestMatchers(
                     r ->
                         AuthHttpBoundary.PATHS.contains(r.getServletPath())
+                            || SiteReadHttpBoundary.accepted(r)
                             || r.getMethod().equals("POST")
                                 && r.getServletPath().equals(CredentialHttpBoundary.PATH)
                             || r.getMethod().equals("GET")
