@@ -60,6 +60,8 @@ class SessionMigrationIT extends AuthenticationTestSupport {
               .dataSource(jdbc.getDataSource())
               .schemas(schema)
               .defaultSchema(schema)
+              // This test isolates the historical V10 -> V11 contract; V12 has its own upgrade test.
+              .target("11")
               .load();
       assertThat(latest.migrate().migrationsExecuted).isEqualTo(1);
       latest.validate();
