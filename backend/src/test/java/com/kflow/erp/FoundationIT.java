@@ -32,7 +32,7 @@ class FoundationIT {
     @Value("${local.server.port}") int port;
 
     @Test
-    void bootsOnPostgresWithOnlyApprovedOrganizationHrAndIamSchema() throws Exception {
+    void bootsOnPostgresWithOrganizationHrIamAndItemProviderSchema() throws Exception {
         assertThat(postgres.isRunning()).isTrue();
         try (var connection = dataSource.getConnection()) {
             assertThat(connection.getMetaData().getDatabaseProductName()).isEqualTo("PostgreSQL");
@@ -43,10 +43,10 @@ class FoundationIT {
                          + "and table_name <> 'flyway_schema_history'")) {
                 var tables = new java.util.ArrayList<String>();
                 while (result.next()) tables.add(result.getString(1));
-                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment", "iam_user", "iam_role", "iam_user_role", "iam_password_credential", "iam_credential_enrollment", "iam_bootstrap_record", "spring_session", "spring_session_attributes");
+                assertThat(tables).containsExactlyInAnyOrder("organization_company", "organization_site", "organization_department", "organization_position", "hr_employee", "hr_employee_assignment", "iam_user", "iam_role", "iam_user_role", "iam_password_credential", "iam_credential_enrollment", "iam_bootstrap_record", "spring_session", "spring_session_attributes", "masterdata_item");
             }
         }
-        assertThat(flyway.info().applied()).hasSize(11);
+        assertThat(flyway.info().applied()).hasSize(12);
         assertThat(flyway.info().pending()).isEmpty();
         assertThat(flyway.validateWithResult().validationSuccessful).isTrue();
         assertThat(entityManagerFactory.isOpen()).isTrue();

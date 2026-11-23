@@ -139,7 +139,7 @@ class CredentialMigrationIT {
                 "spring.jpa.hibernate.ddl-auto=validate")
             .run()) {
       assertThat(context.getBean(Flyway.class).info().current().getVersion().toString())
-          .isEqualTo("11");
+          .isEqualTo("12");
     }
     System.out.println(
         "A1 T34 V9 -> V10 exact original rows and constraints preserved; V1-V9 checksums="
