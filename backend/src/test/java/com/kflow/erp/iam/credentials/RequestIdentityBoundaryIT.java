@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.support.*;
+import tools.jackson.databind.node.ObjectNode;
 
 @org.springframework.context.annotation.Import(RequestIdentityBoundaryIT.Probe.class)
 class RequestIdentityBoundaryIT extends AuthenticationTestSupport {
@@ -165,22 +166,41 @@ class RequestIdentityBoundaryIT extends AuthenticationTestSupport {
             byte[].class,
             b.cookie().getValue(),
             attribute);
-    String value = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
-    value =
-        switch (kind) {
-          case "v1" -> value.replace("SESSION_AUTH_V2", "SESSION_AUTH_V1");
-          case "unknown" -> value.replace("SESSION_AUTH_V2", "SESSION_AUTH_V999");
-          case "negative" ->
-              value.replace("\"userGenerationAtLogin\":0", "\"userGenerationAtLogin\":-1");
-          case "missing" -> value.replace("\"userGenerationAtLogin\":0,", "");
-          default -> value.substring(0, value.length() - 1) + ",\"authorities\":[\"ROLE_ADMIN\"]}";
-        };
-    jdbc.update(
-        "update spring_session_attributes set attribute_bytes=? where session_primary_id=(select"
-            + " primary_id from spring_session where session_id=?) and attribute_name=?",
-        value.getBytes(java.nio.charset.StandardCharsets.UTF_8),
-        b.cookie().getValue(),
-        attribute);
+    var value = (ObjectNode) JSON.readTree(bytes);
+    switch (kind) {
+      case "v1" -> value.put("kind", "SESSION_AUTH_V1");
+      case "unknown" -> value.put("kind", "SESSION_AUTH_V999");
+      case "negative" -> value.put("userGenerationAtLogin", -1);
+      case "missing" -> value.remove("userGenerationAtLogin");
+      case "authorities" -> value.putArray("authorities").add("ROLE_ADMIN");
+      default -> throw new IllegalArgumentException("Unknown corruption kind: " + kind);
+    }
+    assertThat(
+            jdbc.update(
+                "update spring_session_attributes set attribute_bytes=? where session_primary_id=(select"
+                    + " primary_id from spring_session where session_id=?) and attribute_name=?",
+                JSON.writeValueAsBytes(value),
+                b.cookie().getValue(),
+                attribute))
+        .isEqualTo(1);
+    var stored =
+        JSON.readTree(
+            jdbc.queryForObject(
+                "select attribute_bytes from spring_session_attributes where session_primary_id=(select"
+                    + " primary_id from spring_session where session_id=?) and attribute_name=?",
+                byte[].class,
+                b.cookie().getValue(),
+                attribute));
+    assertThat(stored).isEqualTo(value);
+    switch (kind) {
+      case "v1" -> assertThat(stored.get("kind").asString()).isEqualTo("SESSION_AUTH_V1");
+      case "unknown" -> assertThat(stored.get("kind").asString()).isEqualTo("SESSION_AUTH_V999");
+      case "negative" -> assertThat(stored.get("userGenerationAtLogin").asLong()).isEqualTo(-1);
+      case "missing" -> assertThat(stored.has("userGenerationAtLogin")).isFalse();
+      case "authorities" ->
+          assertThat(stored.get("authorities")).isEqualTo(JSON.createArrayNode().add("ROLE_ADMIN"));
+      default -> throw new IllegalArgumentException("Unknown corruption kind: " + kind);
+    }
     clearInvocations(controller, accessRows);
     assertThat(status(b)).isEqualTo(401);
     verify(controller, never()).session(any());
